@@ -13,8 +13,9 @@
     "app_version": "1.1.0",
     "utctime_updated": "2021-11-10T18:51:48.000000Z",
     "package_name": "phantom_taniumthreatresponse",
-    "main_module": "taniumthreatresponse_connector.pyc",
+    "main_module": "taniumthreatresponse_connector.py",
     "min_phantom_version": "4.9.39220",
+    "python_version": 3,
     "app_wizard_version": "1.0.0",
     "configuration": {
         "base_url": {
@@ -3484,7 +3485,7 @@
             },
             {
                 "module": "beautifulsoup4",
-                "input_file": "wheels/beautifulsoup4-4.9.1-py2-none-any.whl"
+                "input_file": "wheels/beautifulsoup4-4.10.0-py3-none-any.whl"
             },
             {
                 "module": "certifi",

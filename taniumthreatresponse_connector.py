@@ -297,7 +297,7 @@ class TaniumThreatResponseConnector(BaseConnector):
                 return action_result.get_status(), None
 
         headers.update({'session': str(self._session_key)})
-        if 'Content-Type' not in headers.keys():
+        if 'Content-Type' not in list(headers.keys()):
             headers.update({'Content-Type': 'application/json'})
 
         ret_val, resp_json = self._make_rest_call(
@@ -311,7 +311,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             if phantom.is_fail(ret_val):
                 return action_result.get_status(), None
             headers.update({'session': str(self._session_key)})
-            if 'Content-Type' not in headers.keys():
+            if 'Content-Type' not in list(headers.keys()):
                 headers.update({'Content-Type': 'application/json'})
 
             ret_val, resp_json = self._make_rest_call(
@@ -690,7 +690,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('List snapshots failed')
             return action_result.get_status()
 
-        for host, names in response.iteritems():
+        for host, names in list(response.items()):
             for name in names:
                 each_snapshot = dict()
                 each_snapshot['host'] = host
@@ -778,8 +778,8 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('List local snapshots failed')
             return action_result.get_status()
 
-        for name, entry in response.iteritems():
-            for key, value in entry.iteritems():
+        for name, entry in list(response.items()):
+            for key, value in list(entry.items()):
                 each_snapshot = dict()
                 each_snapshot.update(value)
                 each_snapshot['snapshot'] = key
@@ -967,7 +967,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         # Process response
         out = []
         for event_type in response:
-            for date, l in event_type.get('details', {}).iteritems():
+            for date, l in list(event_type.get('details', {}).items()):
                 for event in l:
                     out.append({
                         'type': event_type.get('name'),
