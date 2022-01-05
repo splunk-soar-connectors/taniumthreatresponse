@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk Community",
     "license": "Copyright (c) 2020-2022 Splunk Inc.",
-    "app_version": "1.1.0",
+    "app_version": "2.0.0",
     "utctime_updated": "2021-11-10T18:51:48.000000Z",
     "package_name": "phantom_taniumthreatresponse",
     "main_module": "taniumthreatresponse_connector.py",
