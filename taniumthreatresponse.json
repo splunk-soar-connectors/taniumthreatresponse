@@ -15,7 +15,7 @@
     "package_name": "phantom_taniumthreatresponse",
     "main_module": "taniumthreatresponse_connector.py",
     "min_phantom_version": "4.9.39220",
-    "python_version": 3,
+    "python_version": "3",
     "app_wizard_version": "1.0.0",
     "configuration": {
         "base_url": {
