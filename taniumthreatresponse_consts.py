@@ -1,6 +1,6 @@
 # File: taniumthreatresponse_consts.py
 #
-# Copyright (c) 2020-2021 Splunk Inc.
+# Copyright (c) 2020-2022 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@
 ERR_CODE_MSG = "Error code unavailable"
 ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
 PARSE_ERR_MSG = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
-TYPE_ERR_MSG = "Error occurred while connecting to the Tanium Threat Response Server. Please check the asset configuration and|or the action parameters"
+TYPE_ERR_MSG = "Error occurred while connecting to the Tanium Threat Response Server. \
+        Please check the asset configuration and|or the action parameters"
 
 # Constants relating to '_validate_integer'
 VALID_INTEGER_MSG = "Please provide a valid integer value in the {}"
@@ -35,3 +36,6 @@ INTEL_DOC_ID_KEY = "'intel_doc_id' action parameter"
 DSTTYPE_VALUE_LIST = ["computer_name", "ip_address"]
 EVENT_TYPE_VALUE_LIST = ["combined", "dns", "driver", "file", "network", "process", "registry", "sid", "image"]
 FILTER_TYPE_VALUE_LIST = ["any", "all"]
+
+# Endpoints
+STATUS_ENDPOINT = '/plugin/products/threat-response/api/v1/status'

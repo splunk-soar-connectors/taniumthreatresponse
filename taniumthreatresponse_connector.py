@@ -1,6 +1,6 @@
 # File: taniumthreatresponse_connector.py
 #
-# Copyright (c) 2020-2021 Splunk Inc.
+# Copyright (c) 2020-2022 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
 #
 #
 # Phantom App imports
-import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-from phantom.vault import Vault
-from taniumthreatresponse_consts import *
-
-import requests
-import tempfile
 import datetime
 import json
-import uuid
 import os
 import sys
-from bs4 import BeautifulSoup
-from bs4 import UnicodeDammit
+import tempfile
+import uuid
+
+import phantom.app as phantom
+import requests
+from bs4 import BeautifulSoup, UnicodeDammit
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+from phantom.vault import Vault
+
+from taniumthreatresponse_consts import *
 
 
 class RetVal(tuple):
@@ -50,7 +50,11 @@ class TaniumThreatResponseConnector(BaseConnector):
         # Do note that the app json defines the asset config, so please
         # modify this as you deem fit.
         self._base_url = None
+        self._api_token = None
+        self._username = None
+        self._password = None
         self._session_key = None
+        self._verify_server_cert = None
 
     def _handle_py_ver_compat_for_input_str(self, input_str):
         """
@@ -132,7 +136,8 @@ class TaniumThreatResponseConnector(BaseConnector):
         if int(response.status_code) >= 200 and int(response.status_code) <= 299:
             return RetVal(phantom.APP_SUCCESS, {})
 
-        return RetVal(action_result.set_status(phantom.APP_ERROR, 'Status code {}: Empty response and no information in the header'.format(response.status_code)), None)
+        return RetVal(action_result.set_status(
+            phantom.APP_ERROR, 'Status code {}: Empty response and no information in the header'.format(response.status_code)), None)
 
     def _process_content_response(self, response, action_result):
         """ Process plain content from an API call. Can be used for downloading files.
@@ -246,7 +251,8 @@ class TaniumThreatResponseConnector(BaseConnector):
             'Content-Type': 'application/json'
         }
 
-        ret_val, resp_json = self._make_rest_call("{}{}".format(self._base_url, "/auth"), action_result, verify=self._verify, headers=headers, auth=auth, method='post')
+        ret_val, resp_json = self._make_rest_call("{}{}".format(
+            self._base_url, "/auth"), action_result, verify=self._verify_server_cert, headers=headers, auth=auth, method='post')
 
         if phantom.is_fail(ret_val):
             self._state['session_key'] = None
@@ -279,7 +285,8 @@ class TaniumThreatResponseConnector(BaseConnector):
             url = "{0}{1}".format(self._base_url, endpoint)
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "Please check the asset configuration and action parameters. Error: {0}".format(err)), None
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please check the asset configuration and action parameters. Error: {0}".format(err)), None
 
         if headers is None:
             headers = {}
@@ -293,7 +300,8 @@ class TaniumThreatResponseConnector(BaseConnector):
         if 'Content-Type' not in headers.keys():
             headers.update({'Content-Type': 'application/json'})
 
-        ret_val, resp_json = self._make_rest_call(url, action_result, verify=self._verify, headers=headers, params=params, data=data, json=json, method=method)
+        ret_val, resp_json = self._make_rest_call(
+            url, action_result, verify=self._verify_server_cert, headers=headers, params=params, data=data, json=json, method=method)
 
         # If token is expired, generate a new token
         msg = action_result.get_message()
@@ -306,7 +314,8 @@ class TaniumThreatResponseConnector(BaseConnector):
             if 'Content-Type' not in headers.keys():
                 headers.update({'Content-Type': 'application/json'})
 
-            ret_val, resp_json = self._make_rest_call(url, action_result, verify=self._verify, headers=headers, params=params, data=data, json=json, method=method)
+            ret_val, resp_json = self._make_rest_call(
+                url, action_result, verify=self._verify_server_cert, headers=headers, params=params, data=data, json=json, method=method)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status(), None
@@ -415,7 +424,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         if phantom.is_fail(ret_val):
             message = self._handle_py_ver_compat_for_input_str(action_result.get_message())
-            return RetVal(action_result.set_status(phantom.APP_ERROR, 'Unable to list connections{}'.format('. Error message: {}'.format(message) if message else "")), None)
+            return RetVal(action_result.set_status(
+                phantom.APP_ERROR, 'Unable to list connections{}'.format('. Error message: {}'.format(message) if message else "")), None)
 
         return RetVal(phantom.APP_SUCCESS, response)
 
@@ -462,13 +472,14 @@ class TaniumThreatResponseConnector(BaseConnector):
         self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val = self._get_token(action_result)
+        if not self._api_token:
+            ret_val = self._get_token(action_result)
 
         if phantom.is_fail(ret_val):
             self.save_progress('Test Connectivity Failed')
             return action_result.get_status()
 
-        ret_val, response = self._make_rest_call_helper('/plugin/products/trace/status', action_result)
+        ret_val, response = self._make_rest_call_helper(STATUS_ENDPOINT, action_result)
 
         if phantom.is_fail(ret_val):
             self.save_progress('Test Connectivity Failed')
@@ -587,7 +598,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         dsttype = self._handle_py_ver_compat_for_input_str(param.get('dsttype'))
         if dsttype not in DSTTYPE_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, "Please provide valid input from {} in 'dsttype' action parameter".format(DSTTYPE_VALUE_LIST))
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please provide valid input from {} in 'dsttype' action parameter".format(DSTTYPE_VALUE_LIST))
 
         data = {'dst': self._handle_py_ver_compat_for_input_str(param.get('dst')),
                 'dstType': dsttype,
@@ -1099,7 +1111,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         event_type = self._handle_py_ver_compat_for_input_str(param['event_type'])
         if event_type not in EVENT_TYPE_VALUE_LIST:
-            return action_result.set_status(phantom.APP_ERROR, "Please provide valid input from {} in 'event_type' action parameter".format(EVENT_TYPE_VALUE_LIST))
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please provide valid input from {} in 'event_type' action parameter".format(EVENT_TYPE_VALUE_LIST))
 
         ret_val, limit = self._validate_integer(action_result, param.get('limit'), LIMIT_KEY, False)
         if phantom.is_fail(ret_val):
@@ -1123,12 +1136,14 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         if fields or value or operators:
             if not (fields and value and operators):
-                return action_result.set_status(phantom.APP_ERROR, 'fields, operators, and value need to be filled in to query events. Returning all results')
+                return action_result.set_status(
+                    phantom.APP_ERROR, 'fields, operators, and value need to be filled in to query events. Returning all results')
             else:
 
                 filter_type = self._handle_py_ver_compat_for_input_str(param.get("filter_type", "all"))
                 if filter_type and filter_type not in FILTER_TYPE_VALUE_LIST:
-                    return action_result.set_status(phantom.APP_ERROR, "Please provide valid input from {} in 'filter_type' action parameter".format(FILTER_TYPE_VALUE_LIST))
+                    return action_result.set_status(
+                        phantom.APP_ERROR, "Please provide valid input from {} in 'filter_type' action parameter".format(FILTER_TYPE_VALUE_LIST))
 
                 fields = [field.strip() for field in fields.split(',')]
                 fields = list(filter(None, fields))
@@ -1442,7 +1457,9 @@ class TaniumThreatResponseConnector(BaseConnector):
         response_data = response.get("data")
 
         if not response_data:
-            error_message = "No group exists with name {}. Also, please verify that your account has sufficient permissions to access the groups".format(computer_group_name)
+            error_message = "No group exists with name {}. Also, please verify that your \
+                    account has sufficient permissions to access the groups".format(
+                        computer_group_name)
             return action_result.set_status(phantom.APP_ERROR, error_message)
 
         computer_group_id = response_data.get("id")
@@ -1603,8 +1620,18 @@ class TaniumThreatResponseConnector(BaseConnector):
         elif self._base_url.startswith('\\'):
             self._base_url = self._base_url.strip('\\').strip('/')
 
-        self._session_key = self._state.get('session_key', '')
-        self._verify = config.get('verify_server_cert', False)
+        self._api_token = config.get('api_token')
+        if self._api_token:
+            self._session_key = self._api_token
+        else:
+            self._session_key = self._state.get('session_key', '')
+            self._username = self._handle_py_ver_compat_for_input_str(config.get('username'))
+            self._password = config.get('password')
+
+        if not self._api_token and not (self._username and self._password):
+            return self.set_status(phantom.APP_ERROR, "Please provide either an API token, or username and password credentials")
+
+        self._verify_server_cert = config.get('verify_server_cert', False)
 
         return phantom.APP_SUCCESS
 
@@ -1617,8 +1644,9 @@ class TaniumThreatResponseConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
 
     pudb.set_trace()
 
