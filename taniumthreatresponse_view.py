@@ -15,6 +15,8 @@
 #
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)def get_events(headers, data):
+
+
 def get_events(headers, data):
     """ Build a list of dictionaries that have the detail and what that detail "contains".
 
