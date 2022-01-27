@@ -830,46 +830,36 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.uuid",
-                    "data_type": "string",
-                    "column_name": "Uuid",
-                    "column_order": 0,
-                    "example_values": [
-                        "fa6092bc-30d1-4261-aec9-10708bb95e55"
-                    ]
-                },
-                {
                     "data_path": "action_result.data.*.name",
                     "data_type": "string",
-                    "column_name": "Name",
-                    "column_order": 1,
                     "example_values": [
-                        "WIN-Q0RB757Q335-1641602377454.db"
+                        "WIN-Q0RB757Q335-1642209934002.db"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.size",
                     "data_type": "numeric",
-                    "column_name": "Size (in bytes)",
-                    "column_order": 2,
                     "example_values": [
-                        1021648896
+                        1021571072
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.uuid",
+                    "data_type": "string",
+                    "example_values": [
+                        "565f8498-1248-4a5a-a97e-e905c9276b79"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.created",
                     "data_type": "string",
-                    "column_name": "Created",
-                    "column_order": 3,
                     "example_values": [
-                        "2022-01-08T00:39:37.454Z"
+                        "2022-01-15T01:25:34.002Z"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.hostname",
                     "data_type": "string",
-                    "column_name": "Hostname",
-                    "column_order": 4,
                     "example_values": [
                         "WIN-Q0RB757Q335"
                     ],
@@ -880,8 +870,6 @@
                 {
                     "data_path": "action_result.data.*.isUpload",
                     "data_type": "numeric",
-                    "column_name": "IsUpload",
-                    "column_order": 5,
                     "example_values": [
                         false
                     ]
@@ -889,8 +877,6 @@
                 {
                     "data_path": "action_result.data.*.username",
                     "data_type": "string",
-                    "column_name": "Username",
-                    "column_order": 6,
                     "example_values": [
                         "administrator"
                     ],
@@ -901,19 +887,15 @@
                 {
                     "data_path": "action_result.data.*.completed",
                     "data_type": "string",
-                    "column_name": "Completed",
-                    "column_order": 7,
                     "example_values": [
-                        "2022-01-08T00:40:41.615Z"
+                        "2022-01-15T01:26:39.424Z"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.connectionId",
                     "data_type": "string",
-                    "column_name": "Connection ID",
-                    "column_order": 8,
                     "example_values": [
-                        "remote:WIN-Q0RB757Q335::1"
+                        "remote:WIN-Q0RB757Q335:2029399767:1"
                     ]
                 },
                 {
@@ -941,21 +923,35 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Total snapshots: 10"
+                        "Total snapshots: 11"
                     ]
                 },
                 {
                     "data_path": "action_result.summary.total_snapshots",
                     "data_type": "numeric",
                     "example_values": [
-                        10
+                        11
                     ]
                 },
                 {
                     "data_path": "action_result.parameter.sort",
                     "data_type": "string",
                     "example_values": [
-                        "hostname"
+                        "name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric",
+                    "example_values": [
+                        3
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.offset",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
                     ]
                 },
                 {
