@@ -818,13 +818,13 @@
                     "description": "Column by which to sort",
                     "data_type": "string",
                     "value_list": [
-                        "uuid",
-                        "username",
-                        "hostname",
-                        "created",
                         "connectionId",
+                        "created",
+                        "hostname",
+                        "name",
                         "size",
-                        "name"
+                        "username",
+                        "uuid"
                     ]
                 }
             },
