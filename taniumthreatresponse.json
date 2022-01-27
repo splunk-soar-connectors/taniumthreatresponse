@@ -212,101 +212,157 @@
             "parameters": {},
             "output": [
                 {
-                    "data_path": "action_result.data.*.info.createTime",
+                    "data_path": "action_result.data.*.id",
                     "data_type": "string",
-                    "column_name": "Create Time",
-                    "column_order": 6,
-                    "example_values": [
-                        "2018-10-11T12:41:48.236Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.info.dst",
-                    "data_type": "string",
-                    "column_name": "DST",
-                    "column_order": 2,
-                    "contains": [
-                        "ip",
-                        "host name"
-                    ],
-                    "example_values": [
-                        "test_laptop.domain.com"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.info.dstType",
-                    "data_type": "string",
-                    "column_name": "DST Type",
-                    "column_order": 3,
-                    "example_values": [
-                        "computer_name"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.info.initTime",
-                    "data_type": "string",
-                    "column_name": "INIT Time",
-                    "column_order": 7
-                },
-                {
-                    "data_path": "action_result.data.*.info.remote",
-                    "data_type": "boolean",
-                    "column_name": "Remote",
-                    "column_order": 4,
-                    "example_values": [
-                        true
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.info.state",
-                    "data_type": "string",
-                    "column_name": "State",
+                    "column_name": "Connection Id",
                     "column_order": 0,
                     "example_values": [
-                        "active"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.lastUpdate",
-                    "data_type": "numeric",
-                    "column_name": "Last Update",
-                    "column_order": 8,
-                    "example_values": [
-                        1539261708252
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.name",
-                    "data_type": "string",
-                    "column_name": "Connection ID",
-                    "column_order": 1,
+                        "remote:WIN-Q0RB757Q335::1"
+                    ],
                     "contains": [
                         "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.wasConnected",
-                    "data_type": "boolean",
-                    "column_name": "Was Connected",
+                    "data_path": "action_result.data.*.hostname",
+                    "data_type": "string",
+                    "column_name": "Hostname",
+                    "column_order": 1,
+                    "example_values": [
+                        "WIN-Q0RB757Q335"
+                    ],
+                    "contains": [
+                        "host name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "column_name": "Ip",
+                    "column_order": 2,
+                    "example_values": [
+                        "10.1.16.94"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.eid",
+                    "data_type": "string",
+                    "column_name": "Eid",
+                    "column_order": 3,
+                    "example_values": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 4,
+                    "example_values": [
+                        "disconnected"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.userId",
+                    "data_type": "string",
+                    "column_name": "User ID",
                     "column_order": 5,
                     "example_values": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.message",
+                    "data_type": "string",
+                    "column_name": "Message",
+                    "column_order": 6,
+                    "example_values": [
+                        "The connection has been disconnected."
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.clientId",
+                    "data_type": "string",
+                    "column_name": "Client ID",
+                    "column_order": 7,
+                    "example_values": [
+                        "2029399767"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.hasTools",
+                    "data_type": "numeric",
+                    "column_name": "Has Tools",
+                    "column_order": 8,
+                    "example_values": [
                         true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.platform",
+                    "data_type": "string",
+                    "column_name": "Platform",
+                    "column_order": 9,
+                    "example_values": [
+                        "Windows"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.personaId",
+                    "data_type": "numeric",
+                    "column_name": "Persona ID",
+                    "column_order": 10,
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sessionId",
+                    "data_type": "string",
+                    "column_name": "Session ID",
+                    "column_order": 11
+                },
+                {
+                    "data_path": "action_result.data.*.connectedAt",
+                    "data_type": "numeric",
+                    "column_name": "Connected At",
+                    "column_order": 12,
+                    "example_values": [
+                        1641602332020
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.initiatedAt",
+                    "data_type": "numeric",
+                    "column_name": "Initiated At",
+                    "column_order": 13,
+                    "example_values": [
+                        1641602330091
                     ]
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
+                        "success"
                     ]
                 },
                 {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Number of active connections found: 1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_connections",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
                 },
                 {
                     "data_path": "action_result.summary.active_connections",
@@ -316,17 +372,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.summary.total_connections",
+                    "data_path": "action_result.summary.inactive_connections",
                     "data_type": "numeric",
                     "example_values": [
                         1
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Total active connections found: 1"
                     ]
                 },
                 {
@@ -673,116 +722,6 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "list local snapshots",
-            "description": "Get a list of local snapshots",
-            "verbose": "This action will fetch only those snapshots which are captured through Tanium UI. The API endpoint used for this action will be deprecated soon so it is suggested to use the 'list snapshot' action.",
-            "type": "investigate",
-            "identifier": "list_local_snapshots",
-            "read_only": true,
-            "parameters": {},
-            "output": [
-                {
-                    "data_path": "action_result.data.*.bytesReceived",
-                    "data_type": "string",
-                    "column_name": "Bytes Received",
-                    "column_order": 4
-                },
-                {
-                    "data_path": "action_result.data.*.connection_id",
-                    "data_type": "string",
-                    "column_name": "Connection ID",
-                    "column_order": 0,
-                    "contains": [
-                        "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.snapshot",
-                    "data_type": "string",
-                    "column_name": "Snapshot",
-                    "column_order": 1,
-                    "contains": [
-                        "threatresponse snapshot id"
-                    ],
-                    "example_values": [
-                        "2018_11_01T17.21.50.259Z.db"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.started",
-                    "data_type": "string",
-                    "column_name": "Started",
-                    "column_order": 3,
-                    "example_values": [
-                        "2018-11-01T17:21:50.259Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.state",
-                    "data_type": "string",
-                    "column_name": "State",
-                    "column_order": 2,
-                    "example_values": [
-                        "backup"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.totalBytes",
-                    "data_type": "string",
-                    "column_name": "Total Bytes",
-                    "column_order": 5
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.summary.total_snapshots",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Total snapshots: 1"
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                }
-            ],
-            "render": {
-                "type": "table",
-                "title": "Tanium Threat Response"
-            },
-            "versions": "EQ(*)"
-        },
-        {
             "action": "create snapshot",
             "description": "Capture a new snapshot",
             "type": "generic",
@@ -858,162 +797,165 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "delete local snapshot",
-            "description": "Delete a local snapshot",
-            "verbose": "The status of the snapshot deleted using this action may not reflect in the Tanium UI. Also, the API endpoint for this action will be deprecated soon so it is suggested to use the 'delete snapshot' action.",
-            "type": "generic",
-            "identifier": "delete_local_snapshot",
-            "read_only": false,
-            "parameters": {
-                "connection_id": {
-                    "description": "Connection ID",
-                    "data_type": "string",
-                    "required": true,
-                    "primary": true,
-                    "order": 0,
-                    "contains": [
-                        "threatresponse connection id"
-                    ]
-                },
-                "snapshot": {
-                    "description": "Snapshot ID",
-                    "data_type": "string",
-                    "required": true,
-                    "primary": true,
-                    "order": 1,
-                    "contains": [
-                        "threatresponse snapshot id"
-                    ]
-                }
-            },
-            "output": [
-                {
-                    "data_path": "action_result.parameter.connection_id",
-                    "data_type": "string",
-                    "contains": [
-                        "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.snapshot",
-                    "data_type": "string",
-                    "contains": [
-                        "threatresponse snapshot id"
-                    ],
-                    "example_values": [
-                        "2018_11_01T17.21.50.259Z.db"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Delete local snapshot requested"
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                }
-            ],
-            "render": {
-                "type": "table",
-                "title": "Tanium Threat Response"
-            },
-            "versions": "EQ(*)"
-        },
-        {
             "action": "list snapshots",
             "description": "Get a list of all the snapshots",
             "verbose": "This action will fetch all the screenshots that are available on the Tanium Server, i.e., the snapshot files that are uploaded manually and the snapshots that are captured through Tanium UI.",
             "type": "investigate",
             "identifier": "list_snapshots",
             "read_only": true,
-            "parameters": {},
+            "parameters": {
+                "limit": {
+                    "description": "Maximum number of results to return",
+                    "data_type": "numeric",
+                    "order": 0
+                },
+                "offset": {
+                    "description": "Offset into the result set",
+                    "data_type": "numeric",
+                    "order": 1
+                },
+                "sort": {
+                    "description": "Column by which to sort",
+                    "data_type": "string",
+                    "value_list": [
+                        "uuid",
+                        "username",
+                        "hostname",
+                        "created",
+                        "connectionId",
+                        "size",
+                        "name"
+                    ]
+                }
+            },
             "output": [
                 {
-                    "data_path": "action_result.data.*.host",
+                    "data_path": "action_result.data.*.uuid",
                     "data_type": "string",
-                    "column_name": "Host",
-                    "column_order": 1,
-                    "contains": [
-                        "host name",
-                        "ip",
-                        "threatresponse connection id"
-                    ],
+                    "column_name": "Uuid",
+                    "column_order": 0,
                     "example_values": [
-                        "test_laptop"
+                        "fa6092bc-30d1-4261-aec9-10708bb95e55"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.name",
                     "data_type": "string",
-                    "column_name": "File Name",
-                    "column_order": 2,
-                    "contains": [
-                        "file name"
-                    ],
+                    "column_name": "Name",
+                    "column_order": 1,
                     "example_values": [
-                        "2020_03_13T06.08.05.014Z.db"
+                        "WIN-Q0RB757Q335-1641602377454.db"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.size",
+                    "data_type": "numeric",
+                    "column_name": "Size (in bytes)",
+                    "column_order": 2,
+                    "example_values": [
+                        1021648896
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created",
+                    "data_type": "string",
+                    "column_name": "Created",
+                    "column_order": 3,
+                    "example_values": [
+                        "2022-01-08T00:39:37.454Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.hostname",
+                    "data_type": "string",
+                    "column_name": "Hostname",
+                    "column_order": 4,
+                    "example_values": [
+                        "WIN-Q0RB757Q335"
+                    ],
+                    "contains": [
+                        "host name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.isUpload",
+                    "data_type": "numeric",
+                    "column_name": "IsUpload",
+                    "column_order": 5,
+                    "example_values": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.username",
+                    "data_type": "string",
+                    "column_name": "Username",
+                    "column_order": 6,
+                    "example_values": [
+                        "administrator"
+                    ],
+                    "contains": [
+                        "user name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.completed",
+                    "data_type": "string",
+                    "column_name": "Completed",
+                    "column_order": 7,
+                    "example_values": [
+                        "2022-01-08T00:40:41.615Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.connectionId",
+                    "data_type": "string",
+                    "column_name": "Connection ID",
+                    "column_order": 8,
+                    "example_values": [
+                        "remote:WIN-Q0RB757Q335::1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.evidenceType",
+                    "data_type": "string",
+                    "example_values": [
+                        "snapshot"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.recorderVersion",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
                     ]
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
                     "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.summary.total_snapshots",
-                    "data_type": "numeric",
-                    "example_values": [
-                        4
+                        "success"
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Total snapshots: 4"
+                        "Total snapshots: 10"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_snapshots",
+                    "data_type": "numeric",
+                    "example_values": [
+                        10
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.sort",
+                    "data_type": "string",
+                    "example_values": [
+                        "hostname"
                     ]
                 },
                 {
@@ -1475,451 +1417,29 @@
                     "contains": [
                         "threatresponse process table id"
                     ]
-                }
-            },
-            "output": [
-                {
-                    "data_path": "action_result.parameter.connection_id",
-                    "data_type": "string",
-                    "contains": [
-                        "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
-                    ]
                 },
-                {
-                    "data_path": "action_result.parameter.process_table_id",
-                    "data_type": "numeric",
-                    "contains": [
-                        "threatresponse process table id"
-                    ],
-                    "example_values": [
-                        790986
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790987
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.name",
-                    "data_type": "string",
-                    "example_values": [
-                        "0: <Unknown Process>"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.parent",
-                    "data_type": "string",
-                    "example_values": [
-                        "4: System"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.pid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        0
-                    ],
-                    "contains": [
-                        "pid"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.ptid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790987
-                    ],
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790986
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.name",
-                    "data_type": "string",
-                    "example_values": [
-                        "4: System"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.parent",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.pid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        4
-                    ],
-                    "contains": [
-                        "pid"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.ptid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790986
-                    ],
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Process tree retrieved"
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                }
-            ],
-            "render": {
-                "type": "custom",
-                "view": "taniumthreatresponse_view.display_process_tree",
-                "title": "Tanium Threat Response"
-            },
-            "versions": "EQ(*)"
-        },
-        {
-            "action": "get parent process tree",
-            "description": "Get parent process tree for a process instance",
-            "type": "investigate",
-            "identifier": "get_parent_process_tree",
-            "read_only": true,
-            "parameters": {
-                "connection_id": {
-                    "description": "Connection ID",
+                "process_context": {
+                    "description": "Process context to include, default is 'all' and will return all contexts",
                     "data_type": "string",
                     "required": true,
-                    "primary": true,
-                    "order": 0,
-                    "contains": [
-                        "threatresponse connection id"
-                    ]
+                    "default": "all",
+                    "value_list": [
+                        "parent",
+                        "node",
+                        "siblings",
+                        "children",
+                        "all"
+                    ],
+                    "order": 2
                 },
-                "process_table_id": {
-                    "description": "Process Table ID",
+                "limit": {
+                    "description": "Maximum number of siblings and children to return, hard limit of 100",
                     "data_type": "numeric",
-                    "required": true,
-                    "primary": true,
-                    "order": 1,
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
+                    "order": 3,
+                    "default": 100
                 }
             },
-            "output": [
-                {
-                    "data_path": "action_result.parameter.connection_id",
-                    "data_type": "string",
-                    "contains": [
-                        "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.process_table_id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790989
-                    ],
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790987
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.name",
-                    "data_type": "string",
-                    "example_values": [
-                        "0: <Unknown Process>"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.parent",
-                    "data_type": "string",
-                    "example_values": [
-                        "4: System"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.pid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        0
-                    ],
-                    "contains": [
-                        "pid"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.children.*.ptid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790987
-                    ],
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790986
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.name",
-                    "data_type": "string",
-                    "example_values": [
-                        "4: System"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.parent",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.pid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        4
-                    ],
-                    "contains": [
-                        "pid"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.ptid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790986
-                    ],
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Parent process tree retrieved"
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                }
-            ],
-            "render": {
-                "type": "custom",
-                "view": "taniumthreatresponse_view.display_process_tree",
-                "title": "Tanium Threat Response"
-            },
-            "versions": "EQ(*)"
-        },
-        {
-            "action": "get children process tree",
-            "description": "Get children process tree for a process instance",
-            "type": "investigate",
-            "identifier": "get_children_process_tree",
-            "read_only": true,
-            "parameters": {
-                "connection_id": {
-                    "description": "Connection ID",
-                    "data_type": "string",
-                    "required": true,
-                    "primary": true,
-                    "order": 0,
-                    "contains": [
-                        "threatresponse connection id"
-                    ]
-                },
-                "process_table_id": {
-                    "description": "Process Table ID",
-                    "data_type": "numeric",
-                    "required": true,
-                    "primary": true,
-                    "order": 1,
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
-                }
-            },
-            "output": [
-                {
-                    "data_path": "action_result.parameter.connection_id",
-                    "data_type": "string",
-                    "contains": [
-                        "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.process_table_id",
-                    "data_type": "numeric",
-                    "contains": [
-                        "threatresponse process table id"
-                    ],
-                    "example_values": [
-                        790986
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790987
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.name",
-                    "data_type": "string",
-                    "example_values": [
-                        "0: <Unknown Process>"
-                    ],
-                    "contains": [
-                        "file name"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.parent",
-                    "data_type": "string",
-                    "example_values": [
-                        "4: System"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.pid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        0
-                    ],
-                    "contains": [
-                        "pid"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.ptid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        790987
-                    ],
-                    "contains": [
-                        "threatresponse process table id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Children process tree retrieved"
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                }
-            ],
+            "output": [],
             "render": {
                 "type": "custom",
                 "view": "taniumthreatresponse_view.display_process_tree",
@@ -1956,7 +1476,7 @@
                         "network",
                         "process",
                         "registry",
-                        "sid",
+                        "security",
                         "image"
                     ],
                     "order": 1
@@ -2435,84 +1955,79 @@
                     "contains": [
                         "threatresponse connection id"
                     ]
+                },
+                "event_type": {
+                    "description": "Type of event",
+                    "data_type": "string",
+                    "required": true,
+                    "value_list": [
+                        "combined",
+                        "dns",
+                        "driver",
+                        "file",
+                        "network",
+                        "process",
+                        "registry",
+                        "security",
+                        "image"
+                    ],
+                    "order": 1
                 }
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.connection_id",
-                    "data_type": "string",
-                    "contains": [
-                        "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.category",
-                    "data_type": "string",
-                    "column_name": "Category",
-                    "column_order": 0,
-                    "example_values": [
-                        "Driver"
-                    ]
-                },
-                {
                     "data_path": "action_result.data.*.count",
                     "data_type": "numeric",
-                    "column_name": "Count",
-                    "column_order": 2,
+                    "column_name": "Event Count",
+                    "column_order": 1,
                     "example_values": [
-                        120
+                        2016
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.operation",
-                    "data_type": "string",
-                    "column_name": "Operation",
-                    "column_order": 1,
+                    "data_path": "action_result.data.*.has_more",
+                    "data_type": "numeric",
+                    "column_name": "Has More",
+                    "column_order": 2,
                     "example_values": [
-                        "DriverLoaded"
+                        false
                     ]
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.summary.total_categories",
-                    "data_type": "numeric",
-                    "example_values": [
-                        7
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.total_events_count",
-                    "data_type": "numeric",
-                    "example_values": [
-                        13525508
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.total_events_operations",
-                    "data_type": "numeric",
-                    "example_values": [
-                        19
+                        "success"
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Total events operations: 19, Total categories: 7, Total events count: 13525508"
+                        "Total network events count: 2016"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_network_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2016
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.event_type",
+                    "data_type": "string",
+                    "column_name": "Event Type",
+                    "column_order": 0,
+                    "example_values": [
+                        "network"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.connection_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "remote:tanium-client-1:1163582091:2"
                     ]
                 },
                 {
@@ -2545,86 +2060,21 @@
             "parameters": {},
             "output": [
                 {
-                    "data_path": "action_result.data.*.comments",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.created",
-                    "data_type": "string",
-                    "example_values": [
-                        "Sun, 18 Jan 1970 11:09:26 GMT"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.created_by",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.created_by_proc",
-                    "data_type": "string",
-                    "contains": [
-                        "file name"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.downloaded",
-                    "data_type": "string",
-                    "column_name": "Downloaded",
-                    "column_order": 3,
-                    "example_values": [
-                        "2018-09-11 15:16:02.857"
-                    ]
-                },
-                {
                     "data_path": "action_result.data.*.hash",
                     "data_type": "string",
-                    "example_values": [
-                        "cb2a1c2ea227f0338e7f3a8bc03c3d6e"
-                    ],
-                    "contains": [
-                        "md5"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.host",
-                    "data_type": "string",
-                    "column_name": "Host",
-                    "column_order": 1,
-                    "example_values": [
-                        "test_laptop"
-                    ],
-                    "contains": [
-                        "threatresponse connection id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "numeric",
-                    "column_name": "File ID",
+                    "column_name": "Hash",
                     "column_order": 0,
                     "example_values": [
-                        1
-                    ],
-                    "contains": [
-                        "threatresponse file id"
+                        ""
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.last_modified",
+                    "data_path": "action_result.data.*.path",
                     "data_type": "string",
+                    "column_name": "Path",
+                    "column_order": 1,
                     "example_values": [
-                        "2018-09-10 18:44:27.210"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.last_modified_by",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.last_modified_by_proc",
-                    "data_type": "string",
-                    "example_values": [
-                        "C:\\Program Files (x86)\\test\\Application\\test.exe"
+                        "C:\\test\\pscp.exe"
                     ],
                     "contains": [
                         "file path",
@@ -2632,67 +2082,150 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.path",
-                    "data_type": "string",
-                    "column_name": "Path",
-                    "column_order": 2,
-                    "example_values": [
-                        "C:\\Program Files (x86)\\test\\Application\\test.exe"
-                    ],
-                    "contains": [
-                        "file path"
-                    ]
-                },
-                {
                     "data_path": "action_result.data.*.size",
                     "data_type": "numeric",
                     "column_name": "Size",
-                    "column_order": 4,
+                    "column_order": 2,
                     "example_values": [
-                        1588568
-                    ],
-                    "contains": [
-                        "file size"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.spath",
-                    "data_type": "string",
-                    "example_values": [
-                        "a8e59019-01fc-4b1d-8d44-925b343a1cb8.zip"
-                    ],
-                    "contains": [
-                        "file name"
+                        649424
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.tags",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "column_name": "Tags",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.uuid",
+                    "data_type": "string",
+                    "column_name": "UUID",
+                    "column_order": 4,
+                    "example_values": [
+                        "79478f3e-061b-4b59-b20f-349415df38c0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comments",
+                    "data_type": "string",
+                    "column_name": "Comments",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.hostname",
+                    "data_type": "string",
+                    "column_name": "Hostname",
+                    "column_order": 6,
+                    "example_values": [
+                        "tanium-client-1"
+                    ],
+                    "contains": [
+                        "host name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.username",
+                    "data_type": "string",
+                    "column_name": "Username",
+                    "column_order": 7,
+                    "example_values": [
+                        "administrator"
+                    ],
+                    "contains": [
+                        "user name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_by",
+                    "data_type": "string",
+                    "column_name": "Created By",
+                    "column_order": 8,
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.downloaded",
+                    "data_type": "string",
+                    "column_name": "Downloaded",
+                    "column_order": 9,
+                    "example_values": [
+                        "2022-01-11T20:03:15.629Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.evidenceType",
+                    "data_type": "string",
+                    "column_name": "Evidence Type",
+                    "column_order": 10,
+                    "example_values": [
+                        "file"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.last_modified",
+                    "data_type": "string",
+                    "column_name": "Modified",
+                    "column_order": 11,
+                    "example_values": [
+                        "2021-11-16T19:19:39.000Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.created_by_proc",
+                    "data_type": "string",
+                    "column_name": "Created By Proc",
+                    "column_order": 12,
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.last_modified_by",
+                    "data_type": "string",
+                    "column_name": "Last Modified By",
+                    "column_order": 13,
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.last_modified_by_proc",
+                    "data_type": "string",
+                    "column_name": "Last Modified By  Proc",
+                    "column_order": 14,
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.process_creation_time",
+                    "data_type": "string",
+                    "column_name": "Process Creation Time",
+                    "column_order": 15,
+                    "example_values": [
+                        "2021-11-16T19:19:53.000Z"
+                    ]
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.summary.file_count",
-                    "data_type": "numeric",
-                    "example_values": [
-                        3
+                        "success"
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "File count: 3"
+                        "File count: 1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.file_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
                     ]
                 },
                 {
@@ -2820,7 +2353,7 @@
             "parameters": {
                 "file_id": {
                     "description": "ID of file on Tanium",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "required": true,
                     "primary": true,
                     "order": 0,
@@ -2895,7 +2428,7 @@
             "parameters": {
                 "file_id": {
                     "description": "ID of file on Tanium",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "required": true,
                     "primary": true,
                     "order": 0,
@@ -3480,10 +3013,6 @@
     "pip_dependencies": {
         "wheel": [
             {
-                "module": "backports.functools_lru_cache",
-                "input_file": "wheels/backports.functools_lru_cache-1.6.4-py2.py3-none-any.whl"
-            },
-            {
                 "module": "beautifulsoup4",
                 "input_file": "wheels/beautifulsoup4-4.10.0-py3-none-any.whl"
             },
@@ -3505,11 +3034,11 @@
             },
             {
                 "module": "soupsieve",
-                "input_file": "wheels/soupsieve-1.9.6-py2.py3-none-any.whl"
+                "input_file": "wheels/soupsieve-2.3.1-py3-none-any.whl"
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
+                "input_file": "wheels/urllib3-1.26.8-py2.py3-none-any.whl"
             }
         ]
     }

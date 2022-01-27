@@ -34,8 +34,29 @@ INTEL_DOC_ID_KEY = "'intel_doc_id' action parameter"
 
 # Constants relating to value_list check
 DSTTYPE_VALUE_LIST = ["computer_name", "ip_address"]
-EVENT_TYPE_VALUE_LIST = ["combined", "dns", "driver", "file", "network", "process", "registry", "sid", "image"]
+EVENT_TYPE_VALUE_LIST = ["combined", "dns", "driver", "file", "network", "process", "registry", "security", "image"]
 FILTER_TYPE_VALUE_LIST = ["any", "all"]
 
-# Endpoints
+# API Endpoints
+LIST_ALERTS_ENDPOINT = '/plugin/products/detect3/api/v1/alerts'
+LIST_COMPUTERS_ENDPOINT = '/plugin/products/trace/computers'
+CREATE_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/connect'
+LIST_CONNECTIONS_ENDPOINT = '/plugin/products/threat-response/api/v1/conns'
 STATUS_ENDPOINT = '/plugin/products/threat-response/api/v1/status'
+CREATE_SNAPSHOT_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/snapshot'
+GET_ALL_SNAPSHOTS_ENDPOINT = '/plugin/products/threat-response/api/v1/snapshot'
+DELETE_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/delete/{cid}'
+GET_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}'
+GET_EVENTS_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/views/{type}/events'
+GET_EVENTS_SUMMARY_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/views/{type}/eventsCount'
+LIST_FILE_EVIDENCE_ENDPOINT = '/plugin/products/threat-response/api/v1/filedownload'
+SAVE_FILE_EVIDENCE_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/file'
+DELETE_FILE_EVIDENCE_ENDPOINT = '/plugin/products/threat-response/api/v1/filedownload/{file_id}'
+GET_FILE_EVIDENCE_ENDPOINT = '/plugin/products/threat-response/api/v1/filedownload/{file_id}'
+DOWNLOAD_FILE_EVIDENCE_ENDPOINT = '/plugin/products/threat-response/api/v1/filedownload/data/{file_id}'
+DELETE_LOCAL_SNAPSHOT_ENDPOINT = '/plugin/products/threat-response/api/v1/snapshot/{id}'
+UPLOAD_INTEL_DOC_ENDPOINT = '/plugin/products/detect3/api/v1/intels'
+GET_PROCESS_TREE_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/processtrees/{ptid}'
+
+# Connection Status
+CONNECTION_STATUS = {'connected': 'active', 'disconnected': 'inactive'}
