@@ -39,11 +39,11 @@ FILTER_TYPE_VALUE_LIST = ["any", "all"]
 
 # API Endpoints
 LIST_ALERTS_ENDPOINT = '/plugin/products/detect3/api/v1/alerts'
-LIST_COMPUTERS_ENDPOINT = '/plugin/products/trace/computers'
 CREATE_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/connect'
 LIST_CONNECTIONS_ENDPOINT = '/plugin/products/threat-response/api/v1/conns'
 STATUS_ENDPOINT = '/plugin/products/threat-response/api/v1/status'
 CREATE_SNAPSHOT_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/snapshot'
+DELETE_SNAPSHOT_ENDPOINT = '/plugin/products/threat-response/api/v1/snapshot'
 GET_ALL_SNAPSHOTS_ENDPOINT = '/plugin/products/threat-response/api/v1/snapshot'
 DELETE_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/delete/{cid}'
 GET_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}'
@@ -56,6 +56,7 @@ GET_FILE_EVIDENCE_ENDPOINT = '/plugin/products/threat-response/api/v1/filedownlo
 DOWNLOAD_FILE_EVIDENCE_ENDPOINT = '/plugin/products/threat-response/api/v1/filedownload/data/{file_id}'
 DELETE_LOCAL_SNAPSHOT_ENDPOINT = '/plugin/products/threat-response/api/v1/snapshot/{id}'
 UPLOAD_INTEL_DOC_ENDPOINT = '/plugin/products/detect3/api/v1/intels'
+GET_PROCESS_DETAILS_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/processevents/{ptid}/{type}'
 GET_PROCESS_TREE_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/processtrees/{ptid}'
 
 # Connection Status

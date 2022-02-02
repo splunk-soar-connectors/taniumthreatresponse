@@ -492,63 +492,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         self.save_progress('Test Connectivity Passed')
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _handle_list_computers(self, param):
-        """ Get a list of computers that match name passed in param.
-
-        Args:
-            param (dict): Parameters sent in by a user or playbook
-
-        Returns:
-            ActionResult status: success/failure
-        """
-        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        # name is a required parameter, but it can be blank.
-        params = {'name': self._handle_py_ver_compat_for_input_str(param.get('name', ''))}
-        endpoint = '/plugin/products/trace/computers/'
-
-        ret_val, response = self._make_rest_call_helper(endpoint, action_result, params=params)
-        if phantom.is_fail(ret_val):
-            self.save_progress('List Computers Failed')
-            return action_result.get_status()
-
-        if not response:
-            return action_result.set_status(phantom.APP_SUCCESS, 'No results found')
-
-        summary = action_result.update_summary({})
-        summary['total_results'] = len(response)
-
-        for r in response:
-            action_result.add_data({'name': r})
-
-        self.save_progress('List computers successful')
-        message = 'Retrieved list of computers'
-        return action_result.set_status(phantom.APP_SUCCESS, message)
-
-    def _handle_initialize_computers_list(self, param):
-        """ Initialize the endpoints
-
-        Args:
-            param (dict): Parameters sent in by a user or playbook
-
-        Returns:
-            ActionResult status: success/failure
-        """
-        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        endpoint = '/plugin/products/trace/computers/initialize'
-        ret_val, response = self._make_rest_call_helper(endpoint, action_result, method='post')
-
-        if phantom.is_fail(ret_val):
-            self.save_progress('Initialize computers failed')
-            return action_result.get_status()
-
-        self.save_progress('Initialize computers successful')
-        message = 'Requested an initialize computer action'
-        return action_result.set_status(phantom.APP_SUCCESS, message)
-
     def _handle_list_connections(self, param):
         """ List the current connections
 
@@ -754,11 +697,15 @@ class TaniumThreatResponseConnector(BaseConnector):
         self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        host = self._handle_py_ver_compat_for_input_str(param['host'])
-        filename = self._handle_py_ver_compat_for_input_str(param['filename'])
+        snapshot_id = self._handle_py_ver_compat_for_input_str(param['snapshot_id'])
 
-        endpoint = '/plugin/products/trace/locals/{}/{}'.format(host, filename)
-        ret_val, response = self._make_rest_call_helper(endpoint, action_result, method='delete')
+        request = {
+            "ids": [
+                snapshot_id
+            ]
+        }
+
+        ret_val, response = self._make_rest_call_helper(DELETE_SNAPSHOT_ENDPOINT, action_result, json=request, method='delete')
 
         if phantom.is_fail(ret_val):
             self.save_progress('Delete snapshot failed')
@@ -862,6 +809,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = self._handle_py_ver_compat_for_input_str(param['connection_id'])
         ret_val, ptid = self._validate_integer(action_result, param.get('process_table_id'), PROCESS_TABLE_ID_KEY)
+        type = "process"
+
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
@@ -869,8 +818,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Inactive or non-existent connection')
             return action_result.get_status()
 
-        endpoint = '/plugin/products/trace/conns/{0}/processes/{1}'.format(cid, ptid)
-        ret_val, response = self._make_rest_call_helper(endpoint, action_result)
+        ret_val, response = self._make_rest_call_helper(GET_PROCESS_DETAILS_ENDPOINT.format(cid=cid, ptid=ptid, type=type), action_result)
 
         if phantom.is_fail(ret_val):
             self.save_progress('Get process failed')
@@ -1456,8 +1404,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         # Dictionary mapping each action with its corresponding actions
         supported_actions = {
             'test_connectivity': self._handle_test_connectivity,
-            'list_computers': self._handle_list_computers,
-            'initialize_computers_list': self._handle_initialize_computers_list,
             'list_connections': self._handle_list_connections,
             'create_connection': self._handle_create_connection,
             'get_connection': self._handle_get_connection,
