@@ -260,12 +260,12 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             self._state['session_key'] = None
             self._session_key = None
-            self.save_state(self._state)
+            # self.save_state(self._state)
             return action_result.get_status()
 
         self._state['session_key'] = resp_json
         self._session_key = resp_json
-        self.save_state(self._state)
+        # self.save_state(self._state)
 
         return phantom.APP_SUCCESS
 
@@ -526,8 +526,59 @@ class TaniumThreatResponseConnector(BaseConnector):
         message = 'Number of active connections found: {}'.format(summary.get('active_connections', 0))
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
+    def _handle_get_endpoint_helper(self, param, action_result):
+        """ Get endpoint information.
+
+        Args:
+            param (dict)
+
+        """
+        self.save_progress('In get endpoint helper function')
+
+        dst = param.get('dst')
+        dsttype = self._handle_py_ver_compat_for_input_str(param.get('dsttype'))
+
+        if dsttype not in (DSTTYPE_VALUE_LIST or DSTTYPE_PARAMETER_NAME):
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please provide valid input from {} in 'dsttype' action parameter".format(DSTTYPE_VALUE_LIST))
+        params = {}
+        params[DSTTYPE_PARAMETER_NAME[dsttype]] = dst
+
+        ret_val, response = self._make_rest_call_helper(GET_ENDPOINT_API_ENDPOINT, action_result, params=params, method="get")
+
+        return ret_val, response
+
+    def _handle_get_endpoint(self, param):
+        """ Get endpoint information.
+
+        Args:
+            param (dict): Parameters sent in by a user or playbook
+
+        Returns:
+            ActionResult status: success/failure
+
+        """
+        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        ret_val, response = self._handle_get_endpoint_helper(param, action_result)
+
+        if phantom.is_fail(ret_val):
+            self.save_progress('Get endpoint failed')
+            return action_result.get_status()
+
+        if 'data' in response:
+            for item in response['data']:
+                action_result.add_data(item)
+        else:
+            action_result.add_data(response)
+
+        self.save_progress('Get endpoint successful')
+        message = 'Endpoint information found'
+        return action_result.set_status(phantom.APP_SUCCESS, message)
+
     def _handle_create_connection(self, param):
-        """ Create connection with an endpoint.
+        """ Create connection to a live endpoint.
 
         Args:
             param (dict): Parameters sent in by a user or playbook
@@ -538,30 +589,32 @@ class TaniumThreatResponseConnector(BaseConnector):
         self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val, conntimeout = self._validate_integer(action_result, param.get('conntimeout'), CONNTIMEOUT_KEY, False)
+        # Get required endpoint information in order to make a connection
+        ret_val, response = self._handle_get_endpoint_helper(param, action_result)
         if phantom.is_fail(ret_val):
-            return action_result.get_status()
+            message = "Get endpoint info for new connection failed"
+            self.save_progress(message)
+            return action_result.set_status(phantom.APP_ERROR, message)
 
-        dsttype = self._handle_py_ver_compat_for_input_str(param.get('dsttype'))
-        if dsttype not in DSTTYPE_VALUE_LIST:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'dsttype' action parameter".format(DSTTYPE_VALUE_LIST))
+        payload = {"target": {}}
+        data = response.get('data')[0]
+        for item in CREATE_CONNECTION_REQUIRED_FIELD_LIST:
+            if item not in data:
+                return action_result.set_status(phantom.APP_ERROR, "Endpoint data lookup failure in {}".format(self.get_action_identifier()))
+            else:
+                payload['target'][item] = data[item]
 
-        data = {'dst': self._handle_py_ver_compat_for_input_str(param.get('dst')),
-                'dstType': dsttype,
-                'remote': param.get('remote', True)}
-
-        if conntimeout:
-            data.update({'connTimeout': conntimeout})
-
-        ret_val, response = self._make_rest_call_helper(CREATE_CONNECTION_ENDPOINT, action_result, json=data, method='post')
+        ret_val, response = self._make_rest_call_helper(CREATE_CONNECTION_ENDPOINT, action_result, json=payload, method='post')
 
         if phantom.is_fail(ret_val):
             self.save_progress('Create connection failed')
             return action_result.get_status()
 
-        self.save_progress('Create connection successful')
-        message = 'Create connection requested'
+        message = "Create connection successful"
+        self.save_progress(message)
+
+        action_result.add_data(response)
+
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_get_connection(self, param):
@@ -1253,11 +1306,15 @@ class TaniumThreatResponseConnector(BaseConnector):
         data = open(file_path, 'rb').read()
         '''
 
+        file_name = param.get('file_name')
+        data = param.get('intel_doc')
+
         headers = {
-            'Content-Type': 'application/xml'
+            'Content-Type': 'application/octet-stream'
         }
 
-        data = self._handle_py_ver_compat_for_input_str(param['intel_doc'])
+        if file_name:
+            headers['Content-Disposition'] = "filename={}".format(file_name)
 
         ret_val, response = self._make_rest_call_helper(UPLOAD_INTEL_DOC_ENDPOINT, action_result, headers=headers, data=data, method='post')
 
@@ -1406,6 +1463,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             'test_connectivity': self._handle_test_connectivity,
             'list_connections': self._handle_list_connections,
             'create_connection': self._handle_create_connection,
+            'get_endpoint': self._handle_get_endpoint,
             'get_connection': self._handle_get_connection,
             'delete_connection': self._handle_delete_connection,
             'list_snapshots': self._handle_list_snapshots,

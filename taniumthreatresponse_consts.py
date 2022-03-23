@@ -33,12 +33,21 @@ FILE_ID_KEY = "'file_id' action parameter"
 INTEL_DOC_ID_KEY = "'intel_doc_id' action parameter"
 
 # Constants relating to value_list check
-DSTTYPE_VALUE_LIST = ["computer_name", "ip_address"]
+DSTTYPE_VALUE_LIST = ["hostname", "ip_address", "client_id"]
+CREATE_CONNECTION_REQUIRED_FIELD_LIST = ["hostname", "ip", "clientId", "platform"]
 EVENT_TYPE_VALUE_LIST = ["combined", "dns", "driver", "file", "network", "process", "registry", "security", "image"]
 FILTER_TYPE_VALUE_LIST = ["any", "all"]
 
+# Value list to parameter name mapping
+DSTTYPE_PARAMETER_NAME = {
+                            "hostname": "hostname",
+                            "ip_address": "ip",
+                            "client_id": "clientId"
+                         }
+
 # API Endpoints
 LIST_ALERTS_ENDPOINT = '/plugin/products/detect3/api/v1/alerts'
+GET_ENDPOINT_API_ENDPOINT = '/plugin/products/dec/v1/endpoints'
 CREATE_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/connect'
 LIST_CONNECTIONS_ENDPOINT = '/plugin/products/threat-response/api/v1/conns'
 STATUS_ENDPOINT = '/plugin/products/threat-response/api/v1/status'

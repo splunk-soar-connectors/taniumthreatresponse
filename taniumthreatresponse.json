@@ -144,6 +144,9 @@
                     "column_order": 7,
                     "example_values": [
                         "2029399767"
+                    ],
+                    "contains": [
+                        "threatresponse client id"
                     ]
                 },
                 {
@@ -255,99 +258,237 @@
         },
         {
             "action": "create connection",
-            "description": "Create a new local or remote connection",
+            "description": "Create a new live endpoint connection",
             "type": "generic",
             "identifier": "create_connection",
             "read_only": false,
             "parameters": {
                 "dst": {
-                    "description": "Computer name or IP address",
+                    "description": "Client ID, Hostname, or IP address",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
                     "order": 0,
                     "contains": [
-                        "ip",
-                        "host name"
+                        "threatresponse client id",
+                        "host name",
+                        "ip"
                     ]
                 },
                 "dsttype": {
                     "description": "Type of destination",
                     "data_type": "string",
                     "required": true,
-                    "default": "computer_name",
+                    "default": "hostname",
                     "value_list": [
-                        "computer_name",
+                        "client_id",
+                        "hostname",
                         "ip_address"
                     ],
                     "order": 1
-                },
-                "remote": {
-                    "description": "True if remote connection",
-                    "data_type": "boolean",
-                    "default": true,
-                    "order": 2
-                },
-                "conntimeout": {
-                    "description": "Minutes until connection times out (default is 5 minutes)",
-                    "data_type": "numeric",
-                    "default": 5,
-                    "order": 3
                 }
             },
             "output": [
                 {
-                    "data_path": "action_result.parameter.conntimeout",
-                    "data_type": "numeric"
+                    "data_path": "action_result.data",
+                    "data_type": "string",
+                    "column_name": "Connection ID",
+                    "column_order": 0,
+                    "example_values": [
+                        "remote:tanium-client-1:1163582091:2"
+                    ],
+                    "contains": [
+                        "threatresponse connection id"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Create connection successful"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.dst",
                     "data_type": "string",
-                    "contains": [
-                        "ip",
-                        "host name"
-                    ],
                     "example_values": [
-                        "test_laptop.domain.com"
+                        "tanium-client-1"
                     ]
                 },
                 {
                     "data_path": "action_result.parameter.dsttype",
                     "data_type": "string",
                     "example_values": [
-                        "computer_name"
+                        "hostname"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.remote",
-                    "data_type": "boolean",
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
                     "example_values": [
-                        true
+                        1
                     ]
                 },
                 {
-                    "data_path": "action_result.data",
-                    "data_type": "string"
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table",
+                "title": "Tanium Threat Response"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "get endpoint",
+            "description": "gets endpoint information",
+            "type": "investigate",
+            "identifier": "get_endpoint",
+            "read_only": true,
+            "parameters": {
+                "dst": {
+                    "description": "Client ID, Hostname, or IP Address",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "order": 0,
+                    "contains": [
+                        "threatresponse client id",
+                        "host name",
+                        "ip"
+                    ]
+                },
+                "dsttype": {
+                    "description": "Type of destination information",
+                    "data_type": "string",
+                    "required": true,
+                    "default": "hostname",
+                    "value_list": [
+                        "client_id",
+                        "hostname",
+                        "ip_address"
+                    ],
+                    "order": 1
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "column_name": "Ip",
+                    "column_order": 2,
+                    "example_values": [
+                        "10.1.19.171"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.count",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.ready",
+                    "data_type": "numeric",
+                    "example_values": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "example_values": [
+                        ""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.clientId",
+                    "data_type": "string",
+                    "column_name": "Client ID",
+                    "column_order": 0,
+                    "example_values": [
+                        "1163582091"
+                    ],
+                    "contains": [
+                        "threatresponse client id"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.hostname",
+                    "data_type": "string",
+                    "column_name": "Hostname",
+                    "column_order": 1,
+                    "example_values": [
+                        "tanium-client-1"
+                    ],
+                    "contains": [
+                        "host name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.platform",
+                    "data_type": "string",
+                    "column_name": "Platform",
+                    "column_order": 3,
+                    "example_values": [
+                        "Windows"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.installed",
+                    "data_type": "numeric",
+                    "example_values": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.configured",
+                    "data_type": "numeric",
+                    "example_values": [
+                        false
+                    ]
                 },
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
                     "example_values": [
-                        "success",
-                        "failed"
+                        "success"
                     ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Create connection requested"
+                        "Endpoint information found"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.dst",
+                    "data_type": "string",
+                    "example_values": [
+                        "tanium-client-1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.dsttype",
+                    "data_type": "string",
+                    "example_values": [
+                        "hostname"
                     ]
                 },
                 {
@@ -2420,12 +2561,17 @@
             "identifier": "upload_intel_doc",
             "read_only": false,
             "parameters": {
+                "file_name": {
+                    "description": "The target file name of the intel document",
+                    "data_type": "string",
+                    "order": 0
+                },
                 "intel_doc": {
                     "description": "The text of the intel document",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
-                    "order": 0,
+                    "order": 1,
                     "contains": [
                         "threatresponse intel doc"
                     ]
