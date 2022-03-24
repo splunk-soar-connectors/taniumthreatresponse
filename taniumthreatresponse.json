@@ -2569,11 +2569,17 @@
                 "intel_doc": {
                     "description": "The text of the intel document",
                     "data_type": "string",
-                    "required": true,
-                    "primary": true,
                     "order": 1,
                     "contains": [
                         "threatresponse intel doc"
+                    ]
+                },
+                "vault_id": {
+                    "description": "Vault ID",
+                    "data_type": "string",
+                    "order": 2,
+                    "contains": [
+                        "vault id"
                     ]
                 }
             },

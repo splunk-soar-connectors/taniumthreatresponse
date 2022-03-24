@@ -23,6 +23,7 @@ import tempfile
 import uuid
 
 import phantom.app as phantom
+import phantom.rules as ph_rules
 import requests
 from bs4 import BeautifulSoup, UnicodeDammit
 from phantom.action_result import ActionResult
@@ -1300,14 +1301,19 @@ class TaniumThreatResponseConnector(BaseConnector):
         self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ''' future TODO: file ingestion
-        vault_id = param['vault_id']
-        file_path = Vault.get_file_path(vault_id)
-        data = open(file_path, 'rb').read()
-        '''
-
         file_name = param.get('file_name')
         data = param.get('intel_doc')
+        vault_id = param.get('vault_id')
+
+        if vault_id:
+            _, _, vault_info = ph_rules.vault_info(vault_id=vault_id)
+            if not file_name and (vault_info and 'name' in vault_info[0]):
+                file_name = vault_info[0]['name']
+            if 'path' in vault_info[0]:
+                data = open(vault_info[0]['path'], 'rb').read()
+        else:
+            if not (file_name and data):
+                return action_result.set_status(phantom.APP_ERROR, 'Error: please provide an intel doc and target file name.')
 
         headers = {
             'Content-Type': 'application/octet-stream'
