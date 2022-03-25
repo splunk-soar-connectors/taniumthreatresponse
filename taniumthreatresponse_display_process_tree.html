@@ -85,11 +85,11 @@
                 <div class="divTableBody">
                     <div class="divTableRow">
                         <div class="divTableCell">
-                            {% if process.ptid == result.parameter.process_table_id|add:"0" %}
+                            {% if process.process_table_id == result.parameter.process_table_id|add:"0" %}
                                 <span class="fa fa-check-circle"></span>
                             {% endif %}
-                            <a href="javascript:;" onclick="context_menu(this, [{'contains': ['threatresponse process table id'], 'value': '{{ process.ptid }}' }], 0, {{ container.id }}, null, false);">
-                                {{ process.ptid }} &nbsp;<span class="fa fa-caret-down"></span>
+                            <a href="javascript:;" onclick="context_menu(this, [{'contains': ['threatresponse process table id'], 'value': '{{ process.process_table_id }}' }], 0, {{ container.id }}, null, false);">
+                                {{ process.process_table_id }} &nbsp;<span class="fa fa-caret-down"></span>
                             </a>
                         </div>
                         <div class="divTableCell">{{ process.name }}</div>

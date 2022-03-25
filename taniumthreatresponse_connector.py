@@ -15,7 +15,6 @@
 #
 #
 # Phantom App imports
-import datetime
 import json
 import os
 import sys
@@ -885,55 +884,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         message = 'Process information retrieved'
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
-    def _handle_get_process_timeline(self, param):
-        """ Get process timeline from an existing connection.
-
-        Args:
-            param (dict): Parameters sent in by a user or playbook
-
-        Returns:
-            ActionResult status: success/failure
-        """
-        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
-        action_result = self.add_action_result(ActionResult(dict(param)))
-
-        cid = self._handle_py_ver_compat_for_input_str(param['connection_id'])
-        ret_val, ptid = self._validate_integer(action_result, param.get('process_table_id'), PROCESS_TABLE_ID_KEY)
-        if phantom.is_fail(ret_val):
-            return action_result.get_status()
-
-        if not self._is_connection_active(action_result, cid):
-            self.save_progress('Inactive or non-existent connection')
-            return action_result.get_status()
-
-        endpoint = '/plugin/products/trace/conns/{0}/eprocesstimelines/{1}'.format(cid, ptid)
-        ret_val, response = self._make_rest_call_helper(endpoint, action_result)
-
-        if phantom.is_fail(ret_val):
-            self.save_progress('Get Process Timeline Failed')
-            return action_result.get_status()
-
-        # Process response
-        out = []
-        for event_type in response:
-            for date, l in list(event_type.get('details', {}).items()):
-                for event in l:
-                    out.append({
-                        'type': event_type.get('name'),
-                        'date': date,
-                        'isodate': '{}Z'.format(datetime.datetime.utcfromtimestamp(int(date) / 1000).isoformat()),
-                        'event': event
-                    })
-
-        # Sort and add to action result
-        sorted_out = sorted(out, key=lambda x: x['date'])
-        for each_out in sorted_out:
-            action_result.add_data(each_out)
-
-        self.save_progress('Get Process Timeline Successful')
-        message = 'Process timeline retrieved'
-        return action_result.set_status(phantom.APP_SUCCESS, message)
-
     def _handle_get_process_tree(self, param):
         """ Get process tree for a process from an existing connection.
 
@@ -973,8 +923,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         if response:
             # action_result.add_data(response[0]) debugging
-            # for item in response:
-            #    action_result.add_data(item)
+            for item in response:
+                action_result.add_data(item)
             action_result.update_data(response)
         else:
             return action_result.set_status(phantom.APP_SUCCESS, 'No process tree found')
@@ -1476,11 +1426,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             'list_snapshots': self._handle_list_snapshots,
             'create_snapshot': self._handle_create_snapshot,
             'delete_snapshot': self._handle_delete_snapshot,
-            # Unable to get 'upload_local_snapshot' work with the API, disabling for now
-            # 'get_local_snapshot': self._handle_get_local_snapshot,
-            # 'upload_local_snapshot': self._handle_upload_local_snapshot,
             'get_process': self._handle_get_process,
-            'get_process_timeline': self._handle_get_process_timeline,
             'get_process_tree': self._handle_get_process_tree,
             'get_events': self._handle_get_events,
             'get_events_summary': self._handle_get_events_summary,
