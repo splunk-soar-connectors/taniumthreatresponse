@@ -878,7 +878,8 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Get process failed')
             return action_result.get_status()
 
-        action_result.add_data(response)
+        for item in response:
+            action_result.add_data(item)
 
         self.save_progress('Get process successful')
         message = 'Process information retrieved'
