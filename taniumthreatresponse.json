@@ -295,7 +295,7 @@
                     "column_name": "Connection ID",
                     "column_order": 0,
                     "example_values": [
-                        "remote:tanium-client-1:1163582091:2"
+                        "remote:tanium-client:1163582091:2"
                     ],
                     "contains": [
                         "threatresponse connection id"
@@ -319,7 +319,7 @@
                     "data_path": "action_result.parameter.dst",
                     "data_type": "string",
                     "example_values": [
-                        "tanium-client-1"
+                        "tanium-client"
                     ]
                 },
                 {
@@ -434,7 +434,7 @@
                     "column_name": "Hostname",
                     "column_order": 1,
                     "example_values": [
-                        "tanium-client-1"
+                        "tanium-client"
                     ],
                     "contains": [
                         "host name"
@@ -481,7 +481,7 @@
                     "data_path": "action_result.parameter.dst",
                     "data_type": "string",
                     "example_values": [
-                        "tanium-client-1"
+                        "tanium-client"
                     ],
                     "contains": [
                         "threatresponse client id",
@@ -835,7 +835,7 @@
                     "column_name": "Name",
                     "column_order": 1,
                     "example_values": [
-                        "WIN-Q0RB757Q335-1642209934002.db"
+                        "tanium-client-1642209934002.db"
                     ]
                 },
                 {
@@ -874,7 +874,7 @@
                     "column_name": "Hostname",
                     "column_order": 4,
                     "example_values": [
-                        "WIN-Q0RB757Q335"
+                        "tanium-client"
                     ],
                     "contains": [
                         "host name"
@@ -1163,7 +1163,7 @@
                         "threatresponse connection id"
                     ],
                     "example_values": [
-                        "remote:WIN-Q0RB757Q335:2029399767:1"
+                        "remote:tanium-client:2029399767:1"
                     ]
                 },
                 {
@@ -1833,7 +1833,7 @@
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
                     "example_values": [
-                        "remote:tanium-client-1:1163582091:2"
+                        "remote:tanium-client:1163582091:2"
                     ],
                     "contains": [
                         "threatresponse connection id"
@@ -1929,7 +1929,7 @@
                     "column_name": "Hostname",
                     "column_order": 6,
                     "example_values": [
-                        "tanium-client-1"
+                        "tanium-client"
                     ],
                     "contains": [
                         "host name"
@@ -2878,7 +2878,7 @@
                     "column_name": "Computer Name",
                     "column_order": 14,
                     "example_values": [
-                        "WIN-Q0RB757Q335"
+                        "tanium-client"
                     ]
                 },
                 {
@@ -2919,10 +2919,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.details",
-                    "data_type": "string",
-                    "example_values": [
-                        "{\"finding\":{\"system_info\":{\"bits\":64,\"build_number\":\"9600\",\"os\":\"Microsoft Windows Server 2012 R2 Standard\",\"patch_level\":\"6.3.9600.0.0\",\"platform\":\"Windows\"}},\"match\":{\"contexts\":[{\"event\":{},\"process\":{\"uniqueEventId\":\"72057594037989093\",\"uniqueProcessId\":\"-6556162311171167318\"}},{\"event\":{},\"process\":{\"uniqueEventId\":\"72057594037989093\",\"uniqueProcessId\":\"-6556162311171167318\"}},{\"event\":{},\"process\":{\"uniqueEventId\":\"72057594037989093\",\"uniqueProcessId\":\"-6556162311171167318\"}},{\"event\":{},\"process\":{\"uniqueEventId\":\"72057594037989093\",\"uniqueProcessId\":\"-6556162311171167318\"}},{\"event\":{},\"process\":{\"uniqueEventId\":\"72057594037989093\",\"uniqueProcessId\":\"-6556162311171167318\"}}],\"hash\":3989990141,\"properties\":{\"args\":\"net  localgroup administrators\",\"cwd\":null,\"file\":{\"fullpath\":\"C:\\\\Windows\\\\System32\\\\net.exe\",\"md5\":\"7467ec1d75804df9357a0660919e9831\",\"sha1\":null,\"sha256\":null,\"size\":null},\"name\":\"C:\\\\Windows\\\\System32\\\\net.exe\",\"parent\":{\"args\":\"\\\"C:\\\\Windows\\\\system32\\\\cmd.exe\\\" \",\"cwd\":null,\"file\":{\"fullpath\":\"C:\\\\Windows\\\\System32\\\\cmd.exe\",\"md5\":\"f5ae03de0ad60f5b17b82f2cd68402fe\",\"sha1\":null,\"sha256\":null,\"size\":null},\"name\":\"C:\\\\Windows\\\\System32\\\\cmd.exe\",\"parent\":{\"pid\":null},\"pid\":5632,\"ppid\":2460,\"recorder_table_id\":null,\"recorder_unique_id\":\"6218013107868326551\",\"start_time\":\"2021-11-17T18:02:22Z\",\"user\":\"WIN-Q0RB757Q335\\\\Administrator\"},\"pid\":2284,\"ppid\":5632,\"recorder_table_id\":null,\"recorder_unique_id\":\"-6556162311171167318\",\"start_time\":\"2021-11-17T18:02:29Z\",\"user\":\"WIN-Q0RB757Q335\\\\Administrator\"},\"source\":\"signals\",\"type\":\"process\",\"version\":1},\"service_id\":\"8f7d4897-fbed-4aa1-a925-30a65ddce961\"}"
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.status",
