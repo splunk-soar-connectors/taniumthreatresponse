@@ -478,10 +478,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         if not self._api_token:
             ret_val = self._get_token(action_result)
 
-        if phantom.is_fail(ret_val):
-            self.save_progress('Test Connectivity Failed')
-            return action_result.get_status()
-
         ret_val, response = self._make_rest_call_helper(STATUS_ENDPOINT, action_result)
 
         if phantom.is_fail(ret_val):
