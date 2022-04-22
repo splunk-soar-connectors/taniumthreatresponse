@@ -62,13 +62,16 @@ def display_events(provides, all_app_runs, context):
     # Use this mapping to control what data gets shown in which order for each event type
     headers_map = {
         'combined': [
-            'type',
             'id',
-            'timestamp',
+            'pid',
+            'type',
+            'detail',
             'operation',
-            'process_name',
-            'detail'
-        ],  # 'timestamp_raw'
+            'timestamp',
+            'process_path',
+            'timestamp_raw',
+            'process_table_id'
+        ],
         'dns': [
             'id',
             'timestamp',
@@ -96,58 +99,90 @@ def display_events(provides, all_app_runs, context):
         ],  # 'event_id','timestamp_raw'
         'file': [
             'id',
-            'timestamp',
-            'operation',
+            'pid',
             'file',
-            'process_name',
+            'details',
+            'operation',
+            'timestamp',
+            'user_name',
+            'group_name',
+            'process_path',
+            'timestamp_raw',
             'process_table_id',
-            'process_id',
-            'domain',
-            'username'
-        ],  # 'timestamp_raw'
+            'event_operation_id'
+        ],
         'network': [
             'id',
-            'timestamp',
+            'pid',
             'operation',
-            'source_addr',
-            'source_port',
-            'destination_addr',
-            'destination_port',
-            'process_name',
+            'timestamp',
+            'user_name',
+            'group_name',
+            'process_path',
+            'local_address',
+            'timestamp_raw',
+            'remote_address',
             'process_table_id',
-            'process_id',
-            'domain',
-            'username'
-        ],  # 'timestamp_raw'
+            'event_operation_id',
+            'local_address_port',
+            'remote_address_port'
+        ],
         'process': [
-            'create_time',
+            'id',
+            'pid',
+            'hash',
             'end_time',
             'exit_code',
-            'process_name',
+            'user_name',
+            'group_name',
+            'parent_pid',
+            'create_time',
+            'parent_hash',
+            'end_time_raw',
+            'process_path',
+            'hash_type_name',
+            'create_time_raw',
             'process_table_id',
-            'process_id',
+            'parent_command_line',
             'process_command_line',
-            'domain',
-            'username',
-            'sid'
-        ],  # 'create_time_raw', 'end_time_raw'
+            'parent_process_table_id'
+        ],
         'registry': [
             'id',
-            'timestamp',
-            'operation',
+            'pid',
             'key_path',
+            'operation',
+            'timestamp',
+            'user_name',
+            'group_name',
             'value_name',
-            'process_name',
+            'process_path',
+            'timestamp_raw',
             'process_table_id',
-            'process_id',
-            'domain',
-            'username'
-        ],  # 'timestamp_raw'
-        'sid': [
-            'domain',
-            'username',
-            'sid_hash',
-            'sid'
+            'event_operation_id'
+        ],
+        'security': [
+            'id',
+            'pid',
+            'name',
+            'string',
+            'task_id',
+            'event_id',
+            'record_id',
+            'timestamp',
+            'user_name',
+            'event_name',
+            'group_name',
+            'properties',
+            'process_path',
+            'timestamp_raw',
+            'property_names',
+            'login_user_name',
+            'property_values',
+            'process_table_id'
+        ],
+        'image': [
+
         ]
     }
 

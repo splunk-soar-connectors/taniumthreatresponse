@@ -78,7 +78,7 @@
                 <div class="divTableHeading">
                     <div class="divTableRow">
                         <div class="divTableHead">PTID</div>
-                        <div class="divTableHead">NAME</div>
+                        <div class="divTableHead">PROCESS PATH</div>
                     </div>
                 </div>
                 {% for process in result.data %}
@@ -92,7 +92,7 @@
                                 {{ process.process_table_id }} &nbsp;<span class="fa fa-caret-down"></span>
                             </a>
                         </div>
-                        <div class="divTableCell">{{ process.name }}</div>
+                        <div class="divTableCell">{{ process.process_path }}</div>
                     </div>
                     {% if process.children %}
                     <div class="divTableRow">
