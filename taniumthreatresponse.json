@@ -518,11 +518,10 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "get connection",
-            "description": "Gets connection information",
+            "action": "close connection",
+            "description": "Close a user connection",
             "type": "investigate",
-            "identifier": "get_connection",
-            "read_only": true,
+            "identifier": "close_connection",
             "parameters": {
                 "connection_id": {
                     "description": "Connection ID",
@@ -536,109 +535,6 @@
                 }
             },
             "output": [
-                {
-                    "data_path": "action_result.parameter.connection_id",
-                    "data_type": "string",
-                    "column_name": "Connection ID",
-                    "column_order": 1,
-                    "contains": [
-                        "threatresponse connection id"
-                    ],
-                    "example_values": [
-                        "test_laptop"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.createTime",
-                    "data_type": "string",
-                    "column_name": "Create Time",
-                    "column_order": 5,
-                    "example_values": [
-                        "2018-10-11T13:24:28.265Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.dst",
-                    "data_type": "string",
-                    "column_name": "DST",
-                    "column_order": 2,
-                    "contains": [
-                        "ip",
-                        "host name"
-                    ],
-                    "example_values": [
-                        "test_laptop.domain.com"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.dstType",
-                    "data_type": "string",
-                    "column_name": "DST Type",
-                    "column_order": 3,
-                    "example_values": [
-                        "computer_name"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.name",
-                    "data_type": "string",
-                    "contains": [
-                        "host name",
-                        "ip",
-                        "threatresponse connection id"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.remote",
-                    "data_type": "boolean",
-                    "column_name": "Remote",
-                    "column_order": 4,
-                    "example_values": [
-                        true
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.state",
-                    "data_type": "string",
-                    "column_name": "State",
-                    "column_order": 0,
-                    "example_values": [
-                        "active"
-                    ]
-                },
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
-                    "example_values": [
-                        "Connection information found"
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                }
             ],
             "render": {
                 "type": "table",

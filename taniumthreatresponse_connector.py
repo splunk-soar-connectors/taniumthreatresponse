@@ -588,8 +588,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
-    def _handle_get_connection(self, param):
-        """ Get connection information.
+    def _handle_close_connection(self, param):
+        """ Close a user connection.
 
         Args:
             param (dict): Parameters sent in by a user or playbook
@@ -602,16 +602,16 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param.get('connection_id')
 
-        ret_val, response = self._make_rest_call_helper(GET_CONNECTION_ENDPOINT.format(cid=cid), action_result)
+        ret_val, response = self._make_rest_call_helper(CLOSE_CONNECTION_ENDPOINT.format(cid=cid), action_result)
 
         if phantom.is_fail(ret_val):
-            self.save_progress('Get connection failed')
+            self.save_progress('Close connection failed')
             return action_result.get_status()
 
         action_result.add_data(response)
 
-        self.save_progress('Get connection successful')
-        message = 'Connection information found'
+        self.save_progress('Close connection successful')
+        message = 'Connection is closed'
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_delete_connection(self, param):
