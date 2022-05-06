@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk Community",
     "license": "Copyright (c) 2020-2022 Splunk Inc.",
-    "app_version": "2.0.0",
+    "app_version": "2.0.1",
     "utctime_updated": "2021-11-10T18:51:48.000000Z",
     "package_name": "phantom_taniumthreatresponse",
     "main_module": "taniumthreatresponse_connector.py",
@@ -522,6 +522,7 @@
             "description": "Close a user connection",
             "type": "investigate",
             "identifier": "close_connection",
+            "read_only": true,
             "parameters": {
                 "connection_id": {
                     "description": "Connection ID",
