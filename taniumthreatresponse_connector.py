@@ -813,10 +813,8 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.get_status()
 
         if response:
-            # action_result.add_data(response[0]) debugging
             for item in response:
                 action_result.add_data(item)
-            action_result.update_data(response)
         else:
             return action_result.set_status(phantom.APP_SUCCESS, 'No process tree found')
 
@@ -1311,7 +1309,6 @@ class TaniumThreatResponseConnector(BaseConnector):
             'list_connections': self._handle_list_connections,
             'create_connection': self._handle_create_connection,
             'get_endpoint': self._handle_get_endpoint,
-            'get_connection': self._handle_get_connection,
             'delete_connection': self._handle_delete_connection,
             'list_snapshots': self._handle_list_snapshots,
             'create_snapshot': self._handle_create_snapshot,
