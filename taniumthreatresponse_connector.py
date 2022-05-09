@@ -1309,9 +1309,9 @@ class TaniumThreatResponseConnector(BaseConnector):
         supported_actions = {
             'test_connectivity': self._handle_test_connectivity,
             'list_connections': self._handle_list_connections,
+            'close_connection': self._handle_close_connection,
             'create_connection': self._handle_create_connection,
             'get_endpoint': self._handle_get_endpoint,
-            'get_connection': self._handle_get_connection,
             'delete_connection': self._handle_delete_connection,
             'list_snapshots': self._handle_list_snapshots,
             'create_snapshot': self._handle_create_snapshot,

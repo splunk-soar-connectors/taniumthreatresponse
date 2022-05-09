@@ -522,6 +522,7 @@
             "description": "Close a user connection",
             "type": "investigate",
             "identifier": "close_connection",
+            "read_only": true,
             "parameters": {
                 "connection_id": {
                     "description": "Connection ID",
