@@ -10,13 +10,16 @@
     "product_version_regex": ".*",
     "publisher": "Splunk Community",
     "license": "Copyright (c) 2020-2022 Splunk Inc.",
-    "app_version": "2.0.0",
+    "app_version": "2.0.1",
     "utctime_updated": "2021-11-10T18:51:48.000000Z",
     "package_name": "phantom_taniumthreatresponse",
     "main_module": "taniumthreatresponse_connector.py",
-    "min_phantom_version": "4.9.39220",
+    "min_phantom_version": "5.2.0",
     "python_version": "3",
     "app_wizard_version": "1.0.0",
+    "latest_tested_versions": [
+        "3.5.284.0000"
+    ],
     "configuration": {
         "base_url": {
             "description": "Tanium Threat Response URL (e.g., https://tanium.example.com)",
