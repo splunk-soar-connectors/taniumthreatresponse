@@ -16,6 +16,9 @@
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)def get_events(headers, data):
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def get_events(headers, data):
     """ Build a list of dictionaries that have the detail and what that detail "contains".
@@ -203,10 +206,29 @@ def display_events(provides, all_app_runs, context):
 def display_process_tree(provides, all_app_runs, context):
 
     context['results'] = results = []
+    final_result, t = [], {}
+
     for summary, action_results in all_app_runs:
         for result in action_results:
+            data = result.get_data()
+            for index, item in enumerate(data):
+                item['children'] = []
+                if item['context'] == 'parent':
+                    del item['parent_process_table_id']
+                    final_result.append(item)
+                    # del data(index)
+                    t[item['process_table_id']] = final_result[0]
+
+            for item in data:
+                if item['context'] != 'parent':
+                    if 'children' not in item:
+                        item['children'] = []
+                    t[item['parent_process_table_id']]['children'].append(item)
+                    t[item['process_table_id']] = t[item['parent_process_table_id']]['children'][-1]
+                    del t[item['parent_process_table_id']]['children'][-1]['parent_process_table_id']
+
             results.append({
-                'data': result.get_data(),
+                'data': final_result,
                 'parameter': result.get_param(),
                 'message': result.get_message()
             })
