@@ -360,7 +360,7 @@
             "identifier": "get_endpoint",
             "read_only": true,
             "parameters": {
-                "dst": {
+                "destination": {
                     "description": "Client ID, Hostname, or IP Address",
                     "data_type": "string",
                     "required": true,
@@ -372,7 +372,7 @@
                         "ip"
                     ]
                 },
-                "dsttype": {
+                "destination_type": {
                     "description": "Type of destination information",
                     "data_type": "string",
                     "required": true,
@@ -386,18 +386,6 @@
                 }
             },
             "output": [
-                {
-                    "data_path": "action_result.data.*.ip",
-                    "data_type": "string",
-                    "column_name": "Ip",
-                    "column_order": 2,
-                    "example_values": [
-                        "10.1.19.171"
-                    ],
-                    "contains": [
-                        "ip"
-                    ]
-                },
                 {
                     "data_path": "action_result.data.*.count",
                     "data_type": "string",
@@ -425,10 +413,7 @@
                     "column_name": "Client ID",
                     "column_order": 0,
                     "example_values": [
-                        "1163582091"
-                    ],
-                    "contains": [
-                        "threatresponse client id"
+                        "2029399767"
                     ]
                 },
                 {
@@ -437,10 +422,22 @@
                     "column_name": "Hostname",
                     "column_order": 1,
                     "example_values": [
-                        "tanium-client"
+                        "WIN-Q0RB757Q335"
                     ],
                     "contains": [
                         "host name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "column_name": "Ip",
+                    "column_order": 2,
+                    "example_values": [
+                        "10.1.16.94"
+                    ],
+                    "contains": [
+                        "ip"
                     ]
                 },
                 {
@@ -455,6 +452,8 @@
                 {
                     "data_path": "action_result.data.*.installed",
                     "data_type": "numeric",
+                    "column_name": "Installed",
+                    "column_order": 4,
                     "example_values": [
                         false
                     ]
@@ -462,6 +461,8 @@
                 {
                     "data_path": "action_result.data.*.configured",
                     "data_type": "numeric",
+                    "column_name": "Configured",
+                    "column_order": 5,
                     "example_values": [
                         false
                     ]
@@ -481,19 +482,14 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.dst",
+                    "data_path": "action_result.parameter.destination",
                     "data_type": "string",
                     "example_values": [
-                        "tanium-client"
-                    ],
-                    "contains": [
-                        "threatresponse client id",
-                        "host name",
-                        "ip"
+                        "WIN-Q0RB757Q335"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.dsttype",
+                    "data_path": "action_result.parameter.destination_type",
                     "data_type": "string",
                     "example_values": [
                         "hostname"
