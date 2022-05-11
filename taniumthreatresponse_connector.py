@@ -506,12 +506,12 @@ class TaniumThreatResponseConnector(BaseConnector):
         """
         self.save_progress('In get endpoint helper function')
 
-        dst = param.get('dst')
-        dsttype = param.get('dsttype')
+        dst = param.get('destination')
+        dsttype = param.get('destination_type')
 
         if dsttype not in (DSTTYPE_VALUE_LIST or DSTTYPE_PARAMETER_NAME):
             return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'dsttype' action parameter".format(DSTTYPE_VALUE_LIST))
+                phantom.APP_ERROR, "Please provide valid input from {} in 'destination_type' action parameter".format(DSTTYPE_VALUE_LIST))
         params = {}
         params[DSTTYPE_PARAMETER_NAME[dsttype]] = dst
 
@@ -584,7 +584,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         message = "Create connection successful"
         self.save_progress(message)
 
-        action_result.add_data(response)
+        action_result.add_data({'id': response})
 
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
@@ -602,7 +602,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param.get('connection_id')
 
-        ret_val, response = self._make_rest_call_helper(CLOSE_CONNECTION_ENDPOINT.format(cid=cid), action_result)
+        ret_val, response = self._make_rest_call_helper(CLOSE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
 
         if phantom.is_fail(ret_val):
             self.save_progress('Close connection failed')

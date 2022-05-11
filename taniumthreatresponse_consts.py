@@ -49,6 +49,7 @@ DSTTYPE_PARAMETER_NAME = {
 LIST_ALERTS_ENDPOINT = '/plugin/products/detect3/api/v1/alerts'
 GET_ENDPOINT_API_ENDPOINT = '/plugin/products/dec/v1/endpoints'
 CREATE_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/connect'
+CLOSE_CONNECTION_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/close/{cid}'
 LIST_CONNECTIONS_ENDPOINT = '/plugin/products/threat-response/api/v1/conns'
 STATUS_ENDPOINT = '/plugin/products/threat-response/api/v1/status'
 CREATE_SNAPSHOT_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/snapshot'
