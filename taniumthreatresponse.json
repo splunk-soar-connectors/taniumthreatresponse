@@ -321,6 +321,11 @@
                 {
                     "data_path": "action_result.parameter.destination",
                     "data_type": "string",
+                    "contains": [
+                        "threatresponse client id",
+                        "host name",
+                        "ip"
+                    ],
                     "example_values": [
                         "WIN-Q0RB757Q335"
                     ]
