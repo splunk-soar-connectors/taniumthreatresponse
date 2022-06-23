@@ -511,7 +511,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         if dsttype not in (DSTTYPE_VALUE_LIST or DSTTYPE_PARAMETER_NAME):
             return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'destination_type' action parameter".format(DSTTYPE_VALUE_LIST))
+                phantom.APP_ERROR, "Please provide valid input from {} in 'destination_type' action parameter".format(DSTTYPE_VALUE_LIST)), None
         params = {}
         params[DSTTYPE_PARAMETER_NAME[dsttype]] = dst
 
@@ -534,7 +534,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         ret_val, response = self._handle_get_endpoint_helper(param, action_result)
 
-        if phantom.is_fail(ret_val):
+        if phantom.is_fail(ret_val) or not response.get('data'):
             self.save_progress('Get endpoint failed')
             return action_result.get_status()
 
@@ -562,7 +562,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         # Get required endpoint information in order to make a connection
         ret_val, response = self._handle_get_endpoint_helper(param, action_result)
-        if phantom.is_fail(ret_val):
+        if phantom.is_fail(ret_val) or not response.get('data'):
             message = "Get endpoint info for new connection failed"
             self.save_progress(message)
             return action_result.set_status(phantom.APP_ERROR, message)
