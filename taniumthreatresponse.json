@@ -266,7 +266,7 @@
             "identifier": "create_connection",
             "read_only": false,
             "parameters": {
-                "dst": {
+                "destination": {
                     "description": "Client ID, Hostname, or IP address",
                     "data_type": "string",
                     "required": true,
@@ -278,7 +278,7 @@
                         "ip"
                     ]
                 },
-                "dsttype": {
+                "destination_type": {
                     "description": "Type of destination",
                     "data_type": "string",
                     "required": true,
@@ -293,15 +293,15 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data",
+                    "data_path": "action_result.data.*.id",
                     "data_type": "string",
                     "column_name": "Connection ID",
                     "column_order": 0,
-                    "example_values": [
-                        "remote:tanium-client:1163582091:2"
-                    ],
                     "contains": [
                         "threatresponse connection id"
+                    ],
+                    "example_values": [
+                        "remote:test-client-1:2029399767:1"
                     ]
                 },
                 {
@@ -319,14 +319,19 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.dst",
+                    "data_path": "action_result.parameter.destination",
                     "data_type": "string",
+                    "contains": [
+                        "threatresponse client id",
+                        "host name",
+                        "ip"
+                    ],
                     "example_values": [
-                        "tanium-client"
+                        "WIN-Q0RB757Q335"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.dsttype",
+                    "data_path": "action_result.parameter.destination_type",
                     "data_type": "string",
                     "example_values": [
                         "hostname"
@@ -360,7 +365,7 @@
             "identifier": "get_endpoint",
             "read_only": true,
             "parameters": {
-                "dst": {
+                "destination": {
                     "description": "Client ID, Hostname, or IP Address",
                     "data_type": "string",
                     "required": true,
@@ -372,7 +377,7 @@
                         "ip"
                     ]
                 },
-                "dsttype": {
+                "destination_type": {
                     "description": "Type of destination information",
                     "data_type": "string",
                     "required": true,
@@ -386,18 +391,6 @@
                 }
             },
             "output": [
-                {
-                    "data_path": "action_result.data.*.ip",
-                    "data_type": "string",
-                    "column_name": "Ip",
-                    "column_order": 2,
-                    "example_values": [
-                        "10.1.19.171"
-                    ],
-                    "contains": [
-                        "ip"
-                    ]
-                },
                 {
                     "data_path": "action_result.data.*.count",
                     "data_type": "string",
@@ -425,10 +418,7 @@
                     "column_name": "Client ID",
                     "column_order": 0,
                     "example_values": [
-                        "1163582091"
-                    ],
-                    "contains": [
-                        "threatresponse client id"
+                        "2029399767"
                     ]
                 },
                 {
@@ -437,10 +427,22 @@
                     "column_name": "Hostname",
                     "column_order": 1,
                     "example_values": [
-                        "tanium-client"
+                        "WIN-Q0RB757Q335"
                     ],
                     "contains": [
                         "host name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.ip",
+                    "data_type": "string",
+                    "column_name": "Ip",
+                    "column_order": 2,
+                    "example_values": [
+                        "10.1.16.94"
+                    ],
+                    "contains": [
+                        "ip"
                     ]
                 },
                 {
@@ -455,6 +457,8 @@
                 {
                     "data_path": "action_result.data.*.installed",
                     "data_type": "numeric",
+                    "column_name": "Installed",
+                    "column_order": 4,
                     "example_values": [
                         false
                     ]
@@ -462,6 +466,8 @@
                 {
                     "data_path": "action_result.data.*.configured",
                     "data_type": "numeric",
+                    "column_name": "Configured",
+                    "column_order": 5,
                     "example_values": [
                         false
                     ]
@@ -481,19 +487,14 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.dst",
+                    "data_path": "action_result.parameter.destination",
                     "data_type": "string",
                     "example_values": [
-                        "tanium-client"
-                    ],
-                    "contains": [
-                        "threatresponse client id",
-                        "host name",
-                        "ip"
+                        "WIN-Q0RB757Q335"
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.dsttype",
+                    "data_path": "action_result.parameter.destination_type",
                     "data_type": "string",
                     "example_values": [
                         "hostname"
@@ -539,6 +540,41 @@
                 }
             },
             "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Connection is closed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.connection_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "remote:WIN-Q0RB757Q335:2029399767:1"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
             ],
             "render": {
                 "type": "table",
@@ -1157,7 +1193,253 @@
                     "default": 100
                 }
             },
-            "output": [],
+            "output": [
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "72057594046273100"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.pid",
+                    "data_type": "numeric",
+                    "example_values": [
+                        8260
+                    ],
+                    "contains": [
+                        "pid"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.context",
+                    "data_type": "string",
+                    "example_values": [
+                        "parent"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.end_time",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.exit_code",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.user_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "SYSTEM"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.group_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "NT AUTHORITY"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.create_time",
+                    "data_type": "string",
+                    "example_values": [
+                        "2022-03-10 18:29:04.398"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.end_time_raw",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.process_hash",
+                    "data_type": "string",
+                    "example_values": [
+                        "d0956eacc60b294c0e75f4244a61498a"
+                    ],
+                    "contains": [
+                        "md5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.process_path",
+                    "data_type": "string",
+                    "example_values": [
+                        "C:\\Program Files\\Tanium\\Tanium Module Server\\services\\twsm-v1\\twsm.exe"
+                    ],
+                    "contains": [
+                        "file name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.children_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.hash_type_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "MD5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.create_time_raw",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1646936944398
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.dns_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.process_table_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "72057594046273100"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.file_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.unique_process_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "682028550931011434"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.image_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.driver_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.network_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.process_command_line",
+                    "data_type": "string",
+                    "example_values": [
+                        "\"C:\\Program Files\\Tanium\\Tanium Module Server\\services\\twsm-v1\\twsm.exe\""
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.process_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.registry_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.security_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.parent_process_table_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "72057594039633141"
+                    ]
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Process tree retrieved"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_items",
+                    "data_type": "numeric",
+                    "example_values": [
+                        54
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.limit",
+                    "data_type": "numeric",
+                    "example_values": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.connection_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "remote:WIN-Q0RB757Q335:2029399767:1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.process_context",
+                    "data_type": "string",
+                    "example_values": [
+                        "all"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.process_table_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "72057594046273177"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
             "render": {
                 "type": "custom",
                 "view": "taniumthreatresponse_view.display_process_tree",
