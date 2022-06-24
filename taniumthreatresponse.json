@@ -355,7 +355,7 @@
         },
         {
             "action": "get endpoint",
-            "description": "gets endpoint information",
+            "description": "Get information for an endpoint",
             "type": "investigate",
             "identifier": "get_endpoint",
             "read_only": true,
@@ -548,7 +548,7 @@
         },
         {
             "action": "delete connection",
-            "description": "Deletes connection",
+            "description": "Delete a user connection",
             "type": "generic",
             "identifier": "delete_connection",
             "read_only": false,
@@ -698,8 +698,8 @@
         },
         {
             "action": "list snapshots",
-            "description": "Get a list of all the snapshots",
-            "verbose": "This action will fetch all the screenshots that are available on the Tanium Server, i.e., the snapshot files that are uploaded manually and the snapshots that are captured through Tanium UI.",
+            "description": "Get a list of all snapshots",
+            "verbose": "This action will fetch all snapshots that are available on the Tanium Server, i.e., the snapshot files that are uploaded manually and the snapshots that are captured through Tanium UI.",
             "type": "investigate",
             "identifier": "list_snapshots",
             "read_only": true,
