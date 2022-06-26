@@ -2427,7 +2427,7 @@
         },
         {
             "action": "get file",
-            "description": "Download a file from Tanium Threat Response to the Phantom Vault",
+            "description": "Download a file from Tanium Threat Response to the SOAR Vault",
             "type": "investigate",
             "identifier": "get_file",
             "read_only": true,
