@@ -71,3 +71,4 @@ GET_PROCESS_TREE_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}
 
 # Connection Status
 CONNECTION_STATUS = {'connected': 'active', 'disconnected': 'inactive'}
+DEFAULT_REQUEST_TIMEOUT = 60 # in seconds
