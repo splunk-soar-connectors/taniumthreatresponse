@@ -761,10 +761,23 @@
                         "size",
                         "username",
                         "uuid"
-                    ]
+                    ],
+                    "order": 2
                 }
             },
             "output": [
+                {
+                    "data_path": "action_result.data.*.uuid",
+                    "data_type": "string",
+                    "column_name": "Uuid",
+                    "column_order": 0,
+                    "contains": [
+                        "threatresponse snapshot id"
+                    ],
+                    "example_values": [
+                        "565f8498-1248-4a5a-a97e-e905c9276b79"
+                    ]
+                },
                 {
                     "data_path": "action_result.data.*.name",
                     "data_type": "string",
@@ -781,18 +794,6 @@
                     "column_order": 2,
                     "example_values": [
                         1021571072
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.uuid",
-                    "data_type": "string",
-                    "column_name": "Uuid",
-                    "column_order": 0,
-                    "contains": [
-                        "threatresponse snapshot id"
-                    ],
-                    "example_values": [
-                        "565f8498-1248-4a5a-a97e-e905c9276b79"
                     ]
                 },
                 {
