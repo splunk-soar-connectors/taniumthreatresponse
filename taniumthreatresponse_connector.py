@@ -322,7 +322,8 @@ class TaniumThreatResponseConnector(BaseConnector):
             return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid method: {0}".format(method)), resp_json)
 
         try:
-            r = request_func(endpoint, json=json, data=data, headers=headers, verify=verify, auth=auth, params=params, timeout=DEFAULT_REQUEST_TIMEOUT)
+            r = request_func(endpoint, json=json, data=data, headers=headers, verify=verify,
+                                auth=auth, params=params, timeout=DEFAULT_REQUEST_TIMEOUT)
         except requests.exceptions.InvalidSchema:
             error_message = 'Error connecting to server. No connection adapters were found for %s' % (endpoint)
             return RetVal(action_result.set_status(phantom.APP_ERROR, error_message), resp_json)
@@ -1426,7 +1427,8 @@ if __name__ == '__main__':
             headers['Referer'] = "{}login".format(BaseConnector._get_phantom_base_url())
 
             print('Logging into Platform to get the session id')
-            r2 = requests.post("{}login".format(BaseConnector._get_phantom_base_url()), verify=False, data=data, headers=headers, timeout=DEFAULT_REQUEST_TIMEOUT)
+            r2 = requests.post("{}login".format(BaseConnector._get_phantom_base_url()),
+                                   verify=False, data=data, headers=headers, timeout=DEFAULT_REQUEST_TIMEOUT)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print('Unable to get session id from the platform. Error: ' + str(e))
