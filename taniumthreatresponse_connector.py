@@ -1414,7 +1414,7 @@ if __name__ == '__main__':
     if username and password:
         try:
             print('Accessing the Login page')
-            r = requests.get("{}login".format(BaseConnector._get_phantom_base_url()), verify=False, timeout=DEFAULT_REQUEST_TIMEOUT)
+            r = requests.get("{}login".format(BaseConnector._get_phantom_base_url()), verify=False, timeout=DEFAULT_REQUEST_TIMEOUT)  # nosemgrep
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -1428,7 +1428,7 @@ if __name__ == '__main__':
 
             print('Logging into Platform to get the session id')
             r2 = requests.post("{}login".format(BaseConnector._get_phantom_base_url()),
-                                   verify=False, data=data, headers=headers, timeout=DEFAULT_REQUEST_TIMEOUT)
+                                   verify=False, data=data, headers=headers, timeout=DEFAULT_REQUEST_TIMEOUT)  # nosemgrep
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print('Unable to get session id from the platform. Error: ' + str(e))
