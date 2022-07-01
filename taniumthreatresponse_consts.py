@@ -20,7 +20,8 @@ ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configu
 PARSE_ERR_MSG = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
 TYPE_ERR_MSG = "Error occurred while connecting to the Tanium Threat Response Server. \
         Please check the asset configuration and|or the action parameters"
-
+GET_ENDPOINT_INFO_NEW_CONNECTION_ERROR_MSG = "Get endpoint info for new connection failed"
+GET_ENDPOINT_INFO_ERROR_MSG = "Get endpoint info failed or endpoint does not exist"
 # Constants relating to '_validate_integer'
 VALID_INTEGER_MSG = "Please provide a valid integer value in the {}"
 NON_NEGATIVE_INTEGER_MSG = "Please provide a valid non-negative integer value in the {}"

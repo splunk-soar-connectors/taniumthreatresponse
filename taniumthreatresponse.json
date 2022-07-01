@@ -350,6 +350,13 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.summary.connection_id",
+                    "data_type": "string",
+                    "example_values": [
+                       "remote:test-client:1163582091:2"
+                    ]
                 }
             ],
             "render": {
@@ -489,8 +496,13 @@
                 {
                     "data_path": "action_result.parameter.destination",
                     "data_type": "string",
+                    "contains": [
+                        "threatresponse client id",
+                        "host name",
+                        "ip"
+                    ],
                     "example_values": [
-                        "WIN-Q0RB757Q335"
+                        "test-client"
                     ]
                 },
                 {
@@ -512,6 +524,20 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.ip",
+                    "data_type": "string",
+                    "example_values": [
+                        "10.1.2.3"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.hostname",
+                    "data_type": "string",
+                    "example_values": [
+                        "test-client"
                     ]
                 }
             ],
@@ -557,8 +583,11 @@
                 {
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
+                    "contains": [
+                        "threatresponse connection id"
+                    ],
                     "example_values": [
-                        "remote:WIN-Q0RB757Q335:2029399767:1"
+                        "remote:test-client:2029399767:1"
                     ]
                 },
                 {
@@ -1407,8 +1436,11 @@
                 {
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
+                    "contains": [
+                        "threatresponse connection id"
+                    ],
                     "example_values": [
-                        "remote:WIN-Q0RB757Q335:2029399767:1"
+                        "remote:test-client:2029399767:1"
                     ]
                 },
                 {
@@ -1421,6 +1453,9 @@
                 {
                     "data_path": "action_result.parameter.process_table_id",
                     "data_type": "string",
+                    "contains": [
+                        "threatresponse process table id"
+                    ],
                     "example_values": [
                         "72057594046273177"
                     ]

@@ -230,7 +230,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         }
 
         ret_val, resp_json = self._make_rest_call("{}{}".format(
-            self._base_url, "/auth"), action_result, verify=self._verify_server_cert, headers=headers, auth=auth, method='post')
+            self._base_url, "/auth"), action_result, verify=self._verify_server_cert, headers=headers, auth=auth, data={}, method='post')
 
         if phantom.is_fail(ret_val):
             self._state['session_key'] = None
@@ -534,15 +534,18 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         ret_val, response = self._handle_get_endpoint_helper(param, action_result)
 
-        if phantom.is_fail(ret_val) or not response.get('data'):
+        if phantom.is_fail(ret_val):
             self.save_progress('Get endpoint failed')
             return action_result.get_status()
+        elif not response.get('data'):
+            return action_result.set_status(
+                phantom.APP_ERROR, GET_ENDPOINT_INFO_ERROR_MSG)
 
-        if 'data' in response:
-            for item in response['data']:
-                action_result.add_data(item)
-        else:
-            action_result.add_data(response)
+        summary = action_result.update_summary({})
+        for item in response['data']:
+            action_result.add_data(item)
+            summary['hostname'] = item.get('hostname')
+            summary['ip'] = item.get('ip')
 
         self.save_progress('Get endpoint successful')
         message = 'Endpoint information found'
@@ -563,7 +566,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         # Get required endpoint information in order to make a connection
         ret_val, response = self._handle_get_endpoint_helper(param, action_result)
         if phantom.is_fail(ret_val) or not response.get('data'):
-            message = "Get endpoint info for new connection failed"
+            message = GET_ENDPOINT_INFO_NEW_CONNECTION_ERROR_MSG
             self.save_progress(message)
             return action_result.set_status(phantom.APP_ERROR, message)
 
@@ -585,6 +588,8 @@ class TaniumThreatResponseConnector(BaseConnector):
         self.save_progress(message)
 
         action_result.add_data({'id': response})
+        summary = action_result.update_summary({})
+        summary['connection_id'] = response
 
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
