@@ -235,12 +235,12 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             self._state['session_key'] = None
             self._session_key = None
-            # self.save_state(self._state)
+            self.save_state(self._state)
             return action_result.get_status()
 
         self._state['session_key'] = resp_json
         self._session_key = resp_json
-        # self.save_state(self._state)
+        self.save_state(self._state)
 
         return phantom.APP_SUCCESS
 
