@@ -358,14 +358,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         return RetVal(phantom.APP_SUCCESS, filename)
 
     def _save_temp_file(self, content):
-        """
-
-        Args:
-            content:
-
-        Returns:
-
-        """
 
         if hasattr(Vault, 'get_vault_tmp_dir'):
             temp_dir = Vault.get_vault_tmp_dir()
@@ -448,7 +440,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         Returns:
             ActionResult status: success/failure
         """
-        # self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
+        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         if not self._api_token:
@@ -460,7 +452,6 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Test Connectivity Failed')
             return action_result.get_status()
 
-        # self.save_progress(response)
         self.save_progress('Test Connectivity Passed')
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -704,9 +695,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Inactive or non-existent connection')
             return action_result.get_status()
 
-        # endpoint = '/plugin/products/trace/conns/{}/snapshots'.format(cid)
         ret_val, response = self._make_rest_call_helper(CREATE_SNAPSHOT_ENDPOINT.format(cid=cid), action_result, method='post')
-
         if phantom.is_fail(ret_val):
             self.save_progress('Create snapshot failed')
             return action_result.get_status()
@@ -1300,9 +1289,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def handle_action(self, param):
-
-        # import web_pdb
-        # web_pdb.set_trace()
 
         # Get the action that we are supposed to execute for this App Run
         action_id = self.get_action_identifier()
