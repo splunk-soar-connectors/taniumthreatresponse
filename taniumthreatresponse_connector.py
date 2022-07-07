@@ -440,7 +440,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         Returns:
             ActionResult status: success/failure
         """
-        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         if not self._api_token:
