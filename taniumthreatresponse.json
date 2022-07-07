@@ -74,7 +74,7 @@
                     "column_name": "Connection Id",
                     "column_order": 0,
                     "example_values": [
-                        "remote:WIN-Q0RB757Q335::1"
+                        "remote:test-client-1::1"
                     ],
                     "contains": [
                         "threatresponse connection id"
@@ -86,7 +86,7 @@
                     "column_name": "Hostname",
                     "column_order": 1,
                     "example_values": [
-                        "WIN-Q0RB757Q335"
+                        "test-client-1"
                     ],
                     "contains": [
                         "host name"
@@ -98,7 +98,7 @@
                     "column_name": "Ip",
                     "column_order": 2,
                     "example_values": [
-                        "10.1.16.94"
+                        "192.168.1.11"
                     ],
                     "contains": [
                         "ip"
@@ -327,7 +327,7 @@
                         "ip"
                     ],
                     "example_values": [
-                        "WIN-Q0RB757Q335"
+                        "test-client-1"
                     ]
                 },
                 {
@@ -434,7 +434,7 @@
                     "column_name": "Hostname",
                     "column_order": 1,
                     "example_values": [
-                        "WIN-Q0RB757Q335"
+                        "test-client-1"
                     ],
                     "contains": [
                         "host name"
@@ -446,7 +446,7 @@
                     "column_name": "Ip",
                     "column_order": 2,
                     "example_values": [
-                        "10.1.16.94"
+                        "192.168.1.11"
                     ],
                     "contains": [
                         "ip"
@@ -813,7 +813,7 @@
                     "column_name": "Name",
                     "column_order": 1,
                     "example_values": [
-                        "tanium-client-1642209934002.db"
+                        "test-client-1642209934002.db"
                     ]
                 },
                 {
@@ -840,7 +840,7 @@
                     "column_name": "Hostname",
                     "column_order": 4,
                     "example_values": [
-                        "tanium-client"
+                        "test-client"
                     ],
                     "contains": [
                         "host name"
@@ -882,7 +882,7 @@
                     "column_name": "Connection ID",
                     "column_order": 8,
                     "example_values": [
-                        "remote:WIN-Q0RB757Q335:2029399767:1"
+                        "remote:test-client:2029399767:1"
                     ],
                     "contains": [
                         "threatresponse connection id"
@@ -2063,7 +2063,7 @@
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
                     "example_values": [
-                        "remote:tanium-client:1163582091:2"
+                        "remote:test-client:1163582091:2"
                     ],
                     "contains": [
                         "threatresponse connection id"
@@ -2159,7 +2159,7 @@
                     "column_name": "Hostname",
                     "column_order": 6,
                     "example_values": [
-                        "tanium-client"
+                        "test-client"
                     ],
                     "contains": [
                         "host name"
@@ -2217,28 +2217,19 @@
                     "data_path": "action_result.data.*.created_by_proc",
                     "data_type": "string",
                     "column_name": "Created By Proc",
-                    "column_order": 12,
-                    "example_values": [
-                        ""
-                    ]
+                    "column_order": 12
                 },
                 {
                     "data_path": "action_result.data.*.last_modified_by",
                     "data_type": "string",
                     "column_name": "Last Modified By",
-                    "column_order": 13,
-                    "example_values": [
-                        ""
-                    ]
+                    "column_order": 13
                 },
                 {
                     "data_path": "action_result.data.*.last_modified_by_proc",
                     "data_type": "string",
                     "column_name": "Last Modified By  Proc",
-                    "column_order": 14,
-                    "example_values": [
-                        ""
-                    ]
+                    "column_order": 14
                 },
                 {
                     "data_path": "action_result.data.*.process_creation_time",
@@ -3108,7 +3099,7 @@
                     "column_name": "Computer Name",
                     "column_order": 14,
                     "example_values": [
-                        "tanium-client"
+                        "test-client"
                     ]
                 },
                 {
