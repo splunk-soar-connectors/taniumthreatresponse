@@ -1170,7 +1170,8 @@
                 }
             ],
             "render": {
-                "type": "table",
+                "type": "custom",
+                "view": "taniumthreatresponse_view.display_process",
                 "title": "Tanium Threat Response"
             },
             "versions": "EQ(*)"

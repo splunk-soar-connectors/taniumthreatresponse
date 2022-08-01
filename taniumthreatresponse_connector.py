@@ -569,7 +569,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             else:
                 payload['target'][item] = data[item]
 
-        ret_val, response = self._make_rest_call_helper(CREATE_CONNECTION_ENDPOINT, action_result, json=payload, method='post')
+        ret_val, response = self._make_rest_call_helper(CREATE_CONNECTION_ENDPOINT, action_result, json=payload, data='', method='post')
 
         if phantom.is_fail(ret_val):
             self.save_progress('Create connection failed')
@@ -766,7 +766,11 @@ class TaniumThreatResponseConnector(BaseConnector):
             action_result.add_data(item)
 
         self.save_progress('Get process successful')
+
         message = 'Process information retrieved'
+        if not len(response):
+            message = 'No process information found'
+
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_get_process_tree(self, param):

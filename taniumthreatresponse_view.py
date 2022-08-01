@@ -200,6 +200,40 @@ def display_events(provides, all_app_runs, context):
     return 'taniumthreatresponse_display_events.html'
 
 
+def get_process(headers, data):
+    contains_map = {
+        'id': ['threatresponse process table id'],
+        'detail': ['file path']
+    }
+
+    process_info = []
+    for proc in data:
+        process_details = []
+        for head in headers:
+            data = proc.get(head, None)
+            process_details.append({
+                'data': data,
+                'contains': contains_map.get(head, None) if data else None
+            })
+        process_info.append(process_details)
+
+    return process_info
+
+
+def display_process(provides, all_app_runs, context):
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+            headers = ['id', 'type', 'detail', 'operation', 'timestamp', 'raw timestamp']
+
+            results.append({
+                'headers': headers,
+                'process_info': get_process(headers, result.get_data())
+            })
+
+    return 'taniumthreatresponse_display_process.html'
+
+
 def display_process_tree(provides, all_app_runs, context):
 
     context['results'] = results = []
