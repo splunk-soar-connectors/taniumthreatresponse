@@ -242,7 +242,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         self._session_key = resp_json
         self.save_state(self._state)
 
-        return phantom.APP_SUCCESS
+        return action_result.set_status(phantom.APP_SUCCESS, 'Retrieved new token')
 
     def _make_rest_call_helper(self, endpoint, action_result, headers=None, params=None, data=None, json=None, method="get"):
         """ Function that helps setting REST call to the app.
