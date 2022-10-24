@@ -1,5 +1,5 @@
 <!-- File: readme.html
-  Copyright (c) 2020-2021 Splunk Inc.
+  Copyright (c) 2020-2022 Splunk Inc.
 
   Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)
 -->
@@ -7,7 +7,29 @@
     <head>
     </head>
     <body>
-        <h1>Tanium Threat Response Typical Usage Example</h1>
+        <h2>Port Information</h2>
+        <p>
+            The app uses HTTP/ HTTPS protocol for communicating with the Tanium server. Below are the default ports used by Splunk SOAR.
+            <table>
+                <tr class=plain>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service Name</th>
+                    <th>Transport Protocol</th>
+                    <th>Port</th>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http</td>
+                    <td>tcp</td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https</td>
+                    <td>tcp</td>
+                    <td>443</td>
+                </tr>
+            </table>
+        </p>
+
+        <h2>Tanium Threat Response Typical Usage Example</h2>
         <p>
             To get the information from Tanium Threat Response, you will need to follow a certain flow of actions
             to get what you want. First, you will need to run a search to find the computer that Threat Response can interact

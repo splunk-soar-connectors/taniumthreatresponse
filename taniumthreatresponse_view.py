@@ -1,5 +1,18 @@
 # File: taniumthreatresponse_view.py
-# Copyright (c) 2020-2021 Splunk Inc.
+#
+# Copyright (c) 2020-2022 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+#
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)def get_events(headers, data):
 
@@ -49,13 +62,16 @@ def display_events(provides, all_app_runs, context):
     # Use this mapping to control what data gets shown in which order for each event type
     headers_map = {
         'combined': [
-            'type',
             'id',
-            'timestamp',
+            'pid',
+            'type',
+            'detail',
             'operation',
-            'process_name',
-            'detail'
-        ],  # 'timestamp_raw'
+            'timestamp',
+            'process_path',
+            'timestamp_raw',
+            'process_table_id'
+        ],
         'dns': [
             'id',
             'timestamp',
@@ -83,58 +99,90 @@ def display_events(provides, all_app_runs, context):
         ],  # 'event_id','timestamp_raw'
         'file': [
             'id',
-            'timestamp',
-            'operation',
+            'pid',
             'file',
-            'process_name',
+            'details',
+            'operation',
+            'timestamp',
+            'user_name',
+            'group_name',
+            'process_path',
+            'timestamp_raw',
             'process_table_id',
-            'process_id',
-            'domain',
-            'username'
-        ],  # 'timestamp_raw'
+            'event_operation_id'
+        ],
         'network': [
             'id',
-            'timestamp',
+            'pid',
             'operation',
-            'source_addr',
-            'source_port',
-            'destination_addr',
-            'destination_port',
-            'process_name',
+            'timestamp',
+            'user_name',
+            'group_name',
+            'process_path',
+            'local_address',
+            'timestamp_raw',
+            'remote_address',
             'process_table_id',
-            'process_id',
-            'domain',
-            'username'
-        ],  # 'timestamp_raw'
+            'event_operation_id',
+            'local_address_port',
+            'remote_address_port'
+        ],
         'process': [
-            'create_time',
+            'id',
+            'pid',
+            'hash',
             'end_time',
             'exit_code',
-            'process_name',
+            'user_name',
+            'group_name',
+            'parent_pid',
+            'create_time',
+            'parent_hash',
+            'end_time_raw',
+            'process_path',
+            'hash_type_name',
+            'create_time_raw',
             'process_table_id',
-            'process_id',
+            'parent_command_line',
             'process_command_line',
-            'domain',
-            'username',
-            'sid'
-        ],  # 'create_time_raw', 'end_time_raw'
+            'parent_process_table_id'
+        ],
         'registry': [
             'id',
-            'timestamp',
-            'operation',
+            'pid',
             'key_path',
+            'operation',
+            'timestamp',
+            'user_name',
+            'group_name',
             'value_name',
-            'process_name',
+            'process_path',
+            'timestamp_raw',
             'process_table_id',
-            'process_id',
-            'domain',
-            'username'
-        ],  # 'timestamp_raw'
-        'sid': [
-            'domain',
-            'username',
-            'sid_hash',
-            'sid'
+            'event_operation_id'
+        ],
+        'security': [
+            'id',
+            'pid',
+            'name',
+            'string',
+            'task_id',
+            'event_id',
+            'record_id',
+            'timestamp',
+            'user_name',
+            'event_name',
+            'group_name',
+            'properties',
+            'process_path',
+            'timestamp_raw',
+            'property_names',
+            'login_user_name',
+            'property_values',
+            'process_table_id'
+        ],
+        'image': [
+
         ]
     }
 
@@ -152,13 +200,66 @@ def display_events(provides, all_app_runs, context):
     return 'taniumthreatresponse_display_events.html'
 
 
-def display_process_tree(provides, all_app_runs, context):
+def get_process(headers, data):
+    contains_map = {
+        'id': ['threatresponse process table id'],
+        'detail': ['file path']
+    }
 
+    process_info = []
+    for proc in data:
+        process_details = []
+        for head in headers:
+            data = proc.get(head, None)
+            process_details.append({
+                'data': data,
+                'contains': contains_map.get(head, None) if data else None
+            })
+        process_info.append(process_details)
+
+    return process_info
+
+
+def display_process(provides, all_app_runs, context):
     context['results'] = results = []
     for summary, action_results in all_app_runs:
         for result in action_results:
+            headers = ['id', 'type', 'detail', 'operation', 'timestamp', 'raw timestamp']
+
             results.append({
-                'data': result.get_data(),
+                'headers': headers,
+                'process_info': get_process(headers, result.get_data())
+            })
+
+    return 'taniumthreatresponse_display_process.html'
+
+
+def display_process_tree(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    final_result, t = [], {}
+
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+            data = result.get_data()
+            for index, item in enumerate(data):
+                item['children'] = []
+                if item['context'] == 'parent':
+                    del item['parent_process_table_id']
+                    final_result.append(item)
+                    # del data(index)
+                    t[item['process_table_id']] = final_result[0]
+
+            for item in data:
+                if item['context'] != 'parent':
+                    if 'children' not in item:
+                        item['children'] = []
+                    t[item['parent_process_table_id']]['children'].append(item)
+                    t[item['process_table_id']] = t[item['parent_process_table_id']]['children'][-1]
+                    del t[item['parent_process_table_id']]['children'][-1]['parent_process_table_id']
+
+            results.append({
+                'data': final_result,
                 'parameter': result.get_param(),
                 'message': result.get_message()
             })
