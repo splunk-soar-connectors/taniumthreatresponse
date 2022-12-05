@@ -33,15 +33,20 @@
             "default": false,
             "order": 1
         },
+        "api_token": {
+            "description": "API Token",
+            "data_type": "password",
+            "order": 2
+        },
         "username": {
             "description": "Username",
             "data_type": "string",
-            "order": 2
+            "order": 3
         },
         "password": {
             "description": "Password",
             "data_type": "password",
-            "order": 3
+            "order": 4
         }
     },
     "actions": [
