@@ -216,7 +216,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _get_session_key(self, action_result, from_action=False):
-        """ This function is used to get a session_key via REST Call.
+        """ This function is used to get a session key via REST Call.
 
         :param action_result: Object of action result
         :param from_action: Boolean object of from_action
@@ -242,7 +242,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         self._session_key = resp_json
         self.save_state(self._state)
 
-        return action_result.set_status(phantom.APP_SUCCESS, 'Retrieved new token')
+        return action_result.set_status(phantom.APP_SUCCESS, 'Retrieved new session key')
 
     def _make_rest_call_helper(self, endpoint, action_result, headers=None, params=None, data=None, json=None, method="get"):
         """ Function that helps setting REST call to the app.
@@ -281,7 +281,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         ret_val, resp_json = self._make_rest_call(
             url, action_result, verify=self._verify_server_cert, headers=headers, params=params, data=data, json=json, method=method)
 
-        # If session key is expired, generate a new session key
+        # If session key is expired, retrieve a new one
         msg = action_result.get_message()
 
         if msg and ("HTTP 401: Unauthorized" in msg or "403" in msg):
