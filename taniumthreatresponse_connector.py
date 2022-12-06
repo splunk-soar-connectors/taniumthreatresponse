@@ -442,9 +442,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         """
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        if not self._api_token:
-            ret_val = self._get_session_key(action_result)
-
         ret_val, response = self._make_rest_call_helper(STATUS_ENDPOINT, action_result)
 
         if phantom.is_fail(ret_val):
