@@ -215,8 +215,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
-    def _get_token(self, action_result, from_action=False):
-        """ This function is used to get a token via REST Call.
+    def _get_session_key(self, action_result, from_action=False):
+        """ This function is used to get a session_key via REST Call.
 
         :param action_result: Object of action result
         :param from_action: Boolean object of from_action
@@ -270,7 +270,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             headers = {}
 
         if not self._session_key:
-            ret_val = self._get_token(action_result)
+            ret_val = self._get_session_key(action_result)
             if phantom.is_fail(ret_val):
                 return action_result.get_status(), None
 
@@ -281,11 +281,11 @@ class TaniumThreatResponseConnector(BaseConnector):
         ret_val, resp_json = self._make_rest_call(
             url, action_result, verify=self._verify_server_cert, headers=headers, params=params, data=data, json=json, method=method)
 
-        # If token is expired, generate a new token
+        # If session key is expired, generate a new session key
         msg = action_result.get_message()
 
         if msg and ("HTTP 401: Unauthorized" in msg or "403" in msg):
-            ret_val = self._get_token(action_result)
+            ret_val = self._get_session_key(action_result)
             if phantom.is_fail(ret_val):
                 return action_result.get_status(), None
             headers.update({'session': str(self._session_key)})
@@ -443,7 +443,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         if not self._api_token:
-            ret_val = self._get_token(action_result)
+            ret_val = self._get_session_key(action_result)
 
         ret_val, response = self._make_rest_call_helper(STATUS_ENDPOINT, action_result)
 
@@ -1375,7 +1375,7 @@ class TaniumThreatResponseConnector(BaseConnector):
     def finalize(self):
 
         # Save the state, this data is saved across actions and app upgrades
-        # self.save_state(self._state)
+        self.save_state(self._state)
         return phantom.APP_SUCCESS
 
 
