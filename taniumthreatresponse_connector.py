@@ -50,6 +50,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         # Do note that the app json defines the asset config, so please
         # modify this as you deem fit.
         self._base_url = None
+        self._api_token = None
         self._username = None
         self._password = None
         self._session_key = None
@@ -85,23 +86,23 @@ class TaniumThreatResponseConnector(BaseConnector):
                     error_code = e.args[0]
                     error_msg = e.args[1]
                 elif len(e.args) == 1:
-                    error_code = ERR_CODE_MSG
+                    error_code = ERROR_CODE_MSG
                     error_msg = e.args[0]
             else:
-                error_code = ERR_CODE_MSG
-                error_msg = ERR_MSG_UNAVAILABLE
+                error_code = ERROR_CODE_MSG
+                error_msg = ERROR_MSG_UNAVAILABLE
         except:
-            error_code = ERR_CODE_MSG
-            error_msg = ERR_MSG_UNAVAILABLE
+            error_code = ERROR_CODE_MSG
+            error_msg = ERROR_MSG_UNAVAILABLE
 
         try:
-            if error_code in ERR_CODE_MSG:
+            if error_code in ERROR_CODE_MSG:
                 error_text = "Error Message: {0}".format(error_msg)
             else:
                 error_text = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
         except:
-            self.debug_print(PARSE_ERR_MSG)
-            error_text = PARSE_ERR_MSG
+            self.debug_print(PARSE_ERROR_MSG)
+            error_text = PARSE_ERROR_MSG
 
         return error_text
 
@@ -280,7 +281,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         ret_val, resp_json = self._make_rest_call(
             url, action_result, verify=self._verify_server_cert, headers=headers, params=params, data=data, json=json, method=method)
 
-        # If session key is expired, generate a new one
+        # If session key is expired, retrieve a new one
         msg = action_result.get_message()
 
         if msg and ("HTTP 401: Unauthorized" in msg or "403" in msg):
@@ -440,9 +441,6 @@ class TaniumThreatResponseConnector(BaseConnector):
             ActionResult status: success/failure
         """
         action_result = self.add_action_result(ActionResult(dict(param)))
-
-        if not self._session_key:
-            ret_val = self._get_session_key(action_result)
 
         ret_val, response = self._make_rest_call_helper(STATUS_ENDPOINT, action_result)
 
@@ -1356,12 +1354,16 @@ class TaniumThreatResponseConnector(BaseConnector):
         elif self._base_url.startswith('\\'):
             self._base_url = self._base_url.strip('\\').strip('/')
 
-        self._session_key = self._state.get('session_key', '')
-        self._username = config.get('username')
-        self._password = config.get('password')
+        self._api_token = config.get('api_token')
+        if self._api_token:
+            self._session_key = self._api_token
+        else:
+            self._session_key = self._state.get('session_key', '')
+            self._username = config.get('username')
+            self._password = config.get('password')
 
-        if not (self._username and self._password):
-            return self.set_status(phantom.APP_ERROR, "Please provide username and password credentials")
+        if not self._api_token and not (self._username and self._password):
+            return self.set_status(phantom.APP_ERROR, "Please provide either an API token, or username and password credentials")
 
         self._verify_server_cert = config.get('verify_server_cert', False)
 
