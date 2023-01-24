@@ -1,6 +1,6 @@
 # File: taniumthreatresponse_consts.py
 #
-# Copyright (c) 2020-2022 Splunk Inc.
+# Copyright (c) 2020-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,17 +15,20 @@
 #
 #
 # Constants relating to '_get_error_message_from_exception'
-ERROR_CODE_MSG = "Error code unavailable"
-ERROR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
-PARSE_ERROR_MSG = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
-TYPE_ERROR_MSG = "Error occurred while connecting to the Tanium Threat Response Server. \
-        Please check the asset configuration and|or the action parameters"
-GET_ENDPOINT_INFO_NEW_CONNECTION_ERROR_MSG = "Get endpoint info for new connection failed"
-GET_ENDPOINT_INFO_ERROR_MSG = "Get endpoint info failed or endpoint does not exist"
+ERROR_CODE_MESSAGE = "Error code unavailable"
+ERROR_MESSAGE_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
+TANIUM_STATE_FILE_CORRUPT_ERROR = "Error occurred while loading the state file due to its unexpected format. \
+        Resetting the state file with the default format. Please try again."
+TANIUM_SESSION_KEY = 'session_key'
+TANIUM_SESSION_KEY_IS_ENCRYPTED = 'is_encrypted'
+TANIUM_ENCRYPTION_ERROR = "Error occurred while encrypting the state file"
+TANIUM_DECRYPTION_ERROR = "Error occurred while decrypting the state file"
+GET_ENDPOINT_INFO_NEW_CONNECTION_ERROR_MESSAGE = "Get endpoint info for new connection failed"
+GET_ENDPOINT_INFO_ERROR_MESSAGE = "Get endpoint info failed or endpoint does not exist"
 # Constants relating to '_validate_integer'
-VALID_INTEGER_MSG = "Please provide a valid integer value in the {}"
-NON_NEGATIVE_INTEGER_MSG = "Please provide a valid non-negative integer value in the {}"
-NON_ZERO_POSITIVE_INTEGER_MSG = "Please provide a valid non-zero positive integer value in the {}"
+VALID_INTEGER_MESSAGE = "Please provide a valid integer value in the {} parameter"
+NON_NEGATIVE_INTEGER_MESSAGE = "Please provide a valid non-negative integer value in the {} parameter"
+NON_ZERO_POSITIVE_INTEGER_MESSAGE = "Please provide a valid non-zero positive integer value in the {} parameter"
 CONNTIMEOUT_KEY = "'conntimeout' action parameter"
 PROCESS_TABLE_ID_KEY = "'process_table_id' action parameter"
 LIMIT_KEY = "'limit' action parameter"
@@ -70,6 +73,4 @@ UPLOAD_INTEL_DOC_ENDPOINT = '/plugin/products/detect3/api/v1/intels'
 GET_PROCESS_DETAILS_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/processevents/{ptid}/{type}'
 GET_PROCESS_TREE_ENDPOINT = '/plugin/products/threat-response/api/v1/conns/{cid}/processtrees/{ptid}'
 
-# Connection Status
-CONNECTION_STATUS = {'connected': 'active', 'disconnected': 'inactive'}
 DEFAULT_REQUEST_TIMEOUT = 60  # in seconds
