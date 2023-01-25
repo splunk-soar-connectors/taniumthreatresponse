@@ -17,13 +17,13 @@
 # Phantom App imports
 import json
 import os
+import re
 import tempfile
 import uuid
 
 import encryption_helper
 import phantom.app as phantom
 import phantom.rules as ph_rules
-import regex as re
 import requests
 from bs4 import BeautifulSoup
 from phantom.action_result import ActionResult
