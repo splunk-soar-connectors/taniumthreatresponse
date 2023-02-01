@@ -548,9 +548,9 @@
         {
             "action": "close connection",
             "description": "Close a user connection",
-            "type": "investigate",
+            "type": "generic",
             "identifier": "close_connection",
-            "read_only": true,
+            "read_only": false,
             "parameters": {
                 "connection_id": {
                     "description": "Connection ID",
@@ -981,8 +981,8 @@
             "identifier": "delete_snapshot",
             "read_only": false,
             "parameters": {
-                "snapshot_id": {
-                    "description": "Snapshot id",
+                "snapshot_ids": {
+                    "description": "Comma-separated Snapshot IDs",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
@@ -1004,9 +1004,9 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.snapshot_id",
+                    "data_path": "action_result.parameter.snapshot_ids",
                     "data_type": "string",
-                    "column_name": "Snapshot ID",
+                    "column_name": "Snapshot IDs",
                     "column_order": 0,
                     "example_values": [
                         "12467f6a-5f18-4ddb-a8cb-404b0a0a2a6e"
@@ -2590,7 +2590,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.file_name",
+                    "data_path": "action_result.data.*.name",
                     "data_type": "string",
                     "column_name": "Name",
                     "column_order": 1,
