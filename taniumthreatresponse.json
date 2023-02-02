@@ -1006,7 +1006,7 @@
                 {
                     "data_path": "action_result.parameter.snapshot_ids",
                     "data_type": "string",
-                    "column_name": "Snapshot IDs",
+                    "column_name": "Snapshot Ids",
                     "column_order": 0,
                     "example_values": [
                         "12467f6a-5f18-4ddb-a8cb-404b0a0a2a6e"
@@ -1149,7 +1149,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.timestamp_raw",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "column_name": "Raw Timestamp",
                     "column_order": 5,
                     "example_values": [
@@ -1620,42 +1620,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.pid",
-                    "data_type": "numeric",
-                    "example_values": [
-                        2052
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.type",
-                    "data_type": "string",
-                    "example_values": [
-                        "DNS"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.detail",
-                    "data_type": "string",
-                    "example_values": [
-                        "win-q0rb757q335: "
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.process_path",
-                    "data_type": "string",
-                    "example_values": [
-                        "C:\\Program Files\\Tanium\\Tanium Module Server\\services\\event-service\\node.exe"
-                    ]
-                },
-                {
-                    "data_path": "action_result.summary.more_data",
-                    "data_type": "boolean",
-                    "example_values": [
-                        true,
-                        false
-                    ]
-                },
-                {
                     "data_path": "action_result.parameter.fields",
                     "data_type": "string",
                     "example_values": [
@@ -1773,6 +1737,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.detail",
+                    "data_type": "string",
+                    "example_values": [
+                        "win-q0rb757q335: "
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.domain",
                     "data_type": "string",
                     "column_name": "Domain",
@@ -1872,6 +1843,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.pid",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2052
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.process_command_line",
                     "data_type": "string",
                     "example_values": [
@@ -1902,6 +1880,13 @@
                     "contains": [
                         "file name",
                         "file path"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.process_path",
+                    "data_type": "string",
+                    "example_values": [
+                        "C:\\Program Files\\Tanium\\Tanium Module Server\\services\\event-service\\node.exe"
                     ]
                 },
                 {
@@ -1964,9 +1949,16 @@
                 },
                 {
                     "data_path": "action_result.data.*.timestamp_raw",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "example_values": [
                         1663475987
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "DNS"
                     ]
                 },
                 {
@@ -1997,6 +1989,14 @@
                     "data_type": "string",
                     "example_values": [
                         "316439"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.more_data",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
                     ]
                 },
                 {
@@ -2111,13 +2111,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.summary.total_combined_events_count",
-                    "data_type": "numeric",
-                    "example_values": [
-                        100000
-                    ]
-                },
-                {
                     "data_path": "action_result.parameter.event_type",
                     "data_type": "string",
                     "column_name": "Event Type",
@@ -2142,6 +2135,13 @@
                     "column_order": 2,
                     "example_values": [
                         false
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_combined_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        100000
                     ]
                 },
                 {
@@ -2576,13 +2576,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.created_via",
-                    "data_type": "string",
-                    "example_values": [
-                        "automation"
-                    ]
-                },
-                {
                     "data_path": "action_result.data.*.container",
                     "data_type": "numeric",
                     "example_values": [
@@ -2590,15 +2583,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.name",
+                    "data_path": "action_result.data.*.created_via",
                     "data_type": "string",
-                    "column_name": "Name",
-                    "column_order": 1,
                     "example_values": [
-                        "PING.EXE"
-                    ],
-                    "contains": [
-                        "file name"
+                        "automation"
                     ]
                 },
                 {
@@ -2623,6 +2611,18 @@
                     "data_type": "string",
                     "example_values": [
                         "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "column_name": "Name",
+                    "column_order": 1,
+                    "example_values": [
+                        "PING.EXE"
+                    ],
+                    "contains": [
+                        "file name"
                     ]
                 },
                 {
@@ -2754,22 +2754,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.gatherDegenerateFindingsSetAt",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.gatherDegenerateFindingsSetBy",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.funnelAllFindingsToConnectSetAt",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.funnelAllFindingsToConnectSetBy",
-                    "data_type": "string"
-                },
-                {
                     "data_path": "action_result.data.*.alertCount",
                     "data_type": "numeric",
                     "example_values": [
@@ -2791,6 +2775,22 @@
                 },
                 {
                     "data_path": "action_result.data.*.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.funnelAllFindingsToConnectSetAt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.funnelAllFindingsToConnectSetBy",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.gatherDegenerateFindingsSetAt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.gatherDegenerateFindingsSetBy",
                     "data_type": "string"
                 },
                 {
@@ -2985,7 +2985,7 @@
                         "threatresponse intel doc id"
                     ],
                     "example_values": [
-                        ""
+                        1
                     ]
                 },
                 {
