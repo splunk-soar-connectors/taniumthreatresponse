@@ -42,6 +42,9 @@ DSTTYPE_VALUE_LIST = ["hostname", "ip_address", "client_id"]
 CREATE_CONNECTION_REQUIRED_FIELD_LIST = ["hostname", "ip", "clientId", "platform"]
 EVENT_TYPE_VALUE_LIST = ["combined", "dns", "driver", "file", "network", "process", "registry", "security", "image"]
 FILTER_TYPE_VALUE_LIST = ["any", "all"]
+FILE_SORT_TYPE_VALUE_LIST = ["uuid", "hostname", "path", "downloaded", "size"]
+SNAPSHOTS_SORT_TYPE_VALUE_LIST = ["uuid", "username", "hostname", "created", "connectionId", "size", "name"]
+PROCESS_CONTEXT_VALUE_LIST = ["parent", "node", "siblings", "children", "all"]
 
 # Value list to parameter name mapping
 DSTTYPE_PARAMETER_NAME = {
@@ -51,7 +54,7 @@ DSTTYPE_PARAMETER_NAME = {
                          }
 
 # API Endpoints
-LIST_ALERTS_ENDPOINT = "/plugin/products/detect3/api/v1/alerts"
+LIST_ALERTS_ENDPOINT = "/plugin/products/threat-response/api/v1/alerts"
 GET_ENDPOINT_API_ENDPOINT = "/plugin/products/dec/v1/endpoints"
 CREATE_CONNECTION_ENDPOINT = "/plugin/products/threat-response/api/v1/conns/connect"
 CLOSE_CONNECTION_ENDPOINT = "/plugin/products/threat-response/api/v1/conns/close/{cid}"
@@ -70,7 +73,7 @@ DELETE_FILE_EVIDENCE_ENDPOINT = "/plugin/products/threat-response/api/v1/filedow
 GET_FILE_EVIDENCE_ENDPOINT = "/plugin/products/threat-response/api/v1/filedownload/{file_id}"
 DOWNLOAD_FILE_EVIDENCE_ENDPOINT = "/plugin/products/threat-response/api/v1/filedownload/data/{file_id}"
 DELETE_LOCAL_SNAPSHOT_ENDPOINT = "/plugin/products/threat-response/api/v1/snapshot/{id}"
-UPLOAD_INTEL_DOC_ENDPOINT = "/plugin/products/detect3/api/v1/intels"
+UPLOAD_INTEL_DOC_ENDPOINT = "/plugin/products/threat-response/api/v1/intels"
 GET_PROCESS_DETAILS_ENDPOINT = "/plugin/products/threat-response/api/v1/conns/{cid}/processevents/{ptid}/{type}"
 GET_PROCESS_TREE_ENDPOINT = "/plugin/products/threat-response/api/v1/conns/{cid}/processtrees/{ptid}"
 
