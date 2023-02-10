@@ -617,14 +617,12 @@ class TaniumThreatResponseConnector(BaseConnector):
         cid = param.get('connection_id')
 
         ret_val, response = self._make_rest_call_helper(CLOSE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
-        if phantom.is_fail(ret_val) or not response:
+        if phantom.is_fail(ret_val):
             message = 'Close connection failed'
             return action_result.set_status(phantom.APP_ERROR, message)
 
-        action_result.add_data(response)
-
         self.save_progress('Close connection successful')
-        message = 'Successfully closed connection'
+        message = 'Close connection requested'
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_delete_connection(self, param):
@@ -647,7 +645,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.get_status()
 
         self.save_progress('Delete connection successful')
-        message = 'delete connection requested'
+        message = 'Delete connection requested'
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_list_snapshots(self, param):

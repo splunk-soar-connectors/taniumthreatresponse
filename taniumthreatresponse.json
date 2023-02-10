@@ -1074,7 +1074,7 @@
                 },
                 "process_table_id": {
                     "description": "Process Table ID",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "required": true,
                     "primary": true,
                     "order": 1,
@@ -1104,12 +1104,12 @@
                 },
                 {
                     "data_path": "action_result.parameter.process_table_id",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "contains": [
                         "threatresponse process table id"
                     ],
                     "example_values": [
-                        "99057594043959999"
+                        99057594043959999
                     ]
                 },
                 {
@@ -1221,7 +1221,7 @@
                 },
                 "process_table_id": {
                     "description": "Process Table ID",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "required": true,
                     "primary": true,
                     "order": 1,
@@ -1285,12 +1285,12 @@
                 },
                 {
                     "data_path": "action_result.parameter.process_table_id",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "contains": [
                         "threatresponse process table id"
                     ],
                     "example_values": [
-                        "1234567890"
+                        1234567890
                     ]
                 },
                 {
@@ -1391,9 +1391,9 @@
                 },
                 {
                     "data_path": "action_result.data.*.parent_process_table_id",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "example_values": [
-                        "1234567890123456789"
+                        1234567890123456789
                     ]
                 },
                 {
@@ -1442,9 +1442,9 @@
                 },
                 {
                     "data_path": "action_result.data.*.process_table_id",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "example_values": [
-                        "1234567890123456789"
+                        1234567890123456789
                     ]
                 },
                 {
@@ -2752,9 +2752,9 @@
                 },
                 {
                     "data_path": "action_result.data.*.container",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "example_values": [
-                        4
+                        "test"
                     ]
                 },
                 {
