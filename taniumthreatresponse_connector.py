@@ -871,11 +871,11 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.set_status(
                 phantom.APP_ERROR, "Please provide valid input from {} in 'event_type' action parameter".format(EVENT_TYPE_VALUE_LIST))
 
-        ret_val, limit = self._validate_integer(action_result, param.get('limit', 100), LIMIT_KEY)
+        ret_val, limit = self._validate_integer(action_result, param.get('limit', 1000), LIMIT_KEY)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        ret_val, offset = self._validate_integer(action_result, param.get('offset'), OFFSET_KEY, True)
+        ret_val, offset = self._validate_integer(action_result, param.get('offset', 0), OFFSET_KEY, True)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
@@ -892,13 +892,19 @@ class TaniumThreatResponseConnector(BaseConnector):
         params = {}
 
         if limit:
+            if limit > 1000:
+                limit = 1000
             params['limit'] = limit
 
         if offset:
             params['offset'] = offset
 
         if sort:
-            params['sort'] = sort
+            sort = [seperated_sort.strip() for seperated_sort in sort.split(',')]
+            sort = set(list(filter(None, sort)))
+            sort = ','.join(sort)
+            if sort:
+                params['sort'] = sort
 
         filter_type = param.get("filter_type", "all")
         if filter_type and filter_type not in FILTER_TYPE_VALUE_LIST:
@@ -937,8 +943,12 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             self.save_progress('Get Events Failed')
             return action_result.get_status()
+        response_length = len(response)
 
-        for event in range(len(response) - 1):
+        if response_length > limit:
+            response_length -= 1
+
+        for event in range(0, response_length):
             action_result.add_data(response[event])
         action_result.update_summary({'type': event_type})
 

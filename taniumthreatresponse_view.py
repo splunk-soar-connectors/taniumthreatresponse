@@ -82,8 +82,9 @@ def display_events(provides, all_app_runs, context):
             'process_table_id',
             'process_id',
             'domain',
-            'username'
-        ],  # 'timestamp_raw'
+            'username',
+            'timestamp_raw'
+        ],
         'driver': [
             'id',
             'timestamp',
@@ -95,8 +96,10 @@ def display_events(provides, all_app_runs, context):
             'Signature',
             'sid',
             'event_task_id',
-            'event_record_id'
-        ],  # 'event_id','timestamp_raw'
+            'event_record_id',
+            'event_id',
+            'timestamp_raw'
+        ],
         'file': [
             'id',
             'pid',
@@ -182,7 +185,20 @@ def display_events(provides, all_app_runs, context):
             'process_table_id'
         ],
         'image': [
-
+            'id',
+            'pid',
+            'process_path',
+            'path',
+            'hash_type_name',
+            'library_hash',
+            'user_name',
+            'group_name',
+            'signature_issuer',
+            'signature_subject',
+            'signature_status',
+            'timestamp',
+            'timestamp_raw',
+            'process_table_id',
         ]
     }
 

@@ -1546,15 +1546,16 @@
                     "order": 1
                 },
                 "limit": {
-                    "description": "Maximum number of results to return with a hard limit of 100",
+                    "description": "Maximum number of results to return with a hard limit 1000",
                     "data_type": "numeric",
-                    "default": 100,
+                    "default": 1000,
                     "order": 2
                 },
                 "offset": {
-                    "description": "Offset of the start of results",
+                    "description": "Offset of the start of results (Default: 0)",
                     "data_type": "numeric",
-                    "order": 3
+                    "order": 3,
+                    "default": 0
                 },
                 "sort": {
                     "description": "Comma-separated list of fields to sort on (prefixed by - for descending and ordered by priority left to right)",
