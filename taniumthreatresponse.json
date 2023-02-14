@@ -1574,7 +1574,7 @@
                     "order": 5
                 },
                 "operators": {
-                    "description": "Comma-separated list of operators to apply between the fields and the values",
+                    "description": "Comma-separated list of operators (co|nc|isempty|isnull|eq|ne|gt|gte|lt|lte|range) for filter conditions",
                     "data_type": "string",
                     "order": 6
                 },
