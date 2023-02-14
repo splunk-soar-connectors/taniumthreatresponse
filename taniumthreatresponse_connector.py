@@ -900,16 +900,16 @@ class TaniumThreatResponseConnector(BaseConnector):
         if sort:
             params['sort'] = sort
 
+        filter_type = param.get("filter_type", "all")
+        if filter_type and filter_type not in FILTER_TYPE_VALUE_LIST:
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please provide valid input from {} in 'filter_type' action parameter".format(FILTER_TYPE_VALUE_LIST))
+
         if fields or value or operators:
             if not (fields and value and operators):
                 return action_result.set_status(
                     phantom.APP_ERROR, 'fields, operators, and value need to be filled in to query events. Returning all results')
             else:
-                filter_type = param.get("filter_type", "all")
-                if filter_type and filter_type not in FILTER_TYPE_VALUE_LIST:
-                    return action_result.set_status(
-                        phantom.APP_ERROR, "Please provide valid input from {} in 'filter_type' action parameter".format(FILTER_TYPE_VALUE_LIST))
-
                 fields = [field.strip() for field in fields.split(',')]
                 fields = list(filter(None, fields))
 
