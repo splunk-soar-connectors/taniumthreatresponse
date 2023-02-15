@@ -240,7 +240,7 @@ def display_process(provides, all_app_runs, context):
     context['results'] = results = []
     for summary, action_results in all_app_runs:
         for result in action_results:
-            headers = ['id', 'type', 'detail', 'operation', 'timestamp', 'raw timestamp']
+            headers = ['id', 'type', 'detail', 'operation', 'timestamp', 'timestamp_raw']
 
             results.append({
                 'headers': headers,
