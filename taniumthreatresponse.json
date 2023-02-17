@@ -829,18 +829,8 @@
                     "order": 1
                 },
                 "sort": {
-                    "description": "Column by which to sort (Default: 'hostname')",
+                    "description": "Column by which to sort",
                     "data_type": "string",
-                    "default": "hostname",
-                    "value_list": [
-                        "connectionId",
-                        "created",
-                        "hostname",
-                        "name",
-                        "size",
-                        "username",
-                        "uuid"
-                    ],
                     "order": 2
                 }
             },
@@ -1049,13 +1039,8 @@
                 {
                     "data_path": "action_result.parameter.snapshot_ids",
                     "data_type": "string",
-                    "column_name": "Snapshot Ids",
-                    "column_order": 0,
                     "example_values": [
                         "99999f6a-5f18-4ddb-a8cb-404b9a9a9a9a"
-                    ],
-                    "contains": [
-                        "threatresponse snapshot id"
                     ]
                 },
                 {
@@ -1166,7 +1151,7 @@
                 {
                     "data_path": "action_result.data.*.id",
                     "data_type": "string",
-                    "column_name": "ID",
+                    "column_name": "Process Table ID",
                     "column_order": 0,
                     "example_values": [
                         "99057594043959999"
@@ -1607,7 +1592,7 @@
                     "order": 4,
                     "allow_list": true
                 },
-                "value": {
+                "values": {
                     "description": "Comma-separated list of values to search",
                     "data_type": "string",
                     "order": 5
@@ -1652,7 +1637,7 @@
                 {
                     "data_path": "action_result.parameter.event_type",
                     "data_type": "string",
-                    "column_name": "Type",
+                    "column_name": "Event Type",
                     "column_order": 0,
                     "example_values": [
                         "process",
@@ -1707,7 +1692,7 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.value",
+                    "data_path": "action_result.parameter.values",
                     "data_type": "string",
                     "example_values": [
                         "test_value"

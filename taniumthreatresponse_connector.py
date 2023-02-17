@@ -668,10 +668,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        snapshots_sort_by = param.get('sort', 'hostname')
-        if snapshots_sort_by not in SNAPSHOTS_SORT_TYPE_VALUE_LIST:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'sort' action parameter".format(SNAPSHOTS_SORT_TYPE_VALUE_LIST))
+        snapshots_sort_by = param.get('sort', None)
 
         params = {}
         if limit:
@@ -725,11 +722,13 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Create snapshot failed')
             return action_result.get_status()
 
+        message = 'Create snapshot request status'
+
         if response:
             action_result.add_data(response)
+            message += f": {response.get('status', 'None')}"
 
         self.save_progress('Create snapshot successful')
-        message = 'Create snapshot requested'
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_delete_snapshot(self, param):
@@ -746,6 +745,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         snapshot_ids = param['snapshot_ids']
         snapshot_ids = [x.strip() for x in snapshot_ids.split(',')]
+        snapshot_ids = list(filter(None, snapshot_ids))
         if not snapshot_ids:
             return action_result.set_status(phantom.APP_ERROR, TANIUM_INVALID_INPUT_ERROR)
 
