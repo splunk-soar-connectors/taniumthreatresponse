@@ -725,6 +725,9 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Create snapshot failed')
             return action_result.get_status()
 
+        if response:
+            action_result.add_data(response)
+
         self.save_progress('Create snapshot successful')
         message = 'Create snapshot requested'
         return action_result.set_status(phantom.APP_SUCCESS, message)
@@ -994,7 +997,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        summary['total_{}_events_count'.format(event_type)] = response.get('count')
+        summary['{}_events_count'.format(event_type)] = response.get('count')
 
         self.save_progress('Events Summary Successful')
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -1141,9 +1144,6 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         # Get file name from Tanium, if it exists
         ret_val, filename = self._get_filename_from_tanium(action_result, file_id)
-
-        # file is now sent as a zip object - this will make it easier to read
-        filename = "{}.zip".format(filename)
 
         # Save file
         self.send_progress('Saving file to disk')

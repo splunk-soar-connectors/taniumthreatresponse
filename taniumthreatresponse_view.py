@@ -218,8 +218,7 @@ def display_events(provides, all_app_runs, context):
 
 def get_process(headers, data):
     contains_map = {
-        'id': ['threatresponse process table id'],
-        'detail': ['file path']
+        'id': ['threatresponse process table id']
     }
 
     process_info = []

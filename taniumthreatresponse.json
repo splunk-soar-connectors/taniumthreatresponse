@@ -716,8 +716,6 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
                     "example_values": [
                         "success",
                         "failed"
@@ -731,6 +729,47 @@
                     ],
                     "example_values": [
                         "test_laptop"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.taskInfo",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.taskInfo.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1234
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.taskInfo.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "STARTED"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.taskInfo.metadata.connection",
+                    "data_type": "string",
+                    "example_values": [
+                        "remote:WIN-Q0RB757Q335:2029399767:1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.taskInfo.startTime",
+                    "data_type": "string",
+                    "example_values": [
+                        "2023-02-16T07:17:21.432Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 0,
+                    "example_values": [
+                        "IN PROGRESS"
                     ]
                 },
                 {
