@@ -34,18 +34,18 @@
             "default": false,
             "order": 1
         },
-        "api_token": {
-            "description": "API Token",
-            "data_type": "password",
-            "order": 2
-        },
         "username": {
             "description": "Username",
             "data_type": "string",
-            "order": 3
+            "order": 2
         },
         "password": {
             "description": "Password",
+            "data_type": "password",
+            "order": 3
+        },
+        "api_token": {
+            "description": "API Token",
             "data_type": "password",
             "order": 4
         }
@@ -265,6 +265,7 @@
         {
             "action": "create connection",
             "description": "Create a new live endpoint connection",
+            "verbose": "This action consider the latest hostname from tanium if same names available.",
             "type": "generic",
             "identifier": "create_connection",
             "read_only": false,
@@ -345,7 +346,7 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully created connection"
+                        "Connection created successfully"
                     ]
                 },
                 {
@@ -433,7 +434,10 @@
                     "data_path": "action_result.data.*.clientId",
                     "data_type": "string",
                     "column_name": "Client ID",
-                    "column_order": 0,
+                    "column_order": 2,
+                    "contains": [
+                        "threatresponse client id"
+                    ],
                     "example_values": [
                         "2029399999"
                     ]
@@ -455,7 +459,7 @@
                     "data_path": "action_result.data.*.hostname",
                     "data_type": "string",
                     "column_name": "Hostname",
-                    "column_order": 1,
+                    "column_order": 0,
                     "example_values": [
                         "test-client-1"
                     ],
@@ -476,7 +480,7 @@
                     "data_path": "action_result.data.*.ip",
                     "data_type": "string",
                     "column_name": "IP",
-                    "column_order": 2,
+                    "column_order": 1,
                     "example_values": [
                         "8.8.8.8"
                     ],
@@ -502,7 +506,9 @@
                 },
                 {
                     "data_path": "action_result.data.*.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "column_name": "Endpoint Status",
+                    "column_order": 6
                 },
                 {
                     "data_path": "action_result.summary.hostname",
@@ -522,7 +528,7 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Successfully found endpoint information"
+                        "Endpoint information fetched successfully"
                     ]
                 },
                 {
@@ -548,7 +554,7 @@
         },
         {
             "action": "close connection",
-            "description": "Close a user connection",
+            "description": "Close an endpoint connection",
             "type": "generic",
             "identifier": "close_connection",
             "read_only": false,
@@ -568,6 +574,8 @@
                 {
                     "data_path": "action_result.status",
                     "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 1,
                     "example_values": [
                         "success",
                         "failed"
@@ -576,6 +584,8 @@
                 {
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
+                    "column_name": "Connection ID",
+                    "column_order": 0,
                     "contains": [
                         "threatresponse connection id"
                     ],
@@ -621,7 +631,8 @@
         },
         {
             "action": "delete connection",
-            "description": "Delete a user connection",
+            "description": "Delete an endpoint connection",
+            "verbose": "A connection to an endpoint is deleted from Tanium Threat Response module. With the create connection action, we are able to retrieve/create a deleted connection.",
             "type": "generic",
             "identifier": "delete_connection",
             "read_only": false,
@@ -642,7 +653,7 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "column_name": "Status",
-                    "column_order": 0,
+                    "column_order": 1,
                     "example_values": [
                         "success",
                         "failed"
@@ -651,11 +662,13 @@
                 {
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
+                    "column_name": "Connection ID",
+                    "column_order": 0,
                     "contains": [
                         "threatresponse connection id"
                     ],
                     "example_values": [
-                        "test_laptop"
+                        "remote:tanium-client:9929399999:1"
                     ]
                 },
                 {
@@ -724,11 +737,26 @@
                 {
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
+                    "column_name": "Connection ID",
+                    "column_order": 0,
                     "contains": [
                         "threatresponse connection id"
                     ],
                     "example_values": [
-                        "test_laptop"
+                        "remote:tanium-client:9929399999:1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 1,
+                    "example_values": [
+                        "IN PROGRESS"
                     ]
                 },
                 {
@@ -740,13 +768,6 @@
                     "data_type": "numeric",
                     "example_values": [
                         1234
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.taskInfo.status",
-                    "data_type": "string",
-                    "example_values": [
-                        "STARTED"
                     ]
                 },
                 {
@@ -764,17 +785,11 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.status",
+                    "data_path": "action_result.data.*.taskInfo.status",
                     "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 0,
                     "example_values": [
-                        "IN PROGRESS"
+                        "STARTED"
                     ]
-                },
-                {
-                    "data_path": "action_result.data",
-                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.summary",
@@ -954,9 +969,6 @@
                     "column_order": 6,
                     "example_values": [
                         "administrator"
-                    ],
-                    "contains": [
-                        "user name"
                     ]
                 },
                 {
@@ -1039,8 +1051,13 @@
                 {
                     "data_path": "action_result.parameter.snapshot_ids",
                     "data_type": "string",
+                    "column_name": "Snapshot IDs",
+                    "column_order": 0,
                     "example_values": [
                         "99999f6a-5f18-4ddb-a8cb-404b9a9a9a9a"
+                    ],
+                    "contains": [
+                        "threatresponse snapshot id"
                     ]
                 },
                 {
@@ -1245,7 +1262,7 @@
                 },
                 "process_table_id": {
                     "description": "Process Table ID",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "required": true,
                     "primary": true,
                     "order": 1,
@@ -1309,12 +1326,12 @@
                 },
                 {
                     "data_path": "action_result.parameter.process_table_id",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "contains": [
                         "threatresponse process table id"
                     ],
                     "example_values": [
-                        1234567890
+                        "1234567890"
                     ]
                 },
                 {
@@ -1582,7 +1599,7 @@
                     "default": 0
                 },
                 "sort": {
-                    "description": "Comma-separated list of fields to sort on (prefixed by - for descending and ordered by priority left to right)",
+                    "description": "Comma-separated list of fields to sort on (prefixed by '-' for descending and ordered by priority left to right)",
                     "data_type": "string",
                     "order": 7
                 },
@@ -1598,7 +1615,7 @@
                     "order": 5
                 },
                 "operators": {
-                    "description": "Comma-separated list of operators (co|nc|isempty|isnull|eq|ne|gt|gte|lt|lte|range) for filter conditions",
+                    "description": "Comma-separated list of operators (co,nc,isempty,isnull,eq,ne,gt,gte,lt,lte,range) for filter conditions",
                     "data_type": "string",
                     "order": 6
                 },
@@ -1631,7 +1648,7 @@
                         "threatresponse connection id"
                     ],
                     "example_values": [
-                        "test_laptop"
+                        "remote:tanium-client:9929399999:1"
                     ]
                 },
                 {
@@ -1836,6 +1853,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         5
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.evidence",
+                    "data_type": "string",
+                    "example_values": [
+                        "4e1f2655-4043-45f0-bada-b02a48208753"
                     ]
                 },
                 {
@@ -2082,6 +2106,14 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.summary.More data",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
                     "data_path": "action_result.summary.event_count",
                     "data_type": "string",
                     "example_values": [
@@ -2186,6 +2218,32 @@
                         "image"
                     ],
                     "order": 1
+                },
+                "fields": {
+                    "description": "Comma-separated list of fields to search on",
+                    "data_type": "string",
+                    "order": 2,
+                    "allow_list": true
+                },
+                "values": {
+                    "description": "Comma-separated list of values to search",
+                    "data_type": "string",
+                    "order": 3
+                },
+                "operators": {
+                    "description": "Comma-separated list of operators (co,nc,isempty,isnull,eq,ne,gt,gte,lt,lte,range) for filter conditions",
+                    "data_type": "string",
+                    "order": 4
+                },
+                "filter_type": {
+                    "description": "Operator to be applied between filters (Default: 'all')",
+                    "data_type": "string",
+                    "default": "all",
+                    "value_list": [
+                        "any",
+                        "all"
+                    ],
+                    "order": 5
                 }
             },
             "output": [
@@ -2200,6 +2258,8 @@
                 {
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
+                    "column_name": "Connection ID",
+                    "column_order": 0,
                     "example_values": [
                         "remote:test-client:1163582091:2"
                     ],
@@ -2211,16 +2271,32 @@
                     "data_path": "action_result.parameter.event_type",
                     "data_type": "string",
                     "column_name": "Event Type",
-                    "column_order": 0,
+                    "column_order": 1,
                     "example_values": [
                         "network"
                     ]
                 },
                 {
+                    "data_path": "action_result.parameter.fields",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.filter_type",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.operators",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.values",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.count",
                     "data_type": "numeric",
                     "column_name": "Event Count",
-                    "column_order": 1,
+                    "column_order": 2,
                     "example_values": [
                         10000
                     ]
@@ -2229,9 +2305,23 @@
                     "data_path": "action_result.data.*.has_more",
                     "data_type": "boolean",
                     "column_name": "Has More",
-                    "column_order": 2,
+                    "column_order": 3,
                     "example_values": [
                         false
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.combined_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        100000
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.image_events_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        18
                     ]
                 },
                 {
@@ -2310,16 +2400,8 @@
                     "order": 1
                 },
                 "sort": {
-                    "description": "Column by which to sort (Default: 'downloaded')",
+                    "description": "Column by which to sort (prefixed by '-' for descending order)",
                     "data_type": "string",
-                    "default": "downloaded",
-                    "value_list": [
-                        "uuid",
-                        "hostname",
-                        "path",
-                        "downloaded",
-                        "size"
-                    ],
                     "order": 2
                 }
             },
@@ -2355,27 +2437,21 @@
                 },
                 {
                     "data_path": "action_result.data.*.comments",
-                    "data_type": "string",
-                    "column_name": "Comments",
-                    "column_order": 5
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.created_by",
-                    "data_type": "string",
-                    "column_name": "Created By",
-                    "column_order": 8
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.created_by_proc",
-                    "data_type": "string",
-                    "column_name": "Created By Proc",
-                    "column_order": 12
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.downloaded",
                     "data_type": "string",
                     "column_name": "Downloaded",
-                    "column_order": 9,
+                    "column_order": 7,
                     "example_values": [
                         "2022-01-11T20:03:15.629Z"
                     ]
@@ -2384,7 +2460,7 @@
                     "data_path": "action_result.data.*.evidenceType",
                     "data_type": "string",
                     "column_name": "Evidence Type",
-                    "column_order": 10,
+                    "column_order": 8,
                     "example_values": [
                         "file"
                     ]
@@ -2393,13 +2469,16 @@
                     "data_path": "action_result.data.*.hash",
                     "data_type": "string",
                     "column_name": "Hash",
-                    "column_order": 0
+                    "column_order": 0,
+                    "contains": [
+                        "threatresponse file hash"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.hostname",
                     "data_type": "string",
                     "column_name": "Hostname",
-                    "column_order": 6,
+                    "column_order": 5,
                     "example_values": [
                         "test-client"
                     ],
@@ -2411,22 +2490,18 @@
                     "data_path": "action_result.data.*.last_modified",
                     "data_type": "string",
                     "column_name": "Modified",
-                    "column_order": 11,
+                    "column_order": 9,
                     "example_values": [
                         "2021-11-16T19:19:39.000Z"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.last_modified_by",
-                    "data_type": "string",
-                    "column_name": "Last Modified By",
-                    "column_order": 13
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.last_modified_by_proc",
-                    "data_type": "string",
-                    "column_name": "Last Modified By  Proc",
-                    "column_order": 14
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.path",
@@ -2445,7 +2520,7 @@
                     "data_path": "action_result.data.*.process_creation_time",
                     "data_type": "string",
                     "column_name": "Process Creation Time",
-                    "column_order": 15,
+                    "column_order": 10,
                     "example_values": [
                         "2021-11-16T19:19:53.000Z"
                     ]
@@ -2469,7 +2544,7 @@
                     "data_path": "action_result.data.*.username",
                     "data_type": "string",
                     "column_name": "Username",
-                    "column_order": 7,
+                    "column_order": 6,
                     "example_values": [
                         "administrator"
                     ],
@@ -2567,7 +2642,7 @@
                     "data_path": "action_result.parameter.connection_id",
                     "data_type": "string",
                     "example_values": [
-                        "test_laptop"
+                        "remote:tanium-client:9929399999:1"
                     ],
                     "contains": [
                         "threatresponse connection id"
@@ -2663,7 +2738,7 @@
         },
         {
             "action": "delete file",
-            "description": "Delete a downloaded file from Tanium Threat Response",
+            "description": "Delete a file evidence from disk and Tanium Threat Response database",
             "type": "generic",
             "identifier": "delete_file",
             "read_only": false,
@@ -2807,7 +2882,7 @@
                     "data_path": "action_result.data.*.file_name",
                     "data_type": "string",
                     "example_values": [
-                        "test.exe.zip"
+                        "test.exe"
                     ]
                 },
                 {
@@ -3022,7 +3097,7 @@
                     "data_path": "action_result.parameter.file_name",
                     "data_type": "string",
                     "example_values": [
-                        "silent_banker_update.yara"
+                        "test_file.yara"
                     ]
                 },
                 {
@@ -3085,10 +3160,13 @@
                 {
                     "data_path": "action_result.data.*.id",
                     "data_type": "numeric",
-                    "column_name": "ID",
+                    "column_name": "Intel Doc ID",
                     "column_order": 0,
                     "example_values": [
                         123
+                    ],
+                    "contains":[
+                        "threatresponse intel doc id"
                     ]
                 },
                 {
@@ -3403,7 +3481,7 @@
                     "order": 1
                 },
                 "limit": {
-                    "description": "The maximum number of alerts to return (Default: 100, Max: 500)",
+                    "description": "The maximum number of alerts to return (Default: 100)",
                     "data_type": "numeric",
                     "order": 2,
                     "default": 100
@@ -3443,6 +3521,10 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.ackedAt",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.alertedAt",
                     "data_type": "string",
                     "column_name": "Alerted At",
@@ -3455,7 +3537,7 @@
                     "data_path": "action_result.data.*.computerIpAddress",
                     "data_type": "string",
                     "column_name": "Computer IP Address",
-                    "column_order": 16,
+                    "column_order": 15,
                     "example_values": [
                         "8.8.8.8"
                     ],
@@ -3470,6 +3552,9 @@
                     "column_order": 14,
                     "example_values": [
                         "test-client"
+                    ],
+                    "contains": [
+                        "host name"
                     ]
                 },
                 {
@@ -3504,6 +3589,18 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.findingId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.firstEIDResolutionAttempt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.groupingId",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.guid",
                     "data_type": "string",
                     "column_name": "Guid",
@@ -3531,10 +3628,8 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.intelDocRevisionId",
-                    "data_type": "string",
-                    "column_name": "Intel Doc Revision ID",
-                    "column_order": 17
+                    "data_path": "action_result.data.*.lastEIDResolutionAttempt",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.matchType",
@@ -3578,21 +3673,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.scanConfigId",
-                    "data_type": "numeric",
-                    "column_name": "Scan Config ID",
-                    "column_order": 15,
+                    "data_path": "action_result.data.*.receivedAt",
+                    "data_type": "string",
                     "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.scanConfigRevisionId",
-                    "data_type": "numeric",
-                    "column_name": "Scan Config Revision ID",
-                    "column_order": 18,
-                    "example_values": [
-                        3
+                        "2021-11-17T18:03:22.732Z"
                     ]
                 },
                 {
@@ -3614,6 +3698,10 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.suppressedAt",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.type",
                     "data_type": "string",
                     "column_name": "Type",
@@ -3629,6 +3717,20 @@
                     "column_order": 11,
                     "example_values": [
                         "2021-11-17T18:03:22.741Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.filteredCount",
+                    "data_type": "numeric",
+                    "example_values": [
+                        8868
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.totalCount",
+                    "data_type": "numeric",
+                    "example_values": [
+                        8868
                     ]
                 },
                 {

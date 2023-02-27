@@ -72,6 +72,20 @@ File: taniumthreatresponse_display_events.html
 {% else %}
 
 <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper no-footer">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">CONNECTION ID:
+                <a href="javascript:;"
+                    onclick="context_menu(this, [{'contains': ['threatresponse connection id'], 'value': '{{ result.parameter.connection_id }}' }], 0, {{ container.id }}, null, false);">
+                    {{ result.parameter.connection_id }} &nbsp;<span class="fa fa-caret-down"></span>
+                </a>
+            </div>
+            <div class="divTableHead">EVENT TYPE:
+                {{ result.parameter.event_type }}
+                <br><br>
+            </div>
+        </div>
+    </div>
     <div class="dataTables_scroll">
         <div class="dataTables_scrollBody">
             <table class="phantom-table dataTable no-footer" id="DataTables_Table_1" role="grid">

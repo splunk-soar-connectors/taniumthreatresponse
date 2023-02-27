@@ -68,10 +68,25 @@ File: taniumthreatresponse_display_process.html
 {% for result in results %}
 {% if not result.process_info %}
 <h4 class="wf-h4-style">No data found</h4>
-
 {% else %}
-
 <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper no-footer">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">CONNECTION ID:
+                <a href="javascript:;"
+                    onclick="context_menu(this, [{'contains': ['threatresponse connection id'], 'value': '{{ result.parameter.connection_id }}' }], 0, {{ container.id }}, null, false);">
+                    {{ result.parameter.connection_id }} &nbsp;<span class="fa fa-caret-down"></span>
+                </a>
+            </div>
+            <div class="divTableHead">PROCESS TABLE ID:
+                <a href="javascript:;"
+                    onclick="context_menu(this, [{'contains': ['threatresponse process table id'], 'value': '{{ result.parameter.process_table_id }}' }], 0, {{ container.id }}, null, false);">
+                    {{ result.parameter.process_table_id }} &nbsp;<span class="fa fa-caret-down"></span>
+                </a>
+                <br><br>
+            </div>
+        </div>
+    </div>
     <div class="dataTables_scroll">
         <div class="dataTables_scrollBody">
             <table class="phantom-table dataTable no-footer" id="DataTables_Table_1" role="grid">

@@ -368,9 +368,9 @@ class TaniumThreatResponseConnector(BaseConnector):
             return RetVal(action_result.get_status(), None)
 
         if 'fileEvidence' in response:
-            for f in response['fileEvidence']:
-                if f.get('uuid') == file_id:
-                    filename = f.get('path', '').split('\\')[-1]
+            for file_evidence in response.get('fileEvidence', {}):
+                if file_evidence.get('uuid') == file_id:
+                    filename = file_evidence.get('path', '').split('\\')[-1]
                     break
 
         return RetVal(phantom.APP_SUCCESS, filename)
@@ -505,8 +505,10 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Error occurred while processing the response from server. {}".format(error))
 
         self.save_progress('List connections successful')
-        message = 'Number of active connections found: {}'.format(summary.get('active_connections', 0))
-        return action_result.set_status(phantom.APP_SUCCESS, message)
+        message = 'Number of total connections: {}'.format(summary.get('total_connections', 0))
+        message += 'Number of active connections: {}'.format(summary.get('active_connections', 0))
+        message += 'Number of inactive connections: {}'.format(summary.get('inactive_connections', 0))
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_endpoint_helper(self, param, action_result):
         """ Get endpoint information.
@@ -552,13 +554,13 @@ class TaniumThreatResponseConnector(BaseConnector):
                 phantom.APP_ERROR, GET_ENDPOINT_INFO_ERROR_MESSAGE)
 
         summary = action_result.update_summary({})
-        for item in response['data']:
+        for item in response.get('data', {}):
             action_result.add_data(item)
             summary['hostname'] = item.get('hostname')
             summary['ip'] = item.get('ip')
 
         self.save_progress('Get endpoint successful')
-        message = 'Successfully found endpoint information'
+        message = 'Endpoint information fetched successfully'
         return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_create_connection(self, param):
@@ -593,7 +595,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Create connection failed')
             return action_result.get_status()
 
-        message = "Successfully created connection"
+        message = "Connection created successfully"
         self.save_progress(message)
 
         action_result.add_data({'id': response})
@@ -744,7 +746,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         snapshot_ids = param['snapshot_ids']
-        snapshot_ids = [x.strip() for x in snapshot_ids.split(',')]
+        snapshot_ids = set(x.strip() for x in snapshot_ids.split(','))
         snapshot_ids = list(filter(None, snapshot_ids))
         if not snapshot_ids:
             return action_result.set_status(phantom.APP_ERROR, TANIUM_INVALID_INPUT_ERROR)
@@ -823,7 +825,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         process_context = param.get('process_context', 'all')
         if process_context not in PROCESS_CONTEXT_VALUE_LIST:
             return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'sort' action parameter".format(PROCESS_CONTEXT_VALUE_LIST))
+                phantom.APP_ERROR, "Please provide valid input from {} in 'process_context' action parameter".format(PROCESS_CONTEXT_VALUE_LIST))
 
         params = {}
         if limit:
@@ -984,7 +986,45 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('Inactive or non-existent connection')
             return action_result.get_status()
 
-        ret_val, response = self._make_rest_call_helper(GET_EVENTS_SUMMARY_ENDPOINT.format(cid=cid, type=event_type), action_result)
+        filter_type = param.get("filter_type", "all")
+        if filter_type and filter_type not in FILTER_TYPE_VALUE_LIST:
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please provide valid input from {} in 'filter_type' action parameter".format(FILTER_TYPE_VALUE_LIST))
+
+        fields = param.get('fields')
+        operators = param.get('operators')
+        value = param.get('value')
+        params = {}
+        if fields or value or operators:
+            if not (fields and value and operators):
+                return action_result.set_status(
+                    phantom.APP_ERROR, 'fields, operators, and value need to be filled in to query events. Returning all results')
+            else:
+                fields = [field.strip() for field in fields.split(',')]
+                fields = list(filter(None, fields))
+
+                value = [val.strip() for val in value.split(',')]
+                value = list(filter(None, value))
+
+                operators = [operator.strip() for operator in operators.split(',')]
+                operators = list(filter(None, operators))
+
+                if not (len(fields) == len(value) and len(value) == len(operators)):
+                    return action_result.set_status(phantom.APP_ERROR, "Length of value, fields , and operators must be equal")
+
+                group_list = []
+
+                for i, _filter in enumerate(fields):
+                    params["f{}".format(str(i))] = fields[i]
+                    params["o{}".format(str(i))] = operators[i]
+                    params["v{}".format(str(i))] = value[i]
+                    group_list.append(str(i))
+
+                params["gm1"] = filter_type
+                params["g1"] = ",".join(group_list)
+
+        ret_val, response = self._make_rest_call_helper(GET_EVENTS_SUMMARY_ENDPOINT.format(cid=cid, type=event_type),
+                                                        action_result, params=params)
         if phantom.is_fail(ret_val):
             self.save_progress('Events Summary Failed')
             return action_result.get_status()
@@ -1023,10 +1063,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        files_sort_by = param.get('sort', 'downloaded')
-        if files_sort_by not in FILE_SORT_TYPE_VALUE_LIST:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'sort' action parameter".format(FILE_SORT_TYPE_VALUE_LIST))
+        files_sort_by = param.get('sort')
 
         params = {}
         if limit:
@@ -1205,14 +1242,15 @@ class TaniumThreatResponseConnector(BaseConnector):
         }
 
         if file_name:
-            headers['Content-Disposition'] = "filename={}".format(file_name)
+            headers['Content-Disposition'] = "attachment; filename = {}".format(file_name)
 
         ret_val, response = self._make_rest_call_helper(UPLOAD_INTEL_DOC_ENDPOINT, action_result, headers=headers, data=data, method='post')
         if phantom.is_fail(ret_val):
             self.save_progress('Upload intel document failed')
             return action_result.get_status()
 
-        action_result.add_data(response)
+        if response.get('data'):
+            action_result.add_data(response['data'])
 
         self.save_progress('Upload intel document successful')
         message = 'Uploaded intel document to Tanium Threat Response'

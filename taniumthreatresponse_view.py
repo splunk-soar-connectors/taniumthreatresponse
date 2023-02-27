@@ -32,15 +32,23 @@ def get_events(headers, data):
     contains_map = {
         'source_addr': ['ip'],
         'destination_ip': ['ip'],
+        'local_address': ['ip'],
+        'remote_address': ['ip'],
         'username': ['user name'],
         'process_table_id': ['threatresponse process table id'],
+        'parent_process_table_id': ['threatresponse process table id'],
         'process_name': ['file path', 'file name'],
         'process_id': ['pid'],
         'process_command_line': ['file name'],
         'file': ['file path'],
+        'process_path': ['file path'],
+        'path': ['file path'],
         'domain': ['domain'],
         'ImageLoaded': ['file path', 'file name'],
-        'Hashes': ['md5']
+        'Hashes': ['md5'],
+        'hash': ['md5'],
+        'library_hash': ['md5'],
+        'parent_hash': ['md5']
     }
 
     events = []
@@ -64,130 +72,115 @@ def display_events(provides, all_app_runs, context):
         'combined': [
             'id',
             'pid',
+            'process_table_id',
             'type',
-            'detail',
             'operation',
             'timestamp',
-            'process_path',
-            'timestamp_raw',
-            'process_table_id'
+            'detail'
         ],
         'dns': [
             'id',
-            'timestamp',
+            'process_id',
+            'process_table_id',
             'operation',
-            'query',
+            'timestamp',
             'response',
             'process_name',
-            'process_table_id',
-            'process_id',
             'domain',
             'username',
-            'timestamp_raw'
+            'query',
         ],
         'driver': [
             'id',
+            'process_table_id',
             'timestamp',
             'ImageLoaded',
             'Hashes',
             'event_opcode',
-            'process_table_id',
             'Signed',
             'Signature',
             'sid',
             'event_task_id',
             'event_record_id',
             'event_id',
-            'timestamp_raw'
         ],
         'file': [
             'id',
             'pid',
+            'process_table_id',
             'file',
-            'details',
             'operation',
-            'timestamp',
             'user_name',
             'group_name',
-            'process_path',
-            'timestamp_raw',
-            'process_table_id',
-            'event_operation_id'
+            'details',
+            'timestamp'
         ],
         'network': [
             'id',
             'pid',
+            'process_table_id',
             'operation',
-            'timestamp',
-            'user_name',
-            'group_name',
             'process_path',
             'local_address',
-            'timestamp_raw',
-            'remote_address',
-            'process_table_id',
-            'event_operation_id',
             'local_address_port',
-            'remote_address_port'
+            'remote_address',
+            'remote_address_port',
+            'user_name',
+            'group_name',
+            'timestamp'
         ],
         'process': [
             'id',
             'pid',
+            'process_table_id',
+            'hash_type_name',
             'hash',
-            'end_time',
-            'exit_code',
             'user_name',
             'group_name',
-            'parent_pid',
             'create_time',
-            'parent_hash',
-            'end_time_raw',
+            'end_time',
             'process_path',
-            'hash_type_name',
-            'create_time_raw',
-            'process_table_id',
-            'parent_command_line',
             'process_command_line',
-            'parent_process_table_id'
+            'parent_pid',
+            'parent_process_table_id',
+            'parent_hash',
+            'parent_command_line'
         ],
         'registry': [
             'id',
             'pid',
+            'process_table_id',
             'key_path',
             'operation',
-            'timestamp',
+            'value_name',
             'user_name',
             'group_name',
-            'value_name',
             'process_path',
-            'timestamp_raw',
-            'process_table_id',
-            'event_operation_id'
+            'timestamp'
         ],
         'security': [
             'id',
             'pid',
+            'process_table_id',
             'name',
             'string',
+            'process_path',
             'task_id',
             'event_id',
             'record_id',
-            'timestamp',
             'user_name',
+            'login_user_name',
             'event_name',
             'group_name',
             'properties',
-            'process_path',
-            'timestamp_raw',
             'property_names',
-            'login_user_name',
             'property_values',
-            'process_table_id'
+            'timestamp'
         ],
         'image': [
             'id',
             'pid',
-            'process_path',
+            'process_table_id',
             'path',
             'hash_type_name',
             'library_hash',
@@ -196,9 +189,7 @@ def display_events(provides, all_app_runs, context):
             'signature_issuer',
             'signature_subject',
             'signature_status',
-            'timestamp',
-            'timestamp_raw',
-            'process_table_id',
+            'timestamp'
         ]
     }
 
@@ -209,8 +200,9 @@ def display_events(provides, all_app_runs, context):
             headers = headers_map.get(params['event_type'], [])
 
             results.append({
-                'headers': headers,
-                'events': get_events(headers, result.get_data())
+                'headers': [head.replace('_', ' ') for head in headers],
+                'events': get_events(headers, result.get_data()),
+                'parameter': result.get_param()
             })
 
     return 'taniumthreatresponse_display_events.html'
@@ -218,7 +210,8 @@ def display_events(provides, all_app_runs, context):
 
 def get_process(headers, data):
     contains_map = {
-        'id': ['threatresponse process table id']
+        'id': ['threatresponse process table id'],
+        'process_path': ['file path']
     }
 
     process_info = []
@@ -228,7 +221,7 @@ def get_process(headers, data):
             data = proc.get(head, None)
             process_details.append({
                 'data': data,
-                'contains': contains_map.get(head, None) if data else None
+                'contains': contains_map.get(head, None) if data else None,
             })
         process_info.append(process_details)
 
@@ -239,11 +232,12 @@ def display_process(provides, all_app_runs, context):
     context['results'] = results = []
     for summary, action_results in all_app_runs:
         for result in action_results:
-            headers = ['id', 'type', 'detail', 'operation', 'timestamp', 'timestamp_raw']
+            headers = ['id', 'detail', 'operation', 'timestamp']
 
             results.append({
-                'headers': headers,
-                'process_info': get_process(headers, result.get_data())
+                'headers': [head.replace('_', ' ') for head in headers],
+                'process_info': get_process(headers, result.get_data()),
+                'parameter': result.get_param()
             })
 
     return 'taniumthreatresponse_display_process.html'
@@ -257,12 +251,11 @@ def display_process_tree(provides, all_app_runs, context):
     for summary, action_results in all_app_runs:
         for result in action_results:
             data = result.get_data()
-            for index, item in enumerate(data):
+            for _, item in enumerate(data):
                 item['children'] = []
                 if item['context'] == 'parent':
                     del item['parent_process_table_id']
                     final_result.append(item)
-                    # del data(index)
                     t[item['process_table_id']] = final_result[0]
 
             for item in data:
