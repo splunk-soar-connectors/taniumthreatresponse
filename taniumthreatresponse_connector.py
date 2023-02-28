@@ -887,7 +887,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         sort = param.get('sort')
         fields = param.get('fields')
         operators = param.get('operators')
-        value = param.get('value')
+        value = param.get('values')
         cid = param['connection_id']
 
         if not self._is_connection_active(action_result, cid):
@@ -993,7 +993,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         fields = param.get('fields')
         operators = param.get('operators')
-        value = param.get('value')
+        value = param.get('values')
         params = {}
         if fields or value or operators:
             if not (fields and value and operators):
