@@ -1115,7 +1115,7 @@
                 },
                 "process_table_id": {
                     "description": "Process Table ID",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "required": true,
                     "primary": true,
                     "order": 1,
@@ -1145,12 +1145,12 @@
                 },
                 {
                     "data_path": "action_result.parameter.process_table_id",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "contains": [
                         "threatresponse process table id"
                     ],
                     "example_values": [
-                        99057594043959999
+                        "99057594043959999"
                     ]
                 },
                 {
@@ -1432,9 +1432,9 @@
                 },
                 {
                     "data_path": "action_result.data.*.parent_process_table_id",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "example_values": [
-                        1234567890123456789
+                        "1234567890123456789"
                     ]
                 },
                 {
@@ -1485,7 +1485,7 @@
                     "data_path": "action_result.data.*.process_table_id",
                     "data_type": "numeric",
                     "example_values": [
-                        1234567890123456789
+                        "1234567890123456789"
                     ]
                 },
                 {
@@ -1984,11 +1984,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.process_table_id",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "column_name": "Process Table ID",
                     "column_order": 4,
                     "example_values": [
-                        123456
+                        "123456"
                     ],
                     "contains": [
                         "threatresponse process table id"
