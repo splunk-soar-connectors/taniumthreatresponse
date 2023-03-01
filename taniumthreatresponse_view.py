@@ -246,30 +246,26 @@ def display_process(provides, all_app_runs, context):
 def display_process_tree(provides, all_app_runs, context):
 
     context['results'] = results = []
-    final_result, t = [], {}
 
     for summary, action_results in all_app_runs:
         for result in action_results:
+            param = result.get_param()
             data = result.get_data()
-            for _, item in enumerate(data):
-                item['children'] = []
-                if item['context'] == 'parent':
-                    del item['parent_process_table_id']
-                    final_result.append(item)
-                    t[item['process_table_id']] = final_result[0]
+            length = len(data)
+            final_result = []
 
-            for item in data:
-                if item['context'] != 'parent':
-                    if 'children' not in item:
-                        item['children'] = []
-                    t[item['parent_process_table_id']]['children'].append(item)
-                    t[item['process_table_id']] = t[item['parent_process_table_id']]['children'][-1]
-                    del t[item['parent_process_table_id']]['children'][-1]['parent_process_table_id']
+            for resp in data:
+                if resp.get("process_path"):
+                    resp["process_path"] = resp.get("process_path").replace("\\", "\\\\")
+                final_result.append(resp)
+
+            # We are getting one extra process. Hence, removing that extra process
+            if length > param.get('limit'):
+                final_result = final_result[:length - 1]
 
             results.append({
                 'data': final_result,
                 'parameter': result.get_param(),
                 'message': result.get_message()
             })
-
     return 'taniumthreatresponse_display_process_tree.html'

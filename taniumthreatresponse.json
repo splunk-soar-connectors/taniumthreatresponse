@@ -1382,11 +1382,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.end_time_raw",
-                    "data_type": "string"
+                    "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.data.*.exit_code",
-                    "data_type": "string"
+                    "data_type": "numeric"
                 },
                 {
                     "data_path": "action_result.data.*.file_events_count",
@@ -1483,7 +1483,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.process_table_id",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "example_values": [
                         "1234567890123456789"
                     ]
@@ -2278,19 +2278,31 @@
                 },
                 {
                     "data_path": "action_result.parameter.fields",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "pid"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.filter_type",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "all"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.operators",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "eq"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.values",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "123"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.count",
@@ -3125,8 +3137,22 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.blobId",
+                    "data_type": "string",
+                    "example_values": [
+                        "cbdbca3e-0d97-4595-934d-56d24c9b8f95"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.compiled",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.contents",
+                    "data_type": "string",
+                    "example_values": [
+                        "rule ExampleRule { strings: $my_text_string = \"text here\" }"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.createdAt",
@@ -3135,6 +3161,129 @@
                     "column_order": 4,
                     "example_values": [
                         "2022-03-24T17:09:22.712Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.alertCount",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.data.blobId",
+                    "data_type": "string",
+                    "example_values": [
+                        "fb6da13b-f806-4f5b-a1ab-856348957931"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.compiled",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.data.contents",
+                    "data_type": "string",
+                    "example_values": [
+                        "rule ExampleRule { strings: $my_text_string = \"text here\" $my_hex_string = { E2 34 A1 C8 23 FB } condition: $my_text_string or $my_hex_string }"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.createdAt",
+                    "data_type": "string",
+                    "example_values": [
+                        "2023-02-27T09:29:02.962Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.data.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        527
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.intrinsicId",
+                    "data_type": "string",
+                    "example_values": [
+                        "test_file_1.yara"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.isSchemaValid",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.md5",
+                    "data_type": "string",
+                    "example_values": [
+                        "736189521d9da5910de08107c47f015f"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.mitreAttack",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.data.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "test_file_1.yara"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.platforms",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.data.revisionId",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.size",
+                    "data_type": "numeric",
+                    "example_values": [
+                        143
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.sourceId",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "yara"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.typeVersion",
+                    "data_type": "string",
+                    "example_values": [
+                        "4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.unresolvedAlertCount",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.data.updatedAt",
+                    "data_type": "string",
+                    "example_values": [
+                        "2023-02-27T09:29:02.962Z"
                     ]
                 },
                 {
@@ -3165,7 +3314,7 @@
                     "example_values": [
                         123
                     ],
-                    "contains":[
+                    "contains": [
                         "threatresponse intel doc id"
                     ]
                 },
@@ -3400,6 +3549,53 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.data.actionExpiration",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.data.actionIdUnix",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.data.actionIdWindows",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.data.computerGroupId",
+                    "data_type": "numeric",
+                    "example_values": [
+                        34
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.createdAt",
+                    "data_type": "string",
+                    "example_values": [
+                        "2023-02-27T09:33:06.201Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.id",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1000509
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.updatedAt",
+                    "data_type": "string",
+                    "example_values": [
+                        "2023-02-27T09:33:06.201Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.data.userId",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.endpointMatchCount",
                     "data_type": "numeric"
                 },
@@ -3419,6 +3615,20 @@
                     "data_type": "numeric",
                     "contains": [
                         "threatresponse intel doc id"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.meta.deployTask.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "STARTED"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.meta.deployTask.taskId",
+                    "data_type": "numeric",
+                    "example_values": [
+                        29232
                     ]
                 },
                 {
@@ -3628,6 +3838,10 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.intelDocRevisionId",
+                    "data_type": "string"
+                },
+                {
                     "data_path": "action_result.data.*.lastEIDResolutionAttempt",
                     "data_type": "string"
                 },
@@ -3677,6 +3891,20 @@
                     "data_type": "string",
                     "example_values": [
                         "2021-11-17T18:03:22.732Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.scanConfigId",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.scanConfigRevisionId",
+                    "data_type": "numeric",
+                    "example_values": [
+                        3
                     ]
                 },
                 {

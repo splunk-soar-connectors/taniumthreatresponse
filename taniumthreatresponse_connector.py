@@ -950,6 +950,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.get_status()
         response_length = len(response)
 
+        # We are getting one extra event every. Hence, removing that extra event
         if response_length > limit:
             response_length -= 1
 
