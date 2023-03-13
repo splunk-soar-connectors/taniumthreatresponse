@@ -1274,8 +1274,16 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        # Retrieve the computer group that matches the specified name.
-        endpoint = "{}/{}".format("/api/v2/groups/by-name", computer_group_name)
+        if computer_group_name.isnumeric():
+            # Retrieve the computer group that matches the specified id.
+            ret_val, computer_group_name = self._validate_integer(action_result, computer_group_name, 'computer_group_name', allow_zero=True)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+            endpoint = "{}/{}".format("/api/v2/management_rights_groups", computer_group_name)
+        else:
+            # Retrieve the computer group that matches the specified name.
+            endpoint = "{}/{}".format("/api/v2/groups/by-name", computer_group_name)
+
         ret_val, response = self._make_rest_call_helper(endpoint, action_result)
         if phantom.is_fail(ret_val):
             return action_result.get_status()

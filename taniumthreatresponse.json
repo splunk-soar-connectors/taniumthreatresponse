@@ -3451,7 +3451,7 @@
         {
             "action": "start quick scan",
             "description": "Scan a computer group for hashes in intel document",
-            "verbose": "This action requires a 'threat response on demand scans write' permission.",
+            "verbose": "This action requires a 'threat response on demand scans write' permission. If this action is failing with 'GroupNotFound' exception then please try with the ID of computer group for 'computer group name' parameter. You can find Computer Group ID from Tanium UI->Administration->Computer Groups->Click on Computer Group name now you can see the ID on URI. If the computer group name and id have same value in tanium then the priority will be given to 'ID'.",
             "type": "investigate",
             "identifier": "start_quick_scan",
             "read_only": true,
@@ -3467,7 +3467,7 @@
                     ]
                 },
                 "computer_group_name": {
-                    "description": "Name of a Tanium computer group to scan",
+                    "description": "Name or ID of a Tanium computer group to scan",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
