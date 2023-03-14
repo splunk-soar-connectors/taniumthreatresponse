@@ -18,8 +18,9 @@
 import json
 import os
 import re
-import tempfile
 import uuid
+from io import BytesIO
+from zipfile import ZipFile
 
 import encryption_helper
 import phantom.app as phantom
@@ -361,17 +362,14 @@ class TaniumThreatResponseConnector(BaseConnector):
     def _get_filename_from_tanium(self, action_result, file_id):
 
         filename = None
-
-        ret_val, response = self._make_rest_call_helper(LIST_FILE_EVIDENCE_ENDPOINT, action_result)
+        endpoint = LIST_FILE_EVIDENCE_ENDPOINT + f"/{file_id}"
+        ret_val, response = self._make_rest_call_helper(endpoint, action_result)
         if phantom.is_fail(ret_val):
             self.save_progress('List Files Failed')
             return RetVal(action_result.get_status(), None)
 
-        if 'fileEvidence' in response:
-            for file_evidence in response.get('fileEvidence', {}):
-                if file_evidence.get('uuid') == file_id:
-                    filename = file_evidence.get('path', '').split('\\')[-1]
-                    break
+        if response.get('evidence', {}).get('uuid', None) == file_id:
+            filename = response.get('evidence', {}).get('path', '').replace('\\\\', '\\').split('\\')[-1]
 
         return RetVal(phantom.APP_SUCCESS, filename)
 
@@ -385,15 +383,10 @@ class TaniumThreatResponseConnector(BaseConnector):
         temp_dir = '{}/{}'.format(temp_dir, uuid.uuid4())
         os.makedirs(temp_dir)
 
-        file_obj = tempfile.NamedTemporaryFile(prefix='taniumthreatresponse_',
-                                               dir=temp_dir,
-                                               delete=False)
-        file_obj.close()
+        with ZipFile(BytesIO(content)) as zobj:
+            zobj.extractall(path=temp_dir, pwd=b"infected")
 
-        with open(file_obj.name, 'wb') as f:
-            f.write(content)
-
-        return file_obj.name
+        return temp_dir + '/' + zobj.namelist()[0]
 
     def _list_connections(self, action_result):
         """ Return a list of current connections.
@@ -1280,6 +1273,10 @@ class TaniumThreatResponseConnector(BaseConnector):
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
             endpoint = "{}/{}".format("/api/v2/management_rights_groups", computer_group_name)
+            ret_val, response = self._make_rest_call_helper(endpoint, action_result)
+            if phantom.is_fail(ret_val):
+                # Consider ID as name and retrieve
+                endpoint = "{}/{}".format("/api/v2/groups/by-name", str(computer_group_name))
         else:
             # Retrieve the computer group that matches the specified name.
             endpoint = "{}/{}".format("/api/v2/groups/by-name", computer_group_name)
