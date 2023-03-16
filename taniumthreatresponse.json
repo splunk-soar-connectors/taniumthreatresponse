@@ -2979,7 +2979,7 @@
                     "data_path": "action_result.data.*.path",
                     "data_type": "string",
                     "example_values": [
-                        "/opt/phantom/vault/00/72/001234567890e4c24a9b00e0d6a369259999a"
+                        "/opt/phantom/vault/00/72/12121217890e4c24a9b00e0d6a369259999a"
                     ]
                 },
                 {
@@ -2989,9 +2989,6 @@
                     "column_order": 3,
                     "example_values": [
                         12345
-                    ],
-                    "contains": [
-                        "file size"
                     ]
                 },
                 {

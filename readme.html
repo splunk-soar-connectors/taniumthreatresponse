@@ -41,7 +41,7 @@
         <h2>Asset Configuration</h2>
         <li><b>API Token</b></li>
         <ul>
-        <li>An API token can be used for authentication in place of the basic auth method of username and password. If the asset is configured with <b>both</b> API token and username/password credentials, the token will be used as the preferred method. However for security purposes, once the token has expired or if it is invalid, the app will <b>NOT</b> revert to basic auth credentials - the token must either be removed from or replaced in the asset config.
+        <li>An API token can be used for authentication in place of the basic auth method of username and password. If the asset is configured with <b>both</b> API token and username/password credentials, the token will be used as the preferred method. However for security purposes, once the token has expired or if it is invalid, the app will revert to basic auth credentials - the token must either be removed from or replaced in the asset config.
         </li>
         </ul>
         </ul>

@@ -17,7 +17,6 @@
 # Phantom App imports
 import json
 import os
-import re
 import uuid
 from io import BytesIO
 from zipfile import ZipFile
@@ -250,18 +249,22 @@ class TaniumThreatResponseConnector(BaseConnector):
         headers = {
             'Content-Type': 'application/json'
         }
+        if self._api_token:
+            message = "Provided api token is invalid or expired - you need to either remove/replace it from the asset config. "
+        if None in auth:
+            message += "Please provide both username and password credentials to generate new session key."
+            return action_result.set_status(phantom.APP_ERROR, message)
 
+        self.debug_print("Getting session key using username and password")
         ret_val, resp_json = self._make_rest_call("{}{}".format(
             self._base_url, "/auth"), action_result, verify=self._verify_server_cert, headers=headers, auth=auth, data={}, method='post')
         if phantom.is_fail(ret_val):
             self._state['session_key'] = None
             self._session_key = None
-            # self.save_state(self._state)
             return action_result.get_status()
 
         self._state['session_key'] = resp_json
         self._session_key = resp_json
-        # self.save_state(self._state)
 
         return action_result.set_status(phantom.APP_SUCCESS, 'Retrieved new session key')
 
@@ -280,12 +283,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         response obtained by making an API call
         """
 
-        try:
-            url = "{0}{1}".format(self._base_url, endpoint)
-        except Exception as e:
-            error = self._get_error_message_from_exception(e)
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please check the asset configuration and action parameters. Error: {0}".format(error)), None
+        url = "{0}{1}".format(self._base_url, endpoint)
 
         if headers is None:
             headers = {}
@@ -296,7 +294,7 @@ class TaniumThreatResponseConnector(BaseConnector):
                 return action_result.get_status(), None
 
         headers.update({'session': str(self._session_key)})
-        if 'Content-Type' not in list(headers.keys()):
+        if not headers.get('Content-Type', None):
             headers.update({'Content-Type': 'application/json'})
 
         ret_val, resp_json = self._make_rest_call(
@@ -310,7 +308,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             if phantom.is_fail(ret_val):
                 return action_result.get_status(), None
             headers.update({'session': str(self._session_key)})
-            if 'Content-Type' not in list(headers.keys()):
+            if not headers.get('Content-Type', None):
                 headers.update({'Content-Type': 'application/json'})
 
             ret_val, resp_json = self._make_rest_call(
@@ -498,10 +496,10 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Error occurred while processing the response from server. {}".format(error))
 
         self.save_progress('List connections successful')
-        message = 'Number of total connections: {}'.format(summary.get('total_connections', 0))
-        message += 'Number of active connections: {}'.format(summary.get('active_connections', 0))
-        message += 'Number of inactive connections: {}'.format(summary.get('inactive_connections', 0))
-        return action_result.set_status(phantom.APP_SUCCESS)
+        message = 'Number of total connections: {},'.format(summary.get('total_connections', 0))
+        message += ' Number of active connections: {},'.format(summary.get('active_connections', 0))
+        message += ' Number of inactive connections: {}'.format(summary.get('inactive_connections', 0))
+        return action_result.set_status(phantom.APP_SUCCESS, message)
 
     def _handle_get_endpoint_helper(self, param, action_result):
         """ Get endpoint information.
@@ -515,9 +513,10 @@ class TaniumThreatResponseConnector(BaseConnector):
         dst = param.get('destination')
         dsttype = param.get('destination_type')
 
-        if dsttype not in (DSTTYPE_VALUE_LIST or DSTTYPE_PARAMETER_NAME):
+        if dsttype not in DSTTYPE_PARAMETER_NAME.keys():
             return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'destination_type' action parameter".format(DSTTYPE_VALUE_LIST)), None
+                phantom.APP_ERROR,
+                "Please provide valid input from {} in 'destination_type' action parameter".format(DSTTYPE_PARAMETER_NAME.keys())), None
         params = {}
         params[DSTTYPE_PARAMETER_NAME[dsttype]] = dst
 
@@ -1275,15 +1274,18 @@ class TaniumThreatResponseConnector(BaseConnector):
             endpoint = "{}/{}".format("/api/v2/management_rights_groups", computer_group_name)
             ret_val, response = self._make_rest_call_helper(endpoint, action_result)
             if phantom.is_fail(ret_val):
-                # Consider ID as name and retrieve
+                # Consider ID as name and retrieve the computer group that matches the name
                 endpoint = "{}/{}".format("/api/v2/groups/by-name", str(computer_group_name))
+                ret_val, response = self._make_rest_call_helper(endpoint, action_result)
+                if phantom.is_fail(ret_val):
+                    return action_result.get_status()
         else:
             # Retrieve the computer group that matches the specified name.
             endpoint = "{}/{}".format("/api/v2/groups/by-name", computer_group_name)
 
-        ret_val, response = self._make_rest_call_helper(endpoint, action_result)
-        if phantom.is_fail(ret_val):
-            return action_result.get_status()
+            ret_val, response = self._make_rest_call_helper(endpoint, action_result)
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         response_data = response.get("data")
 
@@ -1439,14 +1441,13 @@ class TaniumThreatResponseConnector(BaseConnector):
         if not isinstance(self._state, dict):
             self.debug_print("Resetting the state file with the default format")
             self._state = {"app_version": self.get_app_json().get("app_version")}
-            return self.set_status(phantom.APP_ERROR, TANIUM_STATE_FILE_CORRUPT_ERROR)
 
         # get the asset config
         config = self.get_config()
 
         self._base_url = config.get('base_url')
 
-        self._base_url = re.sub(r'^(/|\\)*|(/|\\)*$', '', self._base_url)
+        self._base_url = self._base_url.strip("\\/")
         self._asset_id = self.get_asset_id()
 
         self._api_token = config.get('api_token')
