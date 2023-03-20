@@ -381,6 +381,8 @@ class TaniumThreatResponseConnector(BaseConnector):
         temp_dir = '{}/{}'.format(temp_dir, uuid.uuid4())
         os.makedirs(temp_dir)
 
+        # We are getting application/zip object from tanium and it has set default password.
+        # So, we are extracting zip object and store it into vault
         with ZipFile(BytesIO(content)) as zobj:
             zobj.extractall(path=temp_dir, pwd=b"infected")
 
@@ -679,15 +681,11 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('List snapshots failed')
             return action_result.get_status()
 
-        if 'snapshots' in response:
-            for snapshot in response['snapshots']:
-                action_result.add_data(snapshot)
+        for snapshot in response.get('snapshots', []):
+            action_result.add_data(snapshot)
 
         summary = action_result.update_summary({})
-        if 'totalCount' in response:
-            summary['total_snapshots'] = response['totalCount']
-        else:
-            summary['total_snapshost'] = 0
+        summary['total_snapshots'] = 'totalCount' in response.get('totalCount', 0)
 
         self.save_progress('List snapshots successful')
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -814,17 +812,17 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        process_context = param.get('process_context', 'all')
-        if process_context not in PROCESS_CONTEXT_VALUE_LIST:
-            return action_result.set_status(
-                phantom.APP_ERROR, "Please provide valid input from {} in 'process_context' action parameter".format(PROCESS_CONTEXT_VALUE_LIST))
-
         params = {}
         if limit:
             params['limit'] = limit
 
+        process_context = param.get('process_context')
         if process_context:
-            params['context'] = process_context
+            process_context = [context.strip() for context in process_context.split(',')]
+            process_context = set(list(filter(None, process_context)))
+            process_context = ','.join(process_context)
+            if process_context:
+                params['context'] = process_context
 
         if not self._is_connection_active(action_result, cid):
             self.save_progress('Inactive or non-existent connection')
@@ -887,7 +885,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.get_status()
 
         params = {}
-
+        # We are getting maximum 1001 events. Therefore, set 1000 as hard limit
         if limit:
             if limit > 1000:
                 limit = 1000
@@ -912,49 +910,46 @@ class TaniumThreatResponseConnector(BaseConnector):
             if not (fields and value and operators):
                 return action_result.set_status(
                     phantom.APP_ERROR, 'fields, operators, and value need to be filled in to query events. Returning all results')
-            else:
-                fields = [field.strip() for field in fields.split(',')]
-                fields = list(filter(None, fields))
 
-                value = [val.strip() for val in value.split(',')]
-                value = list(filter(None, value))
+            fields = [field.strip() for field in fields.split(',')]
+            fields = list(filter(None, fields))
 
-                operators = [operator.strip() for operator in operators.split(',')]
-                operators = list(filter(None, operators))
+            value = [val.strip() for val in value.split(',')]
+            value = list(filter(None, value))
 
-                if not (len(fields) == len(value) and len(value) == len(operators)):
-                    return action_result.set_status(phantom.APP_ERROR, "Length of value, fields , and operators must be equal")
+            operators = [operator.strip() for operator in operators.split(',')]
+            operators = list(filter(None, operators))
 
-                group_list = []
+            if not (len(fields) == len(value) and len(value) == len(operators)):
+                return action_result.set_status(phantom.APP_ERROR, "Length of value, fields , and operators must be equal")
 
-                for i, _filter in enumerate(fields):
-                    params["f{}".format(str(i))] = fields[i]
-                    params["o{}".format(str(i))] = operators[i]
-                    params["v{}".format(str(i))] = value[i]
-                    group_list.append(str(i))
+            group_list = []
 
-                params["gm1"] = filter_type
-                params["g1"] = ",".join(group_list)
+            for i, _filter in enumerate(fields):
+                params["f{}".format(str(i))] = fields[i]
+                params["o{}".format(str(i))] = operators[i]
+                params["v{}".format(str(i))] = value[i]
+                group_list.append(str(i))
+
+            params["gm1"] = filter_type
+            params["g1"] = ",".join(group_list)
 
         ret_val, response = self._make_rest_call_helper(GET_EVENTS_ENDPOINT.format(cid=cid, type=event_type), action_result, params=params)
         if phantom.is_fail(ret_val):
             self.save_progress('Get Events Failed')
             return action_result.get_status()
-        response_length = len(response)
+        # response_length = len(response)
 
-        # We are getting one extra event every. Hence, removing that extra event
-        if response_length > limit:
-            response_length -= 1
+        # We are getting one extra event every time if more events present. Hence, removing that extra event
+        # if response_length > limit:
+        #     response_length -= 1
 
-        for event in range(0, response_length):
+        for event in response:
             action_result.add_data(response[event])
         action_result.update_summary({'type': event_type})
 
         # Results will contain 1 more than the limit when there is more data
-        if len(response) == limit + 1:
-            action_result.update_summary({'more_data': True})
-        else:
-            action_result.update_summary({'more_data': False})
+        action_result.update_summary({'more_data': len(response) == limit + 1})
 
         self.save_progress('Get Events Successful')
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -1082,10 +1077,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         # Add a dictionary that is made up of the most important values from data into the summary
         summary = action_result.update_summary({})
-        if 'totalCount' in response:
-            summary['file_count'] = response['totalCount']
-        else:
-            summary['file_count'] = 0
+        summary['file_count'] = response.get('totalCount', 0)
 
         self.save_progress('List Files Successful')
         return action_result.set_status(phantom.APP_SUCCESS)

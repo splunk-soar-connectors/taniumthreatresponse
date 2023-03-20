@@ -44,7 +44,7 @@ EVENT_TYPE_VALUE_LIST = ["combined", "dns", "driver", "file", "network", "proces
 FILTER_TYPE_VALUE_LIST = ["any", "all"]
 FILE_SORT_TYPE_VALUE_LIST = ["uuid", "hostname", "path", "downloaded", "size"]
 SNAPSHOTS_SORT_TYPE_VALUE_LIST = ["uuid", "username", "hostname", "created", "connectionId", "size", "name"]
-PROCESS_CONTEXT_VALUE_LIST = ["parent", "node", "siblings", "children", "all"]
+PROCESS_CONTEXT_VALUE_LIST = ["parent", "node", "siblings", "children"]
 
 # Value list to parameter name mapping
 DSTTYPE_PARAMETER_NAME = {

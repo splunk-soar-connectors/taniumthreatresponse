@@ -249,19 +249,13 @@ def display_process_tree(provides, all_app_runs, context):
 
     for summary, action_results in all_app_runs:
         for result in action_results:
-            param = result.get_param()
             data = result.get_data()
-            length = len(data)
             final_result = []
 
             for resp in data:
                 if resp.get("process_path"):
                     resp["process_path"] = resp.get("process_path").replace("\\", "\\\\")
                 final_result.append(resp)
-
-            # We are getting one extra process. Hence, removing that extra process
-            if length > param.get('limit'):
-                final_result = final_result[:length - 1]
 
             results.append({
                 'data': final_result,

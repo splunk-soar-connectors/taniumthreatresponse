@@ -1246,6 +1246,7 @@
         {
             "action": "get process tree",
             "description": "Get process tree for a process instance",
+            "verbose": "This action gives the process tree with sibling and children with respect to the 'limit' parameter. Based on API behavior, if more processes are available for the given process table id, the API response contains a maximum of 301 children and 602 siblings.",
             "type": "investigate",
             "identifier": "get_process_tree",
             "read_only": true,
@@ -1271,21 +1272,12 @@
                     ]
                 },
                 "process_context": {
-                    "description": "Process context to include, default is 'all' and will return all contexts",
+                    "description": "Comma-separated list of process contexts to include ('parent', 'node', 'siblings', 'children'), if not provided then return all contexts",
                     "data_type": "string",
-                    "required": true,
-                    "default": "all",
-                    "value_list": [
-                        "parent",
-                        "node",
-                        "siblings",
-                        "children",
-                        "all"
-                    ],
                     "order": 2
                 },
                 "limit": {
-                    "description": "Maximum number of siblings and children to return, hard limit of 100",
+                    "description": "Maximum number of siblings and children to return (Default: 100)",
                     "data_type": "numeric",
                     "order": 3,
                     "default": 100
@@ -1555,6 +1547,7 @@
         {
             "action": "get events",
             "description": "Build a query to get events of a certain type from a connection",
+            "verbose": "When there are more data available, this action result will contain one more data than the limit.",
             "type": "investigate",
             "identifier": "get_events",
             "read_only": true,
@@ -1587,13 +1580,13 @@
                     "order": 1
                 },
                 "limit": {
-                    "description": "Maximum number of results to return with a hard limit 1000",
+                    "description": "Maximum number of results to return with a hard limit 1000 (Default: 1000)",
                     "data_type": "numeric",
                     "default": 1000,
                     "order": 2
                 },
                 "offset": {
-                    "description": "Offset of the start of results (Default: 0)",
+                    "description": "Offset into the result set (Default: 0)",
                     "data_type": "numeric",
                     "order": 3,
                     "default": 0
