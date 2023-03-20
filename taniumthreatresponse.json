@@ -1313,7 +1313,7 @@
                     "data_path": "action_result.parameter.process_context",
                     "data_type": "string",
                     "example_values": [
-                        "all"
+                        "parent"
                     ]
                 },
                 {

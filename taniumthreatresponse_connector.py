@@ -426,7 +426,6 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         for connection in response:
             if conn_id == connection.get('id', ''):
-                # state = connection.get('info', {}).get('state', '')
                 status = connection.get('status', '')
                 if status == 'connected':
                     return phantom.APP_SUCCESS
@@ -938,11 +937,6 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             self.save_progress('Get Events Failed')
             return action_result.get_status()
-        # response_length = len(response)
-
-        # We are getting one extra event every time if more events present. Hence, removing that extra event
-        # if response_length > limit:
-        #     response_length -= 1
 
         for event in response:
             action_result.add_data(response[event])
