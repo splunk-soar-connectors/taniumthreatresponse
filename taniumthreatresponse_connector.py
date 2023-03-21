@@ -684,7 +684,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             action_result.add_data(snapshot)
 
         summary = action_result.update_summary({})
-        summary['total_snapshots'] = 'totalCount' in response.get('totalCount', 0)
+        summary['total_snapshots'] = response.get('totalCount', 0)
 
         self.save_progress('List snapshots successful')
         return action_result.set_status(phantom.APP_SUCCESS)
