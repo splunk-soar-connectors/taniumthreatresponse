@@ -294,7 +294,7 @@ class TaniumThreatResponseConnector(BaseConnector):
                 return action_result.get_status(), None
 
         headers.update({'session': str(self._session_key)})
-        if not headers.get('Content-Type', None):
+        if not headers.get('Content-Type'):
             headers.update({'Content-Type': 'application/json'})
 
         ret_val, resp_json = self._make_rest_call(
@@ -308,7 +308,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             if phantom.is_fail(ret_val):
                 return action_result.get_status(), None
             headers.update({'session': str(self._session_key)})
-            if not headers.get('Content-Type', None):
+            if not headers.get('Content-Type'):
                 headers.update({'Content-Type': 'application/json'})
 
             ret_val, resp_json = self._make_rest_call(
@@ -366,7 +366,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             self.save_progress('List Files Failed')
             return RetVal(action_result.get_status(), None)
 
-        if response.get('evidence', {}).get('uuid', None) == file_id:
+        if response.get('evidence', {}).get('uuid') == file_id:
             filename = response.get('evidence', {}).get('path', '').replace('\\\\', '\\').split('\\')[-1]
 
         return RetVal(phantom.APP_SUCCESS, filename)
@@ -663,7 +663,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        snapshots_sort_by = param.get('sort', None)
+        snapshots_sort_by = param.get('sort')
 
         params = {}
         if limit:
@@ -1354,15 +1354,15 @@ class TaniumThreatResponseConnector(BaseConnector):
                 alert['event_type'] = details.get('match', {}).get('type', "")
 
                 if "md5" in details.get('match', {}).get('properties', {}):
-                    md5 = details.get('match', {}).get('properties', {}).get('fullpath', None)
+                    md5 = details.get('match', {}).get('properties', {}).get('fullpath')
                 else:
-                    md5 = details.get('match', {}).get('properties', {}).get('file', {}).get('md5', None)
+                    md5 = details.get('match', {}).get('properties', {}).get('file', {}).get('md5')
                 if md5:
                     alert['md5'] = md5
-                sha1 = details.get('match', {}).get('properties', {}).get('file', {}).get('sha1', None)
+                sha1 = details.get('match', {}).get('properties', {}).get('file', {}).get('sha1')
                 if sha1:
                     alert['sha1'] = sha1
-                sha256 = details.get('match', {}).get('properties', {}).get('file', {}).get('sha256', None)
+                sha256 = details.get('match', {}).get('properties', {}).get('file', {}).get('sha256')
                 if sha256:
                     alert['sha256'] = sha256
                 action_result.add_data(alert)
@@ -1372,8 +1372,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         if response.get("meta"):
             summary = {}
-            summary["totalCount"] = response["meta"].get("totalCount", None)
-            summary["filteredCount"] = response["meta"].get("filteredCount", None)
+            summary["totalCount"] = response["meta"].get("totalCount")
+            summary["filteredCount"] = response["meta"].get("filteredCount")
             action_result.update_summary(summary)
 
         self.save_progress('List alerts successful')
