@@ -939,7 +939,7 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.get_status()
 
         for event in response:
-            action_result.add_data(response[event])
+            action_result.add_data(event)
         action_result.update_summary({'type': event_type})
 
         # Results will contain 1 more than the limit when there is more data
