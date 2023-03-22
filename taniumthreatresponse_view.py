@@ -55,6 +55,8 @@ def get_events(headers, data):
     for event in data:
         event_details = []
         for head in headers:
+            if "file path" in contains_map.get(head, []):
+                event[head] = event.get(head).replace("\\", "\\\\")
             data = event.get(head, None)
             event_details.append({
                 'data': data,
@@ -80,15 +82,13 @@ def display_events(provides, all_app_runs, context):
         ],
         'dns': [
             'id',
-            'process_id',
+            'pid',
             'process_table_id',
             'operation',
             'timestamp',
-            'response',
-            'process_name',
-            'domain',
-            'username',
-            'query',
+            'process_path',
+            'user_name',
+            'group_name',
         ],
         'driver': [
             'id',
