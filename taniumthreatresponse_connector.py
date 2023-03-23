@@ -342,6 +342,10 @@ class TaniumThreatResponseConnector(BaseConnector):
         try:
             r = request_func(endpoint, json=json, data=data, headers=headers, verify=verify,
                              auth=auth, params=params, timeout=DEFAULT_REQUEST_TIMEOUT)
+        except requests.exceptions.ProxyError as e:
+            error = self._get_error_message_from_exception(e)
+            action_result_error_message = "Proxy connection failed:  {}".format(error)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, action_result_error_message), resp_json)
         except requests.exceptions.InvalidSchema:
             error_message = "Error connecting to server. No connection adapters were found for {}".format(endpoint)
             return RetVal(action_result.set_status(phantom.APP_ERROR, error_message), resp_json)
