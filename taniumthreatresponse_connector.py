@@ -484,9 +484,9 @@ class TaniumThreatResponseConnector(BaseConnector):
             active_connections = 0
             inactive_connections = 0
             for resp in response:
-                if 'status' in resp and resp['status'] == 'disconnected':
+                if resp.get('status') == 'disconnected':
                     inactive_connections += 1
-                elif 'status' in resp and resp['status'] == 'connected':
+                elif resp.get('status') == 'connected':
                     active_connections += 1
                 action_result.add_data(resp)
 

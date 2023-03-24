@@ -54,7 +54,7 @@
         {
             "action": "test connectivity",
             "description": "Validate the asset configuration for connectivity using supplied configuration",
-            "verbose": "This action requires a 'threat response use api' permission.",
+            "verbose": "This action requires the 'threat response use api' permission.",
             "type": "test",
             "identifier": "test_connectivity",
             "read_only": true,
@@ -3057,7 +3057,7 @@
         {
             "action": "upload intel doc",
             "description": "Upload intel document to Tanium Threat Response",
-            "verbose": "This action requires a 'threat response intels write' permission.",
+            "verbose": "This action requires the 'threat response intels write' permission.",
             "type": "generic",
             "identifier": "upload_intel_doc",
             "read_only": false,
@@ -3441,7 +3441,7 @@
         {
             "action": "start quick scan",
             "description": "Scan a computer group for hashes in intel document",
-            "verbose": "This action requires a 'threat response on demand scans write' permission. If this action is failing with 'GroupNotFound' exception then please try with the ID of computer group for 'computer group name' parameter. You can find Computer Group ID from Tanium UI->Administration->Computer Groups->Click on Computer Group name now you can see the ID on URL. If a numerical value is given to the computer group parameter, then priority will be given to 'ID' and ID is not present in tanium, then consider ID as the name of the computer group. If the computer group is deleted but visible on Tanium through the group ID. In this case, this action will be passed using the deleted group ID and scan will start on Tanium without computer group name.",
+            "verbose": "This action requires the 'threat response on demand scans write' permission. If this action is failing with 'GroupNotFound' exception then please try with the ID of computer group for 'computer group name' parameter. You can find Computer Group ID from Tanium UI->Administration->Computer Groups->Click on Computer Group name now you can see the ID on URL. If a numerical value is given to the computer group parameter, then priority will be given to 'ID' and ID is not present in tanium, then consider ID as the name of the computer group. If the computer group is deleted but visible on Tanium through the group ID. In this case, this action will be passed using the deleted group ID and scan will start on Tanium without computer group name.",
             "type": "investigate",
             "identifier": "start_quick_scan",
             "read_only": true,
@@ -3665,7 +3665,7 @@
         {
             "action": "list alerts",
             "description": "List alerts with optional filtering",
-            "verbose": "This action requires a 'threat response alerts read' permission.",
+            "verbose": "This action requires the 'threat response alerts read' permission.",
             "type": "investigate",
             "identifier": "list_alerts",
             "read_only": true,
