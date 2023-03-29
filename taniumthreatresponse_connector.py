@@ -880,7 +880,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         sort = param.get('sort')
         fields = param.get('fields')
         operators = param.get('operators')
-        value = param.get('values')
+        values = param.get('values')
         cid = param['connection_id']
 
         if not self._is_connection_active(action_result, cid):
@@ -909,29 +909,29 @@ class TaniumThreatResponseConnector(BaseConnector):
             return action_result.set_status(
                 phantom.APP_ERROR, "Please provide valid input from {} in 'filter_type' action parameter".format(FILTER_TYPE_VALUE_LIST))
 
-        if fields or value or operators:
-            if not (fields and value and operators):
+        if fields or values or operators:
+            if not (fields and values and operators):
                 return action_result.set_status(
-                    phantom.APP_ERROR, 'fields, operators, and value need to be filled in to query events. Returning all results')
+                    phantom.APP_ERROR, 'Parameters fields, operators, and values need to be filled in to query events. Returning all results')
 
             fields = [field.strip() for field in fields.split(',')]
             fields = list(filter(None, fields))
 
-            value = [val.strip() for val in value.split(',')]
-            value = list(filter(None, value))
+            values = [val.strip() for val in values.split(',')]
+            values = list(filter(None, values))
 
             operators = [operator.strip() for operator in operators.split(',')]
             operators = list(filter(None, operators))
 
-            if not (len(fields) == len(value) and len(value) == len(operators)):
-                return action_result.set_status(phantom.APP_ERROR, "Length of value, fields , and operators must be equal")
+            if not (len(fields) == len(values) and len(values) == len(operators)):
+                return action_result.set_status(phantom.APP_ERROR, "Length of values, fields , and operators must be equal")
 
             group_list = []
 
             for i, _filter in enumerate(fields):
                 params["f{}".format(str(i))] = fields[i]
                 params["o{}".format(str(i))] = operators[i]
-                params["v{}".format(str(i))] = value[i]
+                params["v{}".format(str(i))] = values[i]
                 group_list.append(str(i))
 
             params["gm1"] = filter_type
@@ -979,31 +979,31 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         fields = param.get('fields')
         operators = param.get('operators')
-        value = param.get('values')
+        values = param.get('values')
         params = {}
-        if fields or value or operators:
-            if not (fields and value and operators):
+        if fields or values or operators:
+            if not (fields and values and operators):
                 return action_result.set_status(
-                    phantom.APP_ERROR, 'fields, operators, and value need to be filled in to query events. Returning all results')
+                    phantom.APP_ERROR, 'Parameters fields, operators, and values need to be filled in to query events. Returning all results')
             else:
                 fields = [field.strip() for field in fields.split(',')]
                 fields = list(filter(None, fields))
 
-                value = [val.strip() for val in value.split(',')]
-                value = list(filter(None, value))
+                values = [val.strip() for val in values.split(',')]
+                values = list(filter(None, values))
 
                 operators = [operator.strip() for operator in operators.split(',')]
                 operators = list(filter(None, operators))
 
-                if not (len(fields) == len(value) and len(value) == len(operators)):
-                    return action_result.set_status(phantom.APP_ERROR, "Length of value, fields , and operators must be equal")
+                if not (len(fields) == len(values) and len(values) == len(operators)):
+                    return action_result.set_status(phantom.APP_ERROR, "Length of values, fields , and operators must be equal")
 
                 group_list = []
 
                 for i, _filter in enumerate(fields):
                     params["f{}".format(str(i))] = fields[i]
                     params["o{}".format(str(i))] = operators[i]
-                    params["v{}".format(str(i))] = value[i]
+                    params["v{}".format(str(i))] = values[i]
                     group_list.append(str(i))
 
                 params["gm1"] = filter_type
