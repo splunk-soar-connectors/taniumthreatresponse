@@ -1,1 +1,6 @@
 **Unreleased**
+* Converted this app to Splunk supported [PAPP-28879]
+* Updated deprecated APIs for below actions  with respect to Threat Response(THR) 4.0 API Migration [PAPP-29346]
+    * upload intel doc
+    * start quick scan
+    * list alerts
