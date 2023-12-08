@@ -6,7 +6,7 @@ Connector Version: 3.0.0
 Product Vendor: Tanium  
 Product Name: Threat Response  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.5.0  
+Minimum Product Version: 6.1.1  
 
 This app supports various generic and investigate actions on Tanium Threat Response
 
@@ -102,7 +102,7 @@ ports used by Splunk SOAR.
               # {
               #   "username": "jane.doe",
               #   "domain": "dev",
-              #   "password": "JanesPassword"   # pragma: allowlist secret
+              #   "password": "JanesPassword"    # pragma: allowlist secret
               # }
               
 
