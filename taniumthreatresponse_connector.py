@@ -376,13 +376,8 @@ class TaniumThreatResponseConnector(BaseConnector):
         return RetVal(phantom.APP_SUCCESS, filename)
 
     def _save_temp_file(self, content):
-
-        if hasattr(Vault, 'get_vault_tmp_dir'):
-            temp_dir = Vault.get_vault_tmp_dir()
-        else:
-            temp_dir = '/opt/phantom/vault/tmp'
-
-        temp_dir = '{}/{}'.format(temp_dir, uuid.uuid4())
+        vault_tmp_dir = Vault.get_vault_tmp_dir()
+        temp_dir = '{}/{}'.format(vault_tmp_dir, uuid.uuid4())
         os.makedirs(temp_dir)
 
         # We are getting application/zip object from tanium and it has set default password.
