@@ -377,7 +377,8 @@ class TaniumThreatResponseConnector(BaseConnector):
 
     def _save_temp_file(self, content):
         vault_tmp_dir = Vault.get_vault_tmp_dir()
-        temp_dir = '{}/{}'.format(vault_tmp_dir, uuid.uuid4())
+        temp_dir = os.path.join(vault_tmp_dir, str(uuid.uuid4()))
+
         os.makedirs(temp_dir)
 
         # We are getting application/zip object from tanium and it has set default password.
@@ -385,7 +386,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         with ZipFile(BytesIO(content)) as zobj:
             zobj.extractall(path=temp_dir, pwd=b"infected")
 
-        return temp_dir + '/' + zobj.namelist()[0]
+        return os.path.join(temp_dir, str(zobj.namelist()[0]))
 
     def _list_connections(self, action_result):
         """ Return a list of current connections.
