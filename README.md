@@ -11,7 +11,7 @@ Minimum Product Version: 6.1.1
 This app supports various generic and investigate actions on Tanium Threat Response
 
 [comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2020-2023 Splunk Inc."
+[comment]: # "  Copyright (c) 2020-2024 Splunk Inc."
 [comment]: # ""
 [comment]: # "  Licensed under the Apache License, Version 2.0 (the \'License\');"
 [comment]: # "  you may not use this file except in compliance with the License."
