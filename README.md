@@ -2,7 +2,7 @@
 # Tanium Threat Response
 
 Publisher: Splunk  
-Connector Version: 3.0.0  
+Connector Version: 3.0.1  
 Product Vendor: Tanium  
 Product Name: Threat Response  
 Product Version Supported (regex): ".\*"  
