@@ -1,6 +1,6 @@
 # File: taniumthreatresponse_connector.py
 #
-# Copyright (c) 2020-2023 Splunk Inc.
+# Copyright (c) 2020-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -376,13 +376,9 @@ class TaniumThreatResponseConnector(BaseConnector):
         return RetVal(phantom.APP_SUCCESS, filename)
 
     def _save_temp_file(self, content):
+        vault_tmp_dir = Vault.get_vault_tmp_dir()
+        temp_dir = os.path.join(vault_tmp_dir, str(uuid.uuid4()))
 
-        if hasattr(Vault, 'get_vault_tmp_dir'):
-            temp_dir = Vault.get_vault_tmp_dir()
-        else:
-            temp_dir = '/opt/phantom/vault/tmp'
-
-        temp_dir = '{}/{}'.format(temp_dir, uuid.uuid4())
         os.makedirs(temp_dir)
 
         # We are getting application/zip object from tanium and it has set default password.
@@ -390,7 +386,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         with ZipFile(BytesIO(content)) as zobj:
             zobj.extractall(path=temp_dir, pwd=b"infected")
 
-        return temp_dir + '/' + zobj.namelist()[0]
+        return os.path.join(temp_dir, str(zobj.namelist()[0]))
 
     def _list_connections(self, action_result):
         """ Return a list of current connections.

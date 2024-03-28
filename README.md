@@ -2,16 +2,16 @@
 # Tanium Threat Response
 
 Publisher: Splunk  
-Connector Version: 3.0.0  
+Connector Version: 3.0.1  
 Product Vendor: Tanium  
 Product Name: Threat Response  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.5.0  
+Minimum Product Version: 6.1.1  
 
 This app supports various generic and investigate actions on Tanium Threat Response
 
 [comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2020-2023 Splunk Inc."
+[comment]: # "  Copyright (c) 2020-2024 Splunk Inc."
 [comment]: # ""
 [comment]: # "  Licensed under the Apache License, Version 2.0 (the \'License\');"
 [comment]: # "  you may not use this file except in compliance with the License."
@@ -102,7 +102,7 @@ ports used by Splunk SOAR.
               # {
               #   "username": "jane.doe",
               #   "domain": "dev",
-              #   "password": "JanesPassword" 
+              #   "password": "JanesPassword"    # pragma: allowlist secret
               # }
               
 
