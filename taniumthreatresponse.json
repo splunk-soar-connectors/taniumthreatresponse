@@ -9,7 +9,7 @@
     "product_name": "Threat Response",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2020-2024 Splunk Inc.",
+    "license": "Copyright (c) 2020-2025 Splunk Inc.",
     "app_version": "3.0.1",
     "utctime_updated": "2024-03-28T09:16:36.000000Z",
     "package_name": "phantom_taniumthreatresponse",
@@ -3978,6 +3978,10 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.parameter.ph",
+                    "data_type": "ph"
                 }
             ],
             "render": {

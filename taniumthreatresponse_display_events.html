@@ -1,26 +1,19 @@
 {% extends 'widgets/widget_template.html' %}
 {% load custom_template %}
-
 {% block custom_title_prop %}
-{% if title_logo %}
-style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image:
-url('/app_resource/{{ title_logo }}');"
-{% endif %}
+  {% if title_logo %}
+    style="background-size: auto 60%; background-position: 50%; background-repeat: no-repeat; background-image:
+    url('/app_resource/{{ title_logo }}');"
+  {% endif %}
 {% endblock %}
-{% block title1 %}
-{{ title1 }}
-{% endblock %}
-{% block title2 %}
-{{ title2 }}
-{% endblock %}
-{% block custom_tools %}
-{% endblock %}
-
-{% block widget_content %} <!-- Main Start Block -->
-
-<!--
+{% block title1 %}{{ title1 }}{% endblock %}
+{% block title2 %}{{ title2 }}{% endblock %}
+{% block custom_tools %}{% endblock %}
+{% block widget_content %}
+  <!-- Main Start Block -->
+  <!--
 File: taniumthreatresponse_display_events.html
-    Copyright (c) 2020-2024 Splunk Inc.
+    Copyright (c) 2020-2025 Splunk Inc.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -33,8 +26,7 @@ File: taniumthreatresponse_display_events.html
     either express or implied. See the License for the specific language governing permissions
     and limitations under the License.
 -->
-
-<style>
+  <style>
     .dataTables_scrollBody {
         position: relative;
         overflow: scroll;
@@ -64,66 +56,71 @@ File: taniumthreatresponse_display_events.html
     .wf-h4-style {
         font-size: 16px;
     }
-</style>
-{% for result in results %}
-{% if not result.events %}
-<h4 class="wf-h4-style">No data found</h4>
-
-{% else %}
-
-<div id="DataTables_Table_1_wrapper" class="dataTables_wrapper no-footer">
-    <div class="divTableHeading">
-        <div class="divTableRow">
-            <div class="divTableHead">CONNECTION ID:
-                <a href="javascript:;"
-                    onclick="context_menu(this, [{'contains': ['threatresponse connection id'], 'value': '{{ result.parameter.connection_id }}' }], 0, {{ container.id }}, null, false);">
-                    {{ result.parameter.connection_id }} &nbsp;<span class="fa fa-caret-down"></span>
-                </a>
+  </style>
+  {% for result in results %}
+    {% if not result.events %}
+      <h4 class="wf-h4-style">No data found</h4>
+    {% else %}
+      <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper no-footer">
+        <div class="divTableHeading">
+          <div class="divTableRow">
+            <div class="divTableHead">
+              CONNECTION ID:
+              <a href="javascript:;"
+                 onclick="context_menu(this, [{'contains': ['threatresponse connection id'], 'value': '{{ result.parameter.connection_id }}' }], 0, {{ container.id }}, null, false);">
+                {{ result.parameter.connection_id }} &nbsp;<span class="fa fa-caret-down"></span>
+              </a>
             </div>
-            <div class="divTableHead">EVENT TYPE:
-                {{ result.parameter.event_type }}
-                <br><br>
+            <div class="divTableHead">
+              EVENT TYPE:
+              {{ result.parameter.event_type }}
+              <br>
+              <br>
             </div>
+          </div>
         </div>
-    </div>
-    <div class="dataTables_scroll">
-        <div class="dataTables_scrollBody">
-            <table class="phantom-table dataTable no-footer" id="DataTables_Table_1" role="grid">
-                <thead>
-                    <tr role="row">
-                        {% for header in result.headers %}
-                        <th class="widget-th" aria-controls="DataTables_Table_1" rowspan="1" colspan="1"
-                            aria-label="{{ header }}: activate to sort column ascending">
-                            {{ header }}
-                            {# <div class="dataTables_sizing" style="height:0;overflow:hidden;">{{ header }}</div> #}
-                        </th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for event in result.events %}
-                    <tr role="row" class="hover">
-                        {% for detail in event %}
-                        <td class="widget-td">
-                            {% if detail.contains %}
-                            <a href="javascript:;"
-                                onclick="context_menu(this, [{'contains': {{ detail.contains }}, 'value': '{{ detail.data }}' }], 0, {{ container.id }}, null, false);">
-                                {{ detail.data }}
-                                &nbsp;
-                                <span class="fa fa-caret-down" style="font-size: smaller;"></span></a>
-                            {% else %}
+        <div class="dataTables_scroll">
+          <div class="dataTables_scrollBody">
+            <table class="phantom-table dataTable no-footer"
+                   id="DataTables_Table_1"
+                   role="grid">
+              <thead>
+                <tr role="row">
+                  {% for header in result.headers %}
+                    <th class="widget-th"
+                        aria-controls="DataTables_Table_1"
+                        rowspan="1"
+                        colspan="1"
+                        aria-label="{{ header }}: activate to sort column ascending">
+                      {{ header }}
+                      {# <div class="dataTables_sizing" style="height:0;overflow:hidden;">{{ header }}</div> #}
+                    </th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for event in result.events %}
+                  <tr role="row" class="hover">
+                    {% for detail in event %}
+                      <td class="widget-td">
+                        {% if detail.contains %}
+                          <a href="javascript:;"
+                             onclick="context_menu(this, [{'contains': {{ detail.contains }}, 'value': '{{ detail.data }}' }], 0, {{ container.id }}, null, false);">
                             {{ detail.data }}
-                            {% endif %}
-                        </td>
-                        {% endfor %}
-                    </tr>
+                            &nbsp;
+                            <span class="fa fa-caret-down" style="font-size: smaller;"></span></a>
+                        {% else %}
+                          {{ detail.data }}
+                        {% endif %}
+                      </td>
                     {% endfor %}
-                </tbody>
+                  </tr>
+                {% endfor %}
+              </tbody>
             </table>
+          </div>
         </div>
-    </div>
-</div>
-{% endif %}
-{% endfor %}
-
+      </div>
+    {% endif %}
+  {% endfor %}
 {% endblock %}

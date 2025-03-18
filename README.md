@@ -1,30 +1,13 @@
-[comment]: # "Auto-generated SOAR connector documentation"
 # Tanium Threat Response
 
-Publisher: Splunk  
-Connector Version: 3.0.1  
-Product Vendor: Tanium  
-Product Name: Threat Response  
-Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.1.1  
+Publisher: Splunk \
+Connector Version: 3.0.1 \
+Product Vendor: Tanium \
+Product Name: Threat Response \
+Minimum Product Version: 6.1.1
 
 This app supports various generic and investigate actions on Tanium Threat Response
 
-[comment]: # " File: README.md"
-[comment]: # "  Copyright (c) 2020-2024 Splunk Inc."
-[comment]: # ""
-[comment]: # "  Licensed under the Apache License, Version 2.0 (the \'License\');"
-[comment]: # "  you may not use this file except in compliance with the License."
-[comment]: # "  You may obtain a copy of the License at"
-[comment]: # ""
-[comment]: # "      http://www.apache.org/licenses/LICENSE-2.0"
-[comment]: # ""
-[comment]: # "  Unless required by applicable law or agreed to in writing, software distributed under"
-[comment]: # "  the License is distributed on an \'AS IS\' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,"
-[comment]: # "  either express or implied. See the License for the specific language governing permissions"
-[comment]: # "  and limitations under the License."
-[comment]: # ""
-[comment]: # " pragma: allowlist secret "
 ## Port Information
 
 The app uses HTTP/ HTTPS protocol for communicating with the Tanium server. Below are the default
@@ -32,121 +15,118 @@ ports used by Splunk SOAR.
 
 |         Service Name | Transport Protocol | Port |
 |----------------------|--------------------|------|
-|         http         | tcp                | 80   |
-|         https        | tcp                | 443  |
+|         http | tcp | 80 |
+|         https | tcp | 443 |
 
 ## Asset Configuration
 
--   **API Token**
+- **API Token**
 
 <!-- -->
 
--   An API token can be used for authentication in place of the basic auth method of username and
-    password. If the asset is configured with **both** API token and username/password credentials,
-    the token will be used as the preferred method. However for security purposes, once the token
-    has expired or if it is invalid, the app will revert to basic auth credentials - the token must
-    either be removed from or replaced in the asset config.
+- An API token can be used for authentication in place of the basic auth method of username and
+  password. If the asset is configured with **both** API token and username/password credentials,
+  the token will be used as the preferred method. However for security purposes, once the token
+  has expired or if it is invalid, the app will revert to basic auth credentials - the token must
+  either be removed from or replaced in the asset config.
 
 ## API Token Generation
 
--   There are different methods of creating an API token depending on which version of Tanium is
-    being used. Later versions allow token generation through the UI, while earlier versions require
-    the use of curl commands.
+- There are different methods of creating an API token depending on which version of Tanium is
+  being used. Later versions allow token generation through the UI, while earlier versions require
+  the use of curl commands.
 
--   **IMPORTANT: The default expiration of a generated token is 7 days. To reduce maintenance, we
-    recommend setting the default expiration to 365 days. Note that you will have to repeat this
-    process to generate a new token before the current token expires. Failure to do so will cause
-    integration to break as your token will no longer be valid after such date.**
+- **IMPORTANT: The default expiration of a generated token is 7 days. To reduce maintenance, we
+  recommend setting the default expiration to 365 days. Note that you will have to repeat this
+  process to generate a new token before the current token expires. Failure to do so will cause
+  integration to break as your token will no longer be valid after such date.**
 
--   **The end user will need to add the SOAR source IP address as a "Trusted IP Address" when
-    creating a Tanium API Token. They will also need to note the expiration time and create a new
-    token accordingly.**
+- **The end user will need to add the SOAR source IP address as a "Trusted IP Address" when
+  creating a Tanium API Token. They will also need to note the expiration time and create a new
+  token accordingly.**
 
--   **The following information regarding API calls using curl commands and additional notes have
-    been taken from the "Tanium Server REST API Reference" documentation. More information can be
-    gathered by contacting Tanium Support.**
+- **The following information regarding API calls using curl commands and additional notes have
+  been taken from the "Tanium Server REST API Reference" documentation. More information can be
+  gathered by contacting Tanium Support.**
 
-      
+  ### UI
 
-    ### UI
+- To generate an API token in the UI and to configure the system to use it, please follow the
+  steps mentioned in this
+  [documentation](https://docs.tanium.com/platform_user/platform_user/console_api_tokens.html) .
+  On Tanium 7.5.2.3503, new API tokens can be generated by selecting Administration > Permissions
+  \> API Tokens > New API Token. Depending on the version of Tanium, the UI may not contain the
+  token creation button on the page and will only display a list of the existing API tokens. If
+  this is the case, you will need to use the curl command method.
 
--   To generate an API token in the UI and to configure the system to use it, please follow the
-    steps mentioned in this
-    [documentation](https://docs.tanium.com/platform_user/platform_user/console_api_tokens.html) .
-    On Tanium 7.5.2.3503, new API tokens can be generated by selecting Administration \> Permissions
-    \> API Tokens \> New API Token. Depending on the version of Tanium, the UI may not contain the
-    token creation button on the page and will only display a list of the existing API tokens. If
-    this is the case, you will need to use the curl command method.
+  ### Curl
 
-      
+- To generate an API token using this method, a session string or token string will need to be
+  acquired first through the Login API endpoint. Then, the session or token string will be passed
+  in the header to get the API token. In the examples below, fields need to be passed in the API
+  token request. **You MUST include the SOAR IP address as a trusted IP address.** It is also
+  useful to include the **notes** field, as this can be useful in identifying the token after it
+  is created since the token string is not visible in the UI using this method.
 
-    ### Curl
+- #### Login API Endpoint
 
--   To generate an API token using this method, a session string or token string will need to be
-    acquired first through the Login API endpoint. Then, the session or token string will be passed
-    in the header to get the API token. In the examples below, fields need to be passed in the API
-    token request. **You MUST include the SOAR IP address as a trusted IP address.** It is also
-    useful to include the **notes** field, as this can be useful in identifying the token after it
-    is created since the token string is not visible in the UI using this method.
+  `       /api/v2/session/login      `
 
--   #### Login API Endpoint
+  #### Example Request
 
-      
-    `       /api/v2/session/login      `
+  `       $ curl -s -X POST --data-binary @sample_login.json https://localhost/api/v2/session/login      `
 
-    #### Example Request
+  ```
+        # where sample_login.json contains:
+        # {
+        #   "username": "jane.doe",
+        #   "domain": "dev",
+        #   "password": "JanesPassword"    # pragma: allowlist secret
+        # }
+  ```
 
-    `       $ curl -s -X POST --data-binary @sample_login.json https://localhost/api/v2/session/login      `
+  #### Example Response
 
-              # where sample_login.json contains:
-              # {
-              #   "username": "jane.doe",
-              #   "domain": "dev",
-              #   "password": "JanesPassword"    # pragma: allowlist secret
-              # }
-              
-
-    #### Example Response
-
-              {
-                "data": {
-                    "session": "1-224-3cb8fe975e0b505045d55584014d99f6510c110d19d0708524c1219dbf717535"
-                    }
+  ```
+        {
+          "data": {
+              "session": "1-224-3cb8fe975e0b505045d55584014d99f6510c110d19d0708524c1219dbf717535"
               }
-                
+        }
+  ```
 
--   #### Token API Endpoint
+- #### Token API Endpoint
 
-      
-    `       /api/v2/api_tokens      `
+  `       /api/v2/api_tokens      `
 
-    #### Example Request (session string):
+  #### Example Request (session string):
 
-    `       $ curl -s -X POST -H "session:{string}" --data "{json object}" https://localhost/api/v2/api_tokens      `
+  `       $ curl -s -X POST -H "session:{string}" --data "{json object}" https://localhost/api/v2/api_tokens      `
 
-    #### Header Parameters
+  #### Header Parameters
 
-    | Field   | Type   | Description                                                                                                      |
-    |---------|--------|------------------------------------------------------------------------------------------------------------------|
-    | session | string | (Required) The Tanium session or token string. The session string is returned by the Log In and Validate routes. |
+  | Field | Type | Description |
+  |---------|--------|------------------------------------------------------------------------------------------------------------------|
+  | session | string | (Required) The Tanium session or token string. The session string is returned by the Log In and Validate routes. |
 
-    #### Body Parameters
+  #### Body Parameters
 
-    | Field  | Type             | Description                                                                                                                                                                         |
-    |--------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | object | application/json | (Required) A json object containing fields "expire_in_days", "notes", and "trusted_ip_addresses". Be sure that the SOAR IP address is included in the "trusted_ip_addresses" field. |
+  | Field | Type | Description |
+  |--------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  | object | application/json | (Required) A json object containing fields "expire_in_days", "notes", and "trusted_ip_addresses". Be sure that the SOAR IP address is included in the "trusted_ip_addresses" field. |
 
-    #### Example Request (with fields):
+  #### Example Request (with fields):
 
-    `       $ curl -s -X POST -H "session:{string}" --data-binary @new_token.json https://localhost/api/v2/api_tokens      `
+  `       $ curl -s -X POST -H "session:{string}" --data-binary @new_token.json https://localhost/api/v2/api_tokens      `
 
-              # where new_token.json contains:
-              # {
-              #   "expire_in_days": 365,
-              #   "notes": "My module token.",
-              #   "trusted_ip_addresses": "10.10.10.15,192.168.3.0/24"
-              # }
-                
+  ```
+        # where new_token.json contains:
+        # {
+        #   "expire_in_days": 365,
+        #   "notes": "My module token.",
+        #   "trusted_ip_addresses": "10.10.10.15,192.168.3.0/24"
+        # }
+  ```
 
 ## Tanium Threat Response Typical Usage Example
 
@@ -171,808 +151,887 @@ are captured through Tanium UI.
 To delete a snapshot, you can run the `     delete snapshot    ` action by providing the **snapshot
 id** , which can be obtained by running the `     list snapshots    ` action.
 
+### Configuration variables
 
-### Configuration Variables
-The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a Threat Response asset in SOAR.
+This table lists the configuration variables required to operate Tanium Threat Response. These variables are specified when configuring a Threat Response asset in Splunk SOAR.
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
-**base_url** |  required  | string | Tanium Threat Response URL (e.g., https://tanium.example.com)
-**verify_server_cert** |  optional  | boolean | Verify Server Certificate
-**username** |  optional  | string | Username
-**password** |  optional  | password | Password
-**api_token** |  optional  | password | API Token
+**base_url** | required | string | Tanium Threat Response URL (e.g., https://tanium.example.com) |
+**verify_server_cert** | optional | boolean | Verify Server Certificate |
+**username** | optional | string | Username |
+**password** | optional | password | Password |
+**api_token** | optional | password | API Token |
 
-### Supported Actions  
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
-[list connections](#action-list-connections) - Get a list of connections  
-[create connection](#action-create-connection) - Create a new live endpoint connection  
-[get endpoint](#action-get-endpoint) - Get information for an endpoint  
-[close connection](#action-close-connection) - Close an endpoint connection  
-[delete connection](#action-delete-connection) - Delete an endpoint connection  
-[create snapshot](#action-create-snapshot) - Capture a new snapshot  
-[list snapshots](#action-list-snapshots) - Get a list of all snapshots  
-[delete snapshot](#action-delete-snapshot) - Delete a snapshot  
-[get process](#action-get-process) - Get information for a process  
-[get process tree](#action-get-process-tree) - Get process tree for a process instance  
-[get events](#action-get-events) - Build a query to get events of a certain type from a connection  
-[get events summary](#action-get-events-summary) - Returns counts of given event type  
-[list files](#action-list-files) - List downloaded files in Tanium Threat Response  
-[save file](#action-save-file) - Save a file from a remote connection to Tanium Threat Response  
-[delete file](#action-delete-file) - Delete a file evidence from disk and Tanium Threat Response database  
-[get file](#action-get-file) - Download a file from Tanium Threat Response to the SOAR Vault  
-[upload intel doc](#action-upload-intel-doc) - Upload intel document to Tanium Threat Response  
-[start quick scan](#action-start-quick-scan) - Scan a computer group for hashes in intel document  
-[list alerts](#action-list-alerts) - List alerts with optional filtering  
+### Supported Actions
+
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
+[list connections](#action-list-connections) - Get a list of connections \
+[create connection](#action-create-connection) - Create a new live endpoint connection \
+[get endpoint](#action-get-endpoint) - Get information for an endpoint \
+[close connection](#action-close-connection) - Close an endpoint connection \
+[delete connection](#action-delete-connection) - Delete an endpoint connection \
+[create snapshot](#action-create-snapshot) - Capture a new snapshot \
+[list snapshots](#action-list-snapshots) - Get a list of all snapshots \
+[delete snapshot](#action-delete-snapshot) - Delete a snapshot \
+[get process](#action-get-process) - Get information for a process \
+[get process tree](#action-get-process-tree) - Get process tree for a process instance \
+[get events](#action-get-events) - Build a query to get events of a certain type from a connection \
+[get events summary](#action-get-events-summary) - Returns counts of given event type \
+[list files](#action-list-files) - List downloaded files in Tanium Threat Response \
+[save file](#action-save-file) - Save a file from a remote connection to Tanium Threat Response \
+[delete file](#action-delete-file) - Delete a file evidence from disk and Tanium Threat Response database \
+[get file](#action-get-file) - Download a file from Tanium Threat Response to the SOAR Vault \
+[upload intel doc](#action-upload-intel-doc) - Upload intel document to Tanium Threat Response \
+[start quick scan](#action-start-quick-scan) - Scan a computer group for hashes in intel document \
+[list alerts](#action-list-alerts) - List alerts with optional filtering
 
 ## action: 'test connectivity'
+
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test**  
+Type: **test** \
 Read only: **True**
 
 This action requires the 'threat response use api' permission.
 
 #### Action Parameters
+
 No parameters are required for this action
 
 #### Action Output
-No Output  
+
+No Output
 
 ## action: 'list connections'
+
 Get a list of connections
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 #### Action Parameters
+
 No parameters are required for this action
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.data.\*.clientId | string |  `threatresponse client id`  |   2029399999 
-action_result.data.\*.connectedAt | numeric |  |   1641602339999 
-action_result.data.\*.eid | string |  |   1 
-action_result.data.\*.hasTools | boolean |  |   True 
-action_result.data.\*.hostname | string |  `host name`  |   test-client-1 
-action_result.data.\*.id | string |  `threatresponse connection id`  |   remote:test-client-1::1 
-action_result.data.\*.initiatedAt | numeric |  |   1641602339999 
-action_result.data.\*.ip | string |  `ip`  |   8.8.8.8 
-action_result.data.\*.message | string |  |   The connection has been disconnected. 
-action_result.data.\*.personaId | numeric |  |   0 
-action_result.data.\*.platform | string |  |   Windows 
-action_result.data.\*.sessionId | string |  |  
-action_result.data.\*.status | string |  |   disconnected 
-action_result.data.\*.userId | string |  |   1 
-action_result.summary.active_connections | numeric |  |   1 
-action_result.summary.inactive_connections | numeric |  |   1 
-action_result.summary.total_connections | numeric |  |   2 
-action_result.message | string |  |   Number of active connections found: 1 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.data.\*.clientId | string | `threatresponse client id` | 2029399999 |
+action_result.data.\*.connectedAt | numeric | | 1641602339999 |
+action_result.data.\*.eid | string | | 1 |
+action_result.data.\*.hasTools | boolean | | True |
+action_result.data.\*.hostname | string | `host name` | test-client-1 |
+action_result.data.\*.id | string | `threatresponse connection id` | remote:test-client-1::1 |
+action_result.data.\*.initiatedAt | numeric | | 1641602339999 |
+action_result.data.\*.ip | string | `ip` | 8.8.8.8 |
+action_result.data.\*.message | string | | The connection has been disconnected. |
+action_result.data.\*.personaId | numeric | | 0 |
+action_result.data.\*.platform | string | | Windows |
+action_result.data.\*.sessionId | string | | |
+action_result.data.\*.status | string | | disconnected |
+action_result.data.\*.userId | string | | 1 |
+action_result.summary.active_connections | numeric | | 1 |
+action_result.summary.inactive_connections | numeric | | 1 |
+action_result.summary.total_connections | numeric | | 2 |
+action_result.message | string | | Number of active connections found: 1 |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'create connection'
+
 Create a new live endpoint connection
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 This action consider the latest hostname from tanium if same names available.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**destination** |  required  | Client ID, Hostname, or IP address | string |  `threatresponse client id`  `host name`  `ip` 
-**destination_type** |  required  | Type of destination | string | 
+**destination** | required | Client ID, Hostname, or IP address | string | `threatresponse client id` `host name` `ip` |
+**destination_type** | required | Type of destination | string | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.destination | string |  `threatresponse client id`  `host name`  `ip`  |   test-client-1 
-action_result.parameter.destination_type | string |  |   hostname 
-action_result.data.\*.id | string |  `threatresponse connection id`  |   remote:test-client-1:2029399999:1 
-action_result.summary.connection_id | string |  |   remote:test-client:1163589999:2 
-action_result.message | string |  |   Connection created successfully 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.destination | string | `threatresponse client id` `host name` `ip` | test-client-1 |
+action_result.parameter.destination_type | string | | hostname |
+action_result.data.\*.id | string | `threatresponse connection id` | remote:test-client-1:2029399999:1 |
+action_result.summary.connection_id | string | | remote:test-client:1163589999:2 |
+action_result.message | string | | Connection created successfully |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'get endpoint'
+
 Get information for an endpoint
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**destination** |  required  | Client ID, Hostname, or IP Address | string |  `threatresponse client id`  `host name`  `ip` 
-**destination_type** |  required  | Type of destination information | string | 
+**destination** | required | Client ID, Hostname, or IP Address | string | `threatresponse client id` `host name` `ip` |
+**destination_type** | required | Type of destination information | string | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.destination | string |  `threatresponse client id`  `host name`  `ip`  |   test-client 
-action_result.parameter.destination_type | string |  |   hostname 
-action_result.data.\*.clientId | string |  `threatresponse client id`  |   2029399999 
-action_result.data.\*.configured | boolean |  |   False 
-action_result.data.\*.count | string |  |  
-action_result.data.\*.hostname | string |  `host name`  |   test-client-1 
-action_result.data.\*.installed | boolean |  |   False 
-action_result.data.\*.ip | string |  `ip`  |   8.8.8.8 
-action_result.data.\*.platform | string |  |   Windows 
-action_result.data.\*.ready | boolean |  |   False 
-action_result.data.\*.status | string |  |  
-action_result.summary.hostname | string |  |   test-client 
-action_result.summary.ip | string |  |   8.8.8.8 
-action_result.message | string |  |   Endpoint information fetched successfully 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.destination | string | `threatresponse client id` `host name` `ip` | test-client |
+action_result.parameter.destination_type | string | | hostname |
+action_result.data.\*.clientId | string | `threatresponse client id` | 2029399999 |
+action_result.data.\*.configured | boolean | | False |
+action_result.data.\*.count | string | | |
+action_result.data.\*.hostname | string | `host name` | test-client-1 |
+action_result.data.\*.installed | boolean | | False |
+action_result.data.\*.ip | string | `ip` | 8.8.8.8 |
+action_result.data.\*.platform | string | | Windows |
+action_result.data.\*.ready | boolean | | False |
+action_result.data.\*.status | string | | |
+action_result.summary.hostname | string | | test-client |
+action_result.summary.ip | string | | 8.8.8.8 |
+action_result.message | string | | Endpoint information fetched successfully |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'close connection'
+
 Close an endpoint connection
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:test-client:2029399999:1 
-action_result.data | string |  |  
-action_result.summary | string |  |  
-action_result.message | string |  |   Successfully closed connection 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:test-client:2029399999:1 |
+action_result.data | string | | |
+action_result.summary | string | | |
+action_result.message | string | | Successfully closed connection |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'delete connection'
+
 Delete an endpoint connection
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 A connection to an endpoint is deleted from Tanium Threat Response module. With the create connection action, we are able to retrieve/create a deleted connection.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:tanium-client:9929399999:1 
-action_result.data | string |  |  
-action_result.summary | string |  |  
-action_result.message | string |  |   Delete connection requested 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:tanium-client:9929399999:1 |
+action_result.data | string | | |
+action_result.summary | string | | |
+action_result.message | string | | Delete connection requested |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'create snapshot'
+
 Capture a new snapshot
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:tanium-client:9929399999:1 
-action_result.data | string |  |  
-action_result.data.\*.status | string |  |   IN PROGRESS 
-action_result.data.\*.taskInfo | string |  |  
-action_result.data.\*.taskInfo.id | numeric |  |   1234 
-action_result.data.\*.taskInfo.metadata.connection | string |  |   remote:WIN-Q0RB757Q335:2029399767:1 
-action_result.data.\*.taskInfo.startTime | string |  |   2023-02-16T07:17:21.432Z 
-action_result.data.\*.taskInfo.status | string |  |   STARTED 
-action_result.summary | string |  |  
-action_result.message | string |  |   Create snapshot requested 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:tanium-client:9929399999:1 |
+action_result.data | string | | |
+action_result.data.\*.status | string | | IN PROGRESS |
+action_result.data.\*.taskInfo | string | | |
+action_result.data.\*.taskInfo.id | numeric | | 1234 |
+action_result.data.\*.taskInfo.metadata.connection | string | | remote:WIN-Q0RB757Q335:2029399767:1 |
+action_result.data.\*.taskInfo.startTime | string | | 2023-02-16T07:17:21.432Z |
+action_result.data.\*.taskInfo.status | string | | STARTED |
+action_result.summary | string | | |
+action_result.message | string | | Create snapshot requested |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'list snapshots'
+
 Get a list of all snapshots
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 This action will fetch all snapshots that are available on the Tanium Server, i.e., the snapshot files that are uploaded manually and the snapshots that are captured through Tanium UI.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**limit** |  optional  | Maximum number of results to return (Default: 1000) | numeric | 
-**offset** |  optional  | Offset into the result set (Default: 0) | numeric | 
-**sort** |  optional  | Column by which to sort | string | 
+**limit** | optional | Maximum number of results to return (Default: 1000) | numeric | |
+**offset** | optional | Offset into the result set (Default: 0) | numeric | |
+**sort** | optional | Column by which to sort | string | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.limit | numeric |  |   3 
-action_result.parameter.offset | numeric |  |   2 
-action_result.parameter.sort | string |  |   name 
-action_result.data.\*.completed | string |  |   2022-01-15T01:26:39.424Z 
-action_result.data.\*.connectionId | string |  `threatresponse connection id`  |   remote:test-client:2029399999:1 
-action_result.data.\*.created | string |  |   2022-01-15T01:25:34.002Z 
-action_result.data.\*.evidenceType | string |  |   snapshot 
-action_result.data.\*.hostname | string |  `host name`  |   test-client 
-action_result.data.\*.isUpload | boolean |  |   False 
-action_result.data.\*.name | string |  |   test-client-1642209939999.db 
-action_result.data.\*.recorderVersion | numeric |  |   2 
-action_result.data.\*.size | numeric |  |   9921579999 
-action_result.data.\*.username | string |  |   administrator 
-action_result.data.\*.uuid | string |  `threatresponse snapshot id`  |   59998498-1248-4a5a-a97e-e905c9279999 
-action_result.summary.total_snapshots | numeric |  |   11 
-action_result.message | string |  |   Total snapshots: 11 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.limit | numeric | | 3 |
+action_result.parameter.offset | numeric | | 2 |
+action_result.parameter.sort | string | | name |
+action_result.data.\*.completed | string | | 2022-01-15T01:26:39.424Z |
+action_result.data.\*.connectionId | string | `threatresponse connection id` | remote:test-client:2029399999:1 |
+action_result.data.\*.created | string | | 2022-01-15T01:25:34.002Z |
+action_result.data.\*.evidenceType | string | | snapshot |
+action_result.data.\*.hostname | string | `host name` | test-client |
+action_result.data.\*.isUpload | boolean | | False |
+action_result.data.\*.name | string | | test-client-1642209939999.db |
+action_result.data.\*.recorderVersion | numeric | | 2 |
+action_result.data.\*.size | numeric | | 9921579999 |
+action_result.data.\*.username | string | | administrator |
+action_result.data.\*.uuid | string | `threatresponse snapshot id` | 59998498-1248-4a5a-a97e-e905c9279999 |
+action_result.summary.total_snapshots | numeric | | 11 |
+action_result.message | string | | Total snapshots: 11 |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'delete snapshot'
+
 Delete a snapshot
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 This action can be used to delete the snapshots that are uploaded manually and the snapshots that are captured through Tanium UI.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**snapshot_ids** |  required  | Comma-separated Snapshot IDs | string |  `threatresponse snapshot id` 
+**snapshot_ids** | required | Comma-separated Snapshot IDs | string | `threatresponse snapshot id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.snapshot_ids | string |  `threatresponse snapshot id`  |   99999f6a-5f18-4ddb-a8cb-404b9a9a9a9a 
-action_result.data | string |  |  
-action_result.summary | string |  |  
-action_result.message | string |  |   Delete snapshot requested 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.snapshot_ids | string | `threatresponse snapshot id` | 99999f6a-5f18-4ddb-a8cb-404b9a9a9a9a |
+action_result.data | string | | |
+action_result.summary | string | | |
+action_result.message | string | | Delete snapshot requested |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'get process'
+
 Get information for a process
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
-**process_table_id** |  required  | Process Table ID | string |  `threatresponse process table id` 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
+**process_table_id** | required | Process Table ID | string | `threatresponse process table id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:tanium-client:9929399999:1 
-action_result.parameter.process_table_id | string |  `threatresponse process table id`  |   99057594043959999 
-action_result.data.\*.detail | string |  `file name`  |   440: C:\\Windows\\System32\\test.exe 
-action_result.data.\*.id | string |  |   99057594043959999 
-action_result.data.\*.operation | string |  |   CreateProcess 
-action_result.data.\*.timestamp | string |  |   2021-12-13 06:08:17.820 
-action_result.data.\*.timestamp_raw | numeric |  |   1639975699999 
-action_result.data.\*.type | string |  |   Process 
-action_result.summary | string |  |  
-action_result.message | string |  |   Process information retrieved 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:tanium-client:9929399999:1 |
+action_result.parameter.process_table_id | string | `threatresponse process table id` | 99057594043959999 |
+action_result.data.\*.detail | string | `file name` | 440: C:\\Windows\\System32\\test.exe |
+action_result.data.\*.id | string | | 99057594043959999 |
+action_result.data.\*.operation | string | | CreateProcess |
+action_result.data.\*.timestamp | string | | 2021-12-13 06:08:17.820 |
+action_result.data.\*.timestamp_raw | numeric | | 1639975699999 |
+action_result.data.\*.type | string | | Process |
+action_result.summary | string | | |
+action_result.message | string | | Process information retrieved |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'get process tree'
+
 Get process tree for a process instance
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 This action gives the process tree with sibling and children with respect to the 'limit' parameter. Based on API behavior, if more processes are available for the given process table id, the API response contains a maximum of 301 children and 602 siblings.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
-**process_table_id** |  required  | Process Table ID | string |  `threatresponse process table id` 
-**process_context** |  optional  | Comma-separated list of process contexts to include ('parent', 'node', 'siblings', 'children'), if not provided then return all contexts | string | 
-**limit** |  optional  | Maximum number of siblings and children to return (Default: 100) | numeric | 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
+**process_table_id** | required | Process Table ID | string | `threatresponse process table id` |
+**process_context** | optional | Comma-separated list of process contexts to include ('parent', 'node', 'siblings', 'children'), if not provided then return all contexts | string | |
+**limit** | optional | Maximum number of siblings and children to return (Default: 100) | numeric | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:test-client:2029999999:1 
-action_result.parameter.limit | numeric |  |   100 
-action_result.parameter.process_context | string |  |   parent 
-action_result.parameter.process_table_id | string |  `threatresponse process table id`  |   1234567890 
-action_result.data.\*.children_count | numeric |  |   1 
-action_result.data.\*.context | string |  |   parent 
-action_result.data.\*.create_time | string |  |   2022-03-10 18:29:04.398 
-action_result.data.\*.create_time_raw | numeric |  |   1646936999998 
-action_result.data.\*.dns_events_count | numeric |  |   0 
-action_result.data.\*.driver_events_count | numeric |  |   0 
-action_result.data.\*.end_time | string |  |  
-action_result.data.\*.end_time_raw | numeric |  |  
-action_result.data.\*.exit_code | numeric |  |  
-action_result.data.\*.file_events_count | numeric |  |   0 
-action_result.data.\*.group_name | string |  |   NT AUTHORITY 
-action_result.data.\*.hash_type_name | string |  |   MD5 
-action_result.data.\*.id | string |  |   1234567890123456789 
-action_result.data.\*.image_events_count | numeric |  |   0 
-action_result.data.\*.network_events_count | numeric |  |   0 
-action_result.data.\*.parent_process_table_id | string |  |   1234567890123456789 
-action_result.data.\*.pid | numeric |  `pid`  |   9999 
-action_result.data.\*.process_command_line | string |  |   "C:\\Program Files\\Tanium\\Tanium Module Server\\services\\test-v1\\test.exe" 
-action_result.data.\*.process_events_count | numeric |  |   1 
-action_result.data.\*.process_hash | string |  `md5`  |   d0956eacc60b294c0e75f4244a99999a 
-action_result.data.\*.process_path | string |  `file name`  |   C:\\Program Files\\Tanium\\Tanium Module Server\\services\\test-v1\\test.exe 
-action_result.data.\*.process_table_id | string |  |   1234567890123456789 
-action_result.data.\*.registry_events_count | numeric |  |   0 
-action_result.data.\*.security_events_count | numeric |  |   0 
-action_result.data.\*.unique_process_id | string |  |   1234567890123456789 
-action_result.data.\*.user_name | string |  |   TEST 
-action_result.summary.total_items | numeric |  |   54 
-action_result.message | string |  |   Process tree retrieved 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:test-client:2029999999:1 |
+action_result.parameter.limit | numeric | | 100 |
+action_result.parameter.process_context | string | | parent |
+action_result.parameter.process_table_id | string | `threatresponse process table id` | 1234567890 |
+action_result.data.\*.children_count | numeric | | 1 |
+action_result.data.\*.context | string | | parent |
+action_result.data.\*.create_time | string | | 2022-03-10 18:29:04.398 |
+action_result.data.\*.create_time_raw | numeric | | 1646936999998 |
+action_result.data.\*.dns_events_count | numeric | | 0 |
+action_result.data.\*.driver_events_count | numeric | | 0 |
+action_result.data.\*.end_time | string | | |
+action_result.data.\*.end_time_raw | numeric | | |
+action_result.data.\*.exit_code | numeric | | |
+action_result.data.\*.file_events_count | numeric | | 0 |
+action_result.data.\*.group_name | string | | NT AUTHORITY |
+action_result.data.\*.hash_type_name | string | | MD5 |
+action_result.data.\*.id | string | | 1234567890123456789 |
+action_result.data.\*.image_events_count | numeric | | 0 |
+action_result.data.\*.network_events_count | numeric | | 0 |
+action_result.data.\*.parent_process_table_id | string | | 1234567890123456789 |
+action_result.data.\*.pid | numeric | `pid` | 9999 |
+action_result.data.\*.process_command_line | string | | "C:\\Program Files\\Tanium\\Tanium Module Server\\services\\test-v1\\test.exe" |
+action_result.data.\*.process_events_count | numeric | | 1 |
+action_result.data.\*.process_hash | string | `md5` | d0956eacc60b294c0e75f4244a99999a |
+action_result.data.\*.process_path | string | `file name` | C:\\Program Files\\Tanium\\Tanium Module Server\\services\\test-v1\\test.exe |
+action_result.data.\*.process_table_id | string | | 1234567890123456789 |
+action_result.data.\*.registry_events_count | numeric | | 0 |
+action_result.data.\*.security_events_count | numeric | | 0 |
+action_result.data.\*.unique_process_id | string | | 1234567890123456789 |
+action_result.data.\*.user_name | string | | TEST |
+action_result.summary.total_items | numeric | | 54 |
+action_result.message | string | | Process tree retrieved |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'get events'
+
 Build a query to get events of a certain type from a connection
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 When there are more data available, this action result will contain one more data than the limit.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
-**event_type** |  required  | Type of event | string | 
-**limit** |  optional  | Maximum number of results to return with a hard limit 1000 (Default: 1000) | numeric | 
-**offset** |  optional  | Offset into the result set (Default: 0) | numeric | 
-**sort** |  optional  | Comma-separated list of fields to sort on (prefixed by '-' for descending and ordered by priority left to right) | string | 
-**fields** |  optional  | Comma-separated list of fields to search on | string | 
-**values** |  optional  | Comma-separated list of values to search | string | 
-**operators** |  optional  | Comma-separated list of operators (co,nc,isempty,isnull,eq,ne,gt,gte,lt,lte,range) for filter conditions | string | 
-**filter_type** |  optional  | Operator to be applied between filters (Default: 'all') | string | 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
+**event_type** | required | Type of event | string | |
+**limit** | optional | Maximum number of results to return with a hard limit 1000 (Default: 1000) | numeric | |
+**offset** | optional | Offset into the result set (Default: 0) | numeric | |
+**sort** | optional | Comma-separated list of fields to sort on (prefixed by '-' for descending and ordered by priority left to right) | string | |
+**fields** | optional | Comma-separated list of fields to search on | string | |
+**values** | optional | Comma-separated list of values to search | string | |
+**operators** | optional | Comma-separated list of operators (co,nc,isempty,isnull,eq,ne,gt,gte,lt,lte,range) for filter conditions | string | |
+**filter_type** | optional | Operator to be applied between filters (Default: 'all') | string | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:tanium-client:9929399999:1 
-action_result.parameter.event_type | string |  |   process  file  network  registry  driver  sid  dns 
-action_result.parameter.fields | string |  |   test_field 
-action_result.parameter.filter_type | string |  |   all 
-action_result.parameter.limit | numeric |  |   100 
-action_result.parameter.offset | numeric |  |   1 
-action_result.parameter.operators | string |  |   test_operator 
-action_result.parameter.sort | string |  |   test_field 
-action_result.parameter.values | string |  |   test_value 
-action_result.data.\*.Hashes | string |  `md5`  |   8E1XX946948TESTA3CB70374X795 
-action_result.data.\*.ImageLoaded | string |  `file path`  `file name`  |   C:\\Windows\\System32\\drivers\\test.sys 
-action_result.data.\*.Signature | string |  |   test signature 
-action_result.data.\*.Signed | string |  |   true 
-action_result.data.\*.create_time | string |  |   2018-05-03 17:45:03.423 
-action_result.data.\*.create_time_raw | numeric |  |   1234567890 
-action_result.data.\*.destination_addr | string |  `ip`  |   8.8.8.8 
-action_result.data.\*.destination_port | numeric |  |   80 
-action_result.data.\*.detail | string |  |   win-q1ab345z599:  
-action_result.data.\*.details | string |  |  
-action_result.data.\*.domain | string |  `domain`  |   TEST AUTHORITY 
-action_result.data.\*.end_time | string |  |   2018-09-12 16:16:29.256 
-action_result.data.\*.end_time_raw | numeric |  |   123456789 
-action_result.data.\*.event_id | string |  |   10 
-action_result.data.\*.event_opcode | string |  |   10 
-action_result.data.\*.event_operation_id | numeric |  |   1 
-action_result.data.\*.event_record_id | string |  |   10 
-action_result.data.\*.event_task_id | numeric |  |   5 
-action_result.data.\*.evidence | string |  |   4e1f2655-4043-45f0-bada-b02a48208753 
-action_result.data.\*.exit_code | numeric |  |   0 
-action_result.data.\*.file | string |  `file path`  |   C:\\Program Files\\Cylance\\Desktop\\test.log 
-action_result.data.\*.group_name | string |  |   NT AUTHORITY 
-action_result.data.\*.hash_type_name | string |  |   MD5 
-action_result.data.\*.id | numeric |  |   123456789 
-action_result.data.\*.im_cares | numeric |  |   0 
-action_result.data.\*.key_path | string |  |   HKEY_USERS\\S-1-5-21-725015448-883120318-824768647-1135\\Software\\Test\\Office\\16.0\\Common\\ClientTelemetry\\RulesMetadata\\test.exe\\ETWMonitor\\{F999XXX8E-422D-4B5C-B20E-90D999X9X99X} 
-action_result.data.\*.library_hash | string |  |   9999x4196853xx9999d90e46a703f690 
-action_result.data.\*.operation | string |  |   Write 
-action_result.data.\*.path | string |  |   C:\\Windows\\Test.NET\\Framework64\\v4.0.30319\\test.dll 
-action_result.data.\*.pid | numeric |  |   9999 
-action_result.data.\*.process_command_line | string |  `file name`  |   test.exe 
-action_result.data.\*.process_id | numeric |  `pid`  |   4 
-action_result.data.\*.process_name | string |  `file name`  `file path`  |   System 
-action_result.data.\*.process_path | string |  |   C:\\Program Files\\Tanium\\Tanium Module Server\\services\\test-service\\test.exe 
-action_result.data.\*.process_table_id | string |  `threatresponse process table id`  |   123456 
-action_result.data.\*.query | string |  |  
-action_result.data.\*.response | string |  |  
-action_result.data.\*.sid | string |  |   S-1-5-99 
-action_result.data.\*.sid_hash | numeric |  |   3 
-action_result.data.\*.signature_issuer | string |  |   Test Code Signing PCA 
-action_result.data.\*.signature_status | numeric |  |   1 
-action_result.data.\*.signature_subject | string |  |   Test Corporation 
-action_result.data.\*.source_addr | string |  `ip`  |   8.8.8.8 
-action_result.data.\*.source_port | numeric |  |   12345 
-action_result.data.\*.timestamp | string |  |   2018-09-03 00:33:35.981 
-action_result.data.\*.timestamp_raw | numeric |  |   123456789 
-action_result.data.\*.type | string |  |   DNS 
-action_result.data.\*.user_name | string |  |   SYSTEM 
-action_result.data.\*.username | string |  `user name`  |   SYSTEM 
-action_result.data.\*.value_name | string |  |   Categories 
-action_result.summary | string |  |  
-action_result.summary.More data | boolean |  |   True  False 
-action_result.summary.event_count | string |  |   123456 
-action_result.summary.more_data | boolean |  |   True  False 
-action_result.summary.success | boolean |  |   True  False 
-action_result.summary.type | string |  |   process  file  network  registry  driver  sid  dns 
-action_result.message | string |  |   Success: True  Type: process, Event count: 316439  Type: file, Event count: 2789749  Type: network, Event count: 1021533  Type: registry, Event count: 4576072  Type: driver, Event count: 322  Type: sid, Event count: 22  Type: dns, Event count: 3235817 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:tanium-client:9929399999:1 |
+action_result.parameter.event_type | string | | process file network registry driver sid dns |
+action_result.parameter.fields | string | | test_field |
+action_result.parameter.filter_type | string | | all |
+action_result.parameter.limit | numeric | | 100 |
+action_result.parameter.offset | numeric | | 1 |
+action_result.parameter.operators | string | | test_operator |
+action_result.parameter.sort | string | | test_field |
+action_result.parameter.values | string | | test_value |
+action_result.data.\*.Hashes | string | `md5` | 8E1XX946948TESTA3CB70374X795 |
+action_result.data.\*.ImageLoaded | string | `file path` `file name` | C:\\Windows\\System32\\drivers\\test.sys |
+action_result.data.\*.Signature | string | | test signature |
+action_result.data.\*.Signed | string | | true |
+action_result.data.\*.create_time | string | | 2018-05-03 17:45:03.423 |
+action_result.data.\*.create_time_raw | numeric | | 1234567890 |
+action_result.data.\*.destination_addr | string | `ip` | 8.8.8.8 |
+action_result.data.\*.destination_port | numeric | | 80 |
+action_result.data.\*.detail | string | | win-q1ab345z599: |
+action_result.data.\*.details | string | | |
+action_result.data.\*.domain | string | `domain` | TEST AUTHORITY |
+action_result.data.\*.end_time | string | | 2018-09-12 16:16:29.256 |
+action_result.data.\*.end_time_raw | numeric | | 123456789 |
+action_result.data.\*.event_id | string | | 10 |
+action_result.data.\*.event_opcode | string | | 10 |
+action_result.data.\*.event_operation_id | numeric | | 1 |
+action_result.data.\*.event_record_id | string | | 10 |
+action_result.data.\*.event_task_id | numeric | | 5 |
+action_result.data.\*.evidence | string | | 4e1f2655-4043-45f0-bada-b02a48208753 |
+action_result.data.\*.exit_code | numeric | | 0 |
+action_result.data.\*.file | string | `file path` | C:\\Program Files\\Cylance\\Desktop\\test.log |
+action_result.data.\*.group_name | string | | NT AUTHORITY |
+action_result.data.\*.hash_type_name | string | | MD5 |
+action_result.data.\*.id | numeric | | 123456789 |
+action_result.data.\*.im_cares | numeric | | 0 |
+action_result.data.\*.key_path | string | | HKEY_USERS\\S-1-5-21-725015448-883120318-824768647-1135\\Software\\Test\\Office\\16.0\\Common\\ClientTelemetry\\RulesMetadata\\test.exe\\ETWMonitor\\{F999XXX8E-422D-4B5C-B20E-90D999X9X99X} |
+action_result.data.\*.library_hash | string | | 9999x4196853xx9999d90e46a703f690 |
+action_result.data.\*.operation | string | | Write |
+action_result.data.\*.path | string | | C:\\Windows\\Test.NET\\Framework64\\v4.0.30319\\test.dll |
+action_result.data.\*.pid | numeric | | 9999 |
+action_result.data.\*.process_command_line | string | `file name` | test.exe |
+action_result.data.\*.process_id | numeric | `pid` | 4 |
+action_result.data.\*.process_name | string | `file name` `file path` | System |
+action_result.data.\*.process_path | string | | C:\\Program Files\\Tanium\\Tanium Module Server\\services\\test-service\\test.exe |
+action_result.data.\*.process_table_id | string | `threatresponse process table id` | 123456 |
+action_result.data.\*.query | string | | |
+action_result.data.\*.response | string | | |
+action_result.data.\*.sid | string | | S-1-5-99 |
+action_result.data.\*.sid_hash | numeric | | 3 |
+action_result.data.\*.signature_issuer | string | | Test Code Signing PCA |
+action_result.data.\*.signature_status | numeric | | 1 |
+action_result.data.\*.signature_subject | string | | Test Corporation |
+action_result.data.\*.source_addr | string | `ip` | 8.8.8.8 |
+action_result.data.\*.source_port | numeric | | 12345 |
+action_result.data.\*.timestamp | string | | 2018-09-03 00:33:35.981 |
+action_result.data.\*.timestamp_raw | numeric | | 123456789 |
+action_result.data.\*.type | string | | DNS |
+action_result.data.\*.user_name | string | | SYSTEM |
+action_result.data.\*.username | string | `user name` | SYSTEM |
+action_result.data.\*.value_name | string | | Categories |
+action_result.summary | string | | |
+action_result.summary.More data | boolean | | True False |
+action_result.summary.event_count | string | | 123456 |
+action_result.summary.more_data | boolean | | True False |
+action_result.summary.success | boolean | | True False |
+action_result.summary.type | string | | process file network registry driver sid dns |
+action_result.message | string | | Success: True Type: process, Event count: 316439 Type: file, Event count: 2789749 Type: network, Event count: 1021533 Type: registry, Event count: 4576072 Type: driver, Event count: 322 Type: sid, Event count: 22 Type: dns, Event count: 3235817 |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'get events summary'
+
 Returns counts of given event type
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
-**event_type** |  required  | Type of event | string | 
-**fields** |  optional  | Comma-separated list of fields to search on | string | 
-**values** |  optional  | Comma-separated list of values to search | string | 
-**operators** |  optional  | Comma-separated list of operators (co,nc,isempty,isnull,eq,ne,gt,gte,lt,lte,range) for filter conditions | string | 
-**filter_type** |  optional  | Operator to be applied between filters (Default: 'all') | string | 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
+**event_type** | required | Type of event | string | |
+**fields** | optional | Comma-separated list of fields to search on | string | |
+**values** | optional | Comma-separated list of values to search | string | |
+**operators** | optional | Comma-separated list of operators (co,nc,isempty,isnull,eq,ne,gt,gte,lt,lte,range) for filter conditions | string | |
+**filter_type** | optional | Operator to be applied between filters (Default: 'all') | string | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:test-client:1163582091:2 
-action_result.parameter.event_type | string |  |   network 
-action_result.parameter.fields | string |  |   pid 
-action_result.parameter.filter_type | string |  |   all 
-action_result.parameter.operators | string |  |   eq 
-action_result.parameter.values | string |  |   123 
-action_result.data.\*.count | numeric |  |   10000 
-action_result.data.\*.has_more | boolean |  |   False 
-action_result.summary.combined_events_count | numeric |  |   100000 
-action_result.summary.image_events_count | numeric |  |   18 
-action_result.summary.total_combined_events_count | numeric |  |   10000 
-action_result.summary.total_dns_events_count | numeric |  |   10000 
-action_result.summary.total_driver_events_count | numeric |  |   10000 
-action_result.summary.total_network_events_count | numeric |  |   10000 
-action_result.message | string |  |   Total network events count: 2016 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:test-client:1163582091:2 |
+action_result.parameter.event_type | string | | network |
+action_result.parameter.fields | string | | pid |
+action_result.parameter.filter_type | string | | all |
+action_result.parameter.operators | string | | eq |
+action_result.parameter.values | string | | 123 |
+action_result.data.\*.count | numeric | | 10000 |
+action_result.data.\*.has_more | boolean | | False |
+action_result.summary.combined_events_count | numeric | | 100000 |
+action_result.summary.image_events_count | numeric | | 18 |
+action_result.summary.total_combined_events_count | numeric | | 10000 |
+action_result.summary.total_dns_events_count | numeric | | 10000 |
+action_result.summary.total_driver_events_count | numeric | | 10000 |
+action_result.summary.total_network_events_count | numeric | | 10000 |
+action_result.message | string | | Total network events count: 2016 |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'list files'
+
 List downloaded files in Tanium Threat Response
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**limit** |  optional  | Maximum number of results to return (Default: 1000) | numeric | 
-**offset** |  optional  | Offset into the result set (Default: 0) | numeric | 
-**sort** |  optional  | Column by which to sort (prefixed by '-' for descending order) | string | 
+**limit** | optional | Maximum number of results to return (Default: 1000) | numeric | |
+**offset** | optional | Offset into the result set (Default: 0) | numeric | |
+**sort** | optional | Column by which to sort (prefixed by '-' for descending order) | string | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.limit | numeric |  |   1000 
-action_result.parameter.offset | numeric |  |   1 
-action_result.parameter.sort | string |  |   hostname 
-action_result.data.\*.comments | string |  |  
-action_result.data.\*.created_by | string |  |  
-action_result.data.\*.created_by_proc | string |  |  
-action_result.data.\*.downloaded | string |  |   2022-01-11T20:03:15.629Z 
-action_result.data.\*.evidenceType | string |  |   file 
-action_result.data.\*.hash | string |  `threatresponse file hash`  |  
-action_result.data.\*.hostname | string |  `host name`  |   test-client 
-action_result.data.\*.last_modified | string |  |   2021-11-16T19:19:39.000Z 
-action_result.data.\*.last_modified_by | string |  |  
-action_result.data.\*.last_modified_by_proc | string |  |  
-action_result.data.\*.path | string |  `file path`  `file name`  |   C:\\test\\test.exe 
-action_result.data.\*.process_creation_time | string |  |   2021-11-16T19:19:53.000Z 
-action_result.data.\*.size | numeric |  |   123456 
-action_result.data.\*.tags | string |  |  
-action_result.data.\*.username | string |  `user name`  |   administrator 
-action_result.data.\*.uuid | string |  `threatresponse file id`  |   79478f3e-061b-4b59-x99x-349415df99x0 
-action_result.summary.file_count | numeric |  |   1 
-action_result.message | string |  |   File count: 1 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.limit | numeric | | 1000 |
+action_result.parameter.offset | numeric | | 1 |
+action_result.parameter.sort | string | | hostname |
+action_result.data.\*.comments | string | | |
+action_result.data.\*.created_by | string | | |
+action_result.data.\*.created_by_proc | string | | |
+action_result.data.\*.downloaded | string | | 2022-01-11T20:03:15.629Z |
+action_result.data.\*.evidenceType | string | | file |
+action_result.data.\*.hash | string | `threatresponse file hash` | |
+action_result.data.\*.hostname | string | `host name` | test-client |
+action_result.data.\*.last_modified | string | | 2021-11-16T19:19:39.000Z |
+action_result.data.\*.last_modified_by | string | | |
+action_result.data.\*.last_modified_by_proc | string | | |
+action_result.data.\*.path | string | `file path` `file name` | C:\\test\\test.exe |
+action_result.data.\*.process_creation_time | string | | 2021-11-16T19:19:53.000Z |
+action_result.data.\*.size | numeric | | 123456 |
+action_result.data.\*.tags | string | | |
+action_result.data.\*.username | string | `user name` | administrator |
+action_result.data.\*.uuid | string | `threatresponse file id` | 79478f3e-061b-4b59-x99x-349415df99x0 |
+action_result.summary.file_count | numeric | | 1 |
+action_result.message | string | | File count: 1 |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'save file'
+
 Save a file from a remote connection to Tanium Threat Response
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**connection_id** |  required  | Connection ID | string |  `threatresponse connection id` 
-**file_path** |  required  | Location of file on remote computer | string |  `file path` 
+**connection_id** | required | Connection ID | string | `threatresponse connection id` |
+**file_path** | required | Location of file on remote computer | string | `file path` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.connection_id | string |  `threatresponse connection id`  |   remote:tanium-client:9929399999:1 
-action_result.parameter.file_path | string |  `file path`  |   C:\\test\\System32\\TEST.EXE 
-action_result.data | string |  |  
-action_result.data.\*.status | string |  |   ACCEPTED 
-action_result.data.\*.taskInfo.id | numeric |  |   1396 
-action_result.data.\*.taskInfo.metadata.compress | string |  |   true 
-action_result.data.\*.taskInfo.metadata.connection | string |  |   remote:WIN-X0XX757Q335:2029399999:1 
-action_result.data.\*.taskInfo.startTime | string |  |   2023-02-02T06:45:29.054Z 
-action_result.data.\*.taskInfo.status | string |  |   STARTED 
-action_result.summary | string |  |  
-action_result.message | string |  |   Save file requested 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.connection_id | string | `threatresponse connection id` | remote:tanium-client:9929399999:1 |
+action_result.parameter.file_path | string | `file path` | C:\\test\\System32\\TEST.EXE |
+action_result.data | string | | |
+action_result.data.\*.status | string | | ACCEPTED |
+action_result.data.\*.taskInfo.id | numeric | | 1396 |
+action_result.data.\*.taskInfo.metadata.compress | string | | true |
+action_result.data.\*.taskInfo.metadata.connection | string | | remote:WIN-X0XX757Q335:2029399999:1 |
+action_result.data.\*.taskInfo.startTime | string | | 2023-02-02T06:45:29.054Z |
+action_result.data.\*.taskInfo.status | string | | STARTED |
+action_result.summary | string | | |
+action_result.message | string | | Save file requested |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'delete file'
+
 Delete a file evidence from disk and Tanium Threat Response database
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**file_id** |  required  | ID of file on Tanium | string |  `threatresponse file id` 
+**file_id** | required | ID of file on Tanium | string | `threatresponse file id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.file_id | string |  `threatresponse file id`  |   x9994a0a-2f87-424f-xxxx-99deb726d999 
-action_result.data | string |  |  
-action_result.summary | string |  |  
-action_result.message | string |  |   Delete file requested 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.file_id | string | `threatresponse file id` | x9994a0a-2f87-424f-xxxx-99deb726d999 |
+action_result.data | string | | |
+action_result.summary | string | | |
+action_result.message | string | | Delete file requested |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'get file'
+
 Download a file from Tanium Threat Response to the SOAR Vault
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**file_id** |  required  | ID of file on Tanium | string |  `threatresponse file id` 
+**file_id** | required | ID of file on Tanium | string | `threatresponse file id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.file_id | string |  `threatresponse file id`  |   x9999a0a-2f87-424f-xxxx-99deb726d999 
-action_result.data.\*.container | string |  |   test 
-action_result.data.\*.container_id | numeric |  |   1234 
-action_result.data.\*.create_time | string |  |   10 minutes ago 
-action_result.data.\*.created_via | string |  |   automation 
-action_result.data.\*.file_name | string |  |   test.exe 
-action_result.data.\*.hash | string |  `sha1`  |   x999999ea88859f61803be0c3b9c5636b57d9999 
-action_result.data.\*.id | numeric |  |   10 
-action_result.data.\*.message | string |  |   success 
-action_result.data.\*.metadata.action | string |  |   get file 
-action_result.data.\*.metadata.app_run_id | numeric |  |   1234 
-action_result.data.\*.metadata.sha1 | string |  |   12345678901e4c24a9b00e0d6a369252059a 
-action_result.data.\*.metadata.sha256 | string |  |   c9d3xs232c3ccd4904e8d727a7905093ac9994139fa92674f724313947bde99 
-action_result.data.\*.metadata.size | numeric |  |   123456 
-action_result.data.\*.mime_type | string |  |   application/zip 
-action_result.data.\*.name | string |  `file name`  |   TEST.EXE 
-action_result.data.\*.path | string |  |   /opt/phantom/vault/00/72/12121217890e4c24a9b00e0d6a369259999a 
-action_result.data.\*.size | numeric |  |   12345 
-action_result.data.\*.succeeded | boolean |  |   True 
-action_result.data.\*.task | string |  |  
-action_result.data.\*.user | string |  |   admin 
-action_result.data.\*.vault_document | numeric |  |   26 
-action_result.data.\*.vault_id | string |  `sha1`  `vault id`  |   x057415ea9999f61803be0c3b9c5636b57d9999 
-action_result.summary | string |  |  
-action_result.message | string |  |   File downloaded to vault 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.file_id | string | `threatresponse file id` | x9999a0a-2f87-424f-xxxx-99deb726d999 |
+action_result.data.\*.container | string | | test |
+action_result.data.\*.container_id | numeric | | 1234 |
+action_result.data.\*.create_time | string | | 10 minutes ago |
+action_result.data.\*.created_via | string | | automation |
+action_result.data.\*.file_name | string | | test.exe |
+action_result.data.\*.hash | string | `sha1` | x999999ea88859f61803be0c3b9c5636b57d9999 |
+action_result.data.\*.id | numeric | | 10 |
+action_result.data.\*.message | string | | success |
+action_result.data.\*.metadata.action | string | | get file |
+action_result.data.\*.metadata.app_run_id | numeric | | 1234 |
+action_result.data.\*.metadata.sha1 | string | | 12345678901e4c24a9b00e0d6a369252059a |
+action_result.data.\*.metadata.sha256 | string | | c9d3xs232c3ccd4904e8d727a7905093ac9994139fa92674f724313947bde99 |
+action_result.data.\*.metadata.size | numeric | | 123456 |
+action_result.data.\*.mime_type | string | | application/zip |
+action_result.data.\*.name | string | `file name` | TEST.EXE |
+action_result.data.\*.path | string | | /opt/phantom/vault/00/72/12121217890e4c24a9b00e0d6a369259999a |
+action_result.data.\*.size | numeric | | 12345 |
+action_result.data.\*.succeeded | boolean | | True |
+action_result.data.\*.task | string | | |
+action_result.data.\*.user | string | | admin |
+action_result.data.\*.vault_document | numeric | | 26 |
+action_result.data.\*.vault_id | string | `sha1` `vault id` | x057415ea9999f61803be0c3b9c5636b57d9999 |
+action_result.summary | string | | |
+action_result.message | string | | File downloaded to vault |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'upload intel doc'
+
 Upload intel document to Tanium Threat Response
 
-Type: **generic**  
+Type: **generic** \
 Read only: **False**
 
 This action requires the 'threat response intels write' permission.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**file_name** |  optional  | The target file name of the intel document | string | 
-**intel_doc** |  optional  | The text of the intel document | string |  `threatresponse intel doc` 
-**vault_id** |  optional  | Vault ID | string |  `vault id` 
+**file_name** | optional | The target file name of the intel document | string | |
+**intel_doc** | optional | The text of the intel document | string | `threatresponse intel doc` |
+**vault_id** | optional | Vault ID | string | `vault id` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.file_name | string |  |   test_file.yara 
-action_result.parameter.intel_doc | string |  `threatresponse intel doc`  |  
-action_result.parameter.vault_id | string |  `vault id`  |   99bdf807609cddc8d4643d53ef18ab08x989x99 
-action_result.data.\*.alertCount | numeric |  |   0 
-action_result.data.\*.blobId | string |  |   cbdbca3e-0d97-4595-934d-56d24c9b8f95 
-action_result.data.\*.compiled | string |  |  
-action_result.data.\*.contents | string |  |   rule ExampleRule { strings: $my_text_string = "text here" } 
-action_result.data.\*.createdAt | string |  |   2022-03-24T17:09:22.712Z 
-action_result.data.\*.data.alertCount | numeric |  |  
-action_result.data.\*.data.blobId | string |  |   fb6da13b-f806-4f5b-a1ab-856348957931 
-action_result.data.\*.data.compiled | string |  |  
-action_result.data.\*.data.contents | string |  |   rule ExampleRule { strings: $my_text_string = "text here" $my_hex_string = { E2 34 A1 C8 23 FB } condition: $my_text_string or $my_hex_string } 
-action_result.data.\*.data.createdAt | string |  |   2023-02-27T09:29:02.962Z 
-action_result.data.\*.data.description | string |  |  
-action_result.data.\*.data.id | numeric |  |   527 
-action_result.data.\*.data.intrinsicId | string |  |   test_file_1.yara 
-action_result.data.\*.data.isSchemaValid | boolean |  |   True  False 
-action_result.data.\*.data.md5 | string |  |   736189521d9da5910de08107c47f015f 
-action_result.data.\*.data.mitreAttack | string |  |  
-action_result.data.\*.data.name | string |  |   test_file_1.yara 
-action_result.data.\*.data.platforms | string |  |  
-action_result.data.\*.data.revisionId | numeric |  |   1 
-action_result.data.\*.data.size | numeric |  |   143 
-action_result.data.\*.data.sourceId | numeric |  |   1 
-action_result.data.\*.data.type | string |  |   yara 
-action_result.data.\*.data.typeVersion | string |  |   4 
-action_result.data.\*.data.unresolvedAlertCount | numeric |  |  
-action_result.data.\*.data.updatedAt | string |  |   2023-02-27T09:29:02.962Z 
-action_result.data.\*.description | string |  |  
-action_result.data.\*.funnelAllFindingsToConnectSetAt | string |  |  
-action_result.data.\*.funnelAllFindingsToConnectSetBy | string |  |  
-action_result.data.\*.gatherDegenerateFindingsSetAt | string |  |  
-action_result.data.\*.gatherDegenerateFindingsSetBy | string |  |  
-action_result.data.\*.id | numeric |  `threatresponse intel doc id`  |   123 
-action_result.data.\*.intrinsicId | string |  |   silent_banker_update.yara 
-action_result.data.\*.isSchemaValid | boolean |  |   True 
-action_result.data.\*.md5 | string |  `md5`  |   99999a26910df8465087aa5x4x3aa999 
-action_result.data.\*.mitreAttack | string |  |  
-action_result.data.\*.name | string |  |   test.yara 
-action_result.data.\*.platforms | string |  |  
-action_result.data.\*.revisionId | numeric |  |   2 
-action_result.data.\*.size | numeric |  |   123 
-action_result.data.\*.sourceId | numeric |  |   1 
-action_result.data.\*.type | string |  |   yara 
-action_result.data.\*.typeVersion | string |  |   3 
-action_result.data.\*.unresolvedAlertCount | numeric |  |   0 
-action_result.data.\*.updatedAt | string |  |   2022-03-24T17:10:50.682Z 
-action_result.summary | string |  |  
-action_result.message | string |  |   Uploaded intel document to Tanium Threat Response 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.file_name | string | | test_file.yara |
+action_result.parameter.intel_doc | string | `threatresponse intel doc` | |
+action_result.parameter.vault_id | string | `vault id` | 99bdf807609cddc8d4643d53ef18ab08x989x99 |
+action_result.data.\*.alertCount | numeric | | 0 |
+action_result.data.\*.blobId | string | | cbdbca3e-0d97-4595-934d-56d24c9b8f95 |
+action_result.data.\*.compiled | string | | |
+action_result.data.\*.contents | string | | rule ExampleRule { strings: $my_text_string = "text here" } |
+action_result.data.\*.createdAt | string | | 2022-03-24T17:09:22.712Z |
+action_result.data.\*.data.alertCount | numeric | | |
+action_result.data.\*.data.blobId | string | | fb6da13b-f806-4f5b-a1ab-856348957931 |
+action_result.data.\*.data.compiled | string | | |
+action_result.data.\*.data.contents | string | | rule ExampleRule { strings: $my_text_string = "text here" $my_hex_string = { E2 34 A1 C8 23 FB } condition: $my_text_string or $my_hex_string } |
+action_result.data.\*.data.createdAt | string | | 2023-02-27T09:29:02.962Z |
+action_result.data.\*.data.description | string | | |
+action_result.data.\*.data.id | numeric | | 527 |
+action_result.data.\*.data.intrinsicId | string | | test_file_1.yara |
+action_result.data.\*.data.isSchemaValid | boolean | | True False |
+action_result.data.\*.data.md5 | string | | 736189521d9da5910de08107c47f015f |
+action_result.data.\*.data.mitreAttack | string | | |
+action_result.data.\*.data.name | string | | test_file_1.yara |
+action_result.data.\*.data.platforms | string | | |
+action_result.data.\*.data.revisionId | numeric | | 1 |
+action_result.data.\*.data.size | numeric | | 143 |
+action_result.data.\*.data.sourceId | numeric | | 1 |
+action_result.data.\*.data.type | string | | yara |
+action_result.data.\*.data.typeVersion | string | | 4 |
+action_result.data.\*.data.unresolvedAlertCount | numeric | | |
+action_result.data.\*.data.updatedAt | string | | 2023-02-27T09:29:02.962Z |
+action_result.data.\*.description | string | | |
+action_result.data.\*.funnelAllFindingsToConnectSetAt | string | | |
+action_result.data.\*.funnelAllFindingsToConnectSetBy | string | | |
+action_result.data.\*.gatherDegenerateFindingsSetAt | string | | |
+action_result.data.\*.gatherDegenerateFindingsSetBy | string | | |
+action_result.data.\*.id | numeric | `threatresponse intel doc id` | 123 |
+action_result.data.\*.intrinsicId | string | | silent_banker_update.yara |
+action_result.data.\*.isSchemaValid | boolean | | True |
+action_result.data.\*.md5 | string | `md5` | 99999a26910df8465087aa5x4x3aa999 |
+action_result.data.\*.mitreAttack | string | | |
+action_result.data.\*.name | string | | test.yara |
+action_result.data.\*.platforms | string | | |
+action_result.data.\*.revisionId | numeric | | 2 |
+action_result.data.\*.size | numeric | | 123 |
+action_result.data.\*.sourceId | numeric | | 1 |
+action_result.data.\*.type | string | | yara |
+action_result.data.\*.typeVersion | string | | 3 |
+action_result.data.\*.unresolvedAlertCount | numeric | | 0 |
+action_result.data.\*.updatedAt | string | | 2022-03-24T17:10:50.682Z |
+action_result.summary | string | | |
+action_result.message | string | | Uploaded intel document to Tanium Threat Response |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'start quick scan'
+
 Scan a computer group for hashes in intel document
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 This action requires the 'threat response on demand scans write' permission. If this action is failing with 'GroupNotFound' exception then please try with the ID of computer group for 'computer group name' parameter. You can find Computer Group ID from Tanium UI->Administration->Computer Groups->Click on Computer Group name now you can see the ID on URL. If a numerical value is given to the computer group parameter, then priority will be given to 'ID' and ID is not present in tanium, then consider ID as the name of the computer group. If the computer group is deleted but visible on Tanium through the group ID. In this case, this action will be passed using the deleted group ID and scan will start on Tanium without computer group name.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**intel_doc_id** |  required  | ID of the intel document to scan | numeric |  `threatresponse intel doc id` 
-**computer_group_name** |  required  | Name or ID of a Tanium computer group to scan | string |  `tanium computer group name` 
+**intel_doc_id** | required | ID of the intel document to scan | numeric | `threatresponse intel doc id` |
+**computer_group_name** | required | Name or ID of a Tanium computer group to scan | string | `tanium computer group name` |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.computer_group_name | string |  `tanium computer group name`  |  
-action_result.parameter.intel_doc_id | numeric |  `threatresponse intel doc id`  |   1 
-action_result.data.\*.actionExpiration | string |  |   2023-01-23T09:33:33.000Z 
-action_result.data.\*.actionIdUnix | numeric |  |   123456 
-action_result.data.\*.actionIdWindows | numeric |  |   123456 
-action_result.data.\*.alertCount | numeric |  |  
-action_result.data.\*.computerGroupId | numeric |  |   123 
-action_result.data.\*.computer_group_name | string |  `tanium computer group name`  |  
-action_result.data.\*.createdAt | string |  |  
-action_result.data.\*.data.actionExpiration | string |  |  
-action_result.data.\*.data.actionIdUnix | string |  |  
-action_result.data.\*.data.actionIdWindows | string |  |  
-action_result.data.\*.data.computerGroupId | numeric |  |   34 
-action_result.data.\*.data.createdAt | string |  |   2023-02-27T09:33:06.201Z 
-action_result.data.\*.data.id | numeric |  |   1000509 
-action_result.data.\*.data.updatedAt | string |  |   2023-02-27T09:33:06.201Z 
-action_result.data.\*.data.userId | numeric |  |   2 
-action_result.data.\*.endpointMatchCount | numeric |  |  
-action_result.data.\*.id | numeric |  |  
-action_result.data.\*.intelDocId | numeric |  |   123 
-action_result.data.\*.intel_doc_id | numeric |  `threatresponse intel doc id`  |  
-action_result.data.\*.meta.deployTask.status | string |  |   STARTED 
-action_result.data.\*.meta.deployTask.taskId | numeric |  |   29232 
-action_result.data.\*.questionId | numeric |  |  
-action_result.data.\*.revisionId | numeric |  |  
-action_result.data.\*.userId | numeric |  |  
-action_result.summary | string |  |  
-action_result.message | string |  |  
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1   
+action_result.status | string | | success failed |
+action_result.parameter.computer_group_name | string | `tanium computer group name` | |
+action_result.parameter.intel_doc_id | numeric | `threatresponse intel doc id` | 1 |
+action_result.data.\*.actionExpiration | string | | 2023-01-23T09:33:33.000Z |
+action_result.data.\*.actionIdUnix | numeric | | 123456 |
+action_result.data.\*.actionIdWindows | numeric | | 123456 |
+action_result.data.\*.alertCount | numeric | | |
+action_result.data.\*.computerGroupId | numeric | | 123 |
+action_result.data.\*.computer_group_name | string | `tanium computer group name` | |
+action_result.data.\*.createdAt | string | | |
+action_result.data.\*.data.actionExpiration | string | | |
+action_result.data.\*.data.actionIdUnix | string | | |
+action_result.data.\*.data.actionIdWindows | string | | |
+action_result.data.\*.data.computerGroupId | numeric | | 34 |
+action_result.data.\*.data.createdAt | string | | 2023-02-27T09:33:06.201Z |
+action_result.data.\*.data.id | numeric | | 1000509 |
+action_result.data.\*.data.updatedAt | string | | 2023-02-27T09:33:06.201Z |
+action_result.data.\*.data.userId | numeric | | 2 |
+action_result.data.\*.endpointMatchCount | numeric | | |
+action_result.data.\*.id | numeric | | |
+action_result.data.\*.intelDocId | numeric | | 123 |
+action_result.data.\*.intel_doc_id | numeric | `threatresponse intel doc id` | |
+action_result.data.\*.meta.deployTask.status | string | | STARTED |
+action_result.data.\*.meta.deployTask.taskId | numeric | | 29232 |
+action_result.data.\*.questionId | numeric | | |
+action_result.data.\*.revisionId | numeric | | |
+action_result.data.\*.userId | numeric | | |
+action_result.summary | string | | |
+action_result.message | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ## action: 'list alerts'
+
 List alerts with optional filtering
 
-Type: **investigate**  
+Type: **investigate** \
 Read only: **True**
 
 This action requires the 'threat response alerts read' permission.
 
 #### Action Parameters
+
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**query** |  optional  | Query to filter alerts (e.g. 'intelDocId=1&priority=high') | string | 
-**limit** |  optional  | The maximum number of alerts to return (Default: 100) | numeric | 
-**offset** |  optional  | Offset into the result set (Default: 0) | numeric | 
+**query** | optional | Query to filter alerts (e.g. 'intelDocId=1&priority=high') | string | |
+**limit** | optional | The maximum number of alerts to return (Default: 100) | numeric | |
+**offset** | optional | Offset into the result set (Default: 0) | numeric | |
 
 #### Action Output
+
 DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
-action_result.status | string |  |   success  failed 
-action_result.parameter.limit | numeric |  |   100 
-action_result.parameter.offset | numeric |  |  
-action_result.parameter.query | string |  |   priority=high 
-action_result.data.\*.ackedAt | string |  |  
-action_result.data.\*.alertedAt | string |  |   2021-11-17T18:02:32.000Z 
-action_result.data.\*.computerIpAddress | string |  `ip`  |   8.8.8.8 
-action_result.data.\*.computerName | string |  `host name`  |   test-client 
-action_result.data.\*.createdAt | string |  |   2021-11-17T18:03:22.741Z 
-action_result.data.\*.details | string |  |  
-action_result.data.\*.eid | numeric |  |   1 
-action_result.data.\*.event_type | string |  |   process 
-action_result.data.\*.findingId | string |  |  
-action_result.data.\*.firstEIDResolutionAttempt | string |  |  
-action_result.data.\*.groupingId | string |  |  
-action_result.data.\*.guid | string |  |   0123456-5d89-477e-bf14-8d6577842xx9 
-action_result.data.\*.id | numeric |  |   1 
-action_result.data.\*.intelDocId | numeric |  |   11 
-action_result.data.\*.intelDocRevisionId | string |  |  
-action_result.data.\*.lastEIDResolutionAttempt | string |  |  
-action_result.data.\*.matchType | string |  |   process 
-action_result.data.\*.md5 | string |  `md5`  |   9999ec1d75804df9357a0660919x9999 
-action_result.data.\*.path | string |  `file name`  `file path`  |   C:\\Windows\\System32\\test.exe 
-action_result.data.\*.priority | string |  |   high 
-action_result.data.\*.receivedAt | string |  |   2021-11-17T18:03:22.732Z 
-action_result.data.\*.scanConfigId | numeric |  |   1 
-action_result.data.\*.scanConfigRevisionId | numeric |  |   3 
-action_result.data.\*.severity | string |  |   info 
-action_result.data.\*.state | string |  |   unresolved 
-action_result.data.\*.suppressedAt | string |  |  
-action_result.data.\*.type | string |  |   detect.match 
-action_result.data.\*.updatedAt | string |  |   2021-11-17T18:03:22.741Z 
-action_result.summary.filteredCount | numeric |  |   8868 
-action_result.summary.totalCount | numeric |  |   8868 
-action_result.summary.total_alerts | numeric |  |   100 
-action_result.message | string |  |   Listed alerts successfully 
-summary.total_objects | numeric |  |   1 
-summary.total_objects_successful | numeric |  |   1 
+action_result.status | string | | success failed |
+action_result.parameter.limit | numeric | | 100 |
+action_result.parameter.offset | numeric | | |
+action_result.parameter.query | string | | priority=high |
+action_result.data.\*.ackedAt | string | | |
+action_result.data.\*.alertedAt | string | | 2021-11-17T18:02:32.000Z |
+action_result.data.\*.computerIpAddress | string | `ip` | 8.8.8.8 |
+action_result.data.\*.computerName | string | `host name` | test-client |
+action_result.data.\*.createdAt | string | | 2021-11-17T18:03:22.741Z |
+action_result.data.\*.details | string | | |
+action_result.data.\*.eid | numeric | | 1 |
+action_result.data.\*.event_type | string | | process |
+action_result.data.\*.findingId | string | | |
+action_result.data.\*.firstEIDResolutionAttempt | string | | |
+action_result.data.\*.groupingId | string | | |
+action_result.data.\*.guid | string | | 0123456-5d89-477e-bf14-8d6577842xx9 |
+action_result.data.\*.id | numeric | | 1 |
+action_result.data.\*.intelDocId | numeric | | 11 |
+action_result.data.\*.intelDocRevisionId | string | | |
+action_result.data.\*.lastEIDResolutionAttempt | string | | |
+action_result.data.\*.matchType | string | | process |
+action_result.data.\*.md5 | string | `md5` | 9999ec1d75804df9357a0660919x9999 |
+action_result.data.\*.path | string | `file name` `file path` | C:\\Windows\\System32\\test.exe |
+action_result.data.\*.priority | string | | high |
+action_result.data.\*.receivedAt | string | | 2021-11-17T18:03:22.732Z |
+action_result.data.\*.scanConfigId | numeric | | 1 |
+action_result.data.\*.scanConfigRevisionId | numeric | | 3 |
+action_result.data.\*.severity | string | | info |
+action_result.data.\*.state | string | | unresolved |
+action_result.data.\*.suppressedAt | string | | |
+action_result.data.\*.type | string | | detect.match |
+action_result.data.\*.updatedAt | string | | 2021-11-17T18:03:22.741Z |
+action_result.summary.filteredCount | numeric | | 8868 |
+action_result.summary.totalCount | numeric | | 8868 |
+action_result.summary.total_alerts | numeric | | 100 |
+action_result.message | string | | Listed alerts successfully |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+action_result.parameter.ph | ph | | |
+
+______________________________________________________________________
+
+Auto-generated Splunk SOAR Connector documentation.
+
+Copyright 2025 Splunk Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License.
