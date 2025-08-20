@@ -243,6 +243,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         username = config.get("username")
         auth = (username, config.get("password"))
         headers = {"Content-Type": "application/json"}
+        message = ""
         if self._api_token:
             message = "Provided api token is invalid or expired - you need to either remove/replace it from the asset config. "
         if None in auth:
