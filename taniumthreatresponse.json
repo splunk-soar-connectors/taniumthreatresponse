@@ -9,9 +9,9 @@
     "product_name": "Threat Response",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2020-2025 Splunk Inc.",
-    "app_version": "3.0.2",
-    "utctime_updated": "2025-08-20T22:38:24.448630Z",
+    "license": "Copyright (c) 2020-2024 Splunk Inc.",
+    "app_version": "3.0.1",
+    "utctime_updated": "2024-03-28T09:16:36.000000Z",
     "package_name": "phantom_taniumthreatresponse",
     "main_module": "taniumthreatresponse_connector.py",
     "fips_compliant": true,
@@ -3978,10 +3978,6 @@
                     "example_values": [
                         1
                     ]
-                },
-                {
-                    "data_path": "action_result.parameter.ph",
-                    "data_type": "ph"
                 }
             ],
             "render": {
@@ -3990,5 +3986,29 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.10.0-py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
+            }
+        ]
+    },
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.10.0-py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
+            }
+        ]
+    }
 }

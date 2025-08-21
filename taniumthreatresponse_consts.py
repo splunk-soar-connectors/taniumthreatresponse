@@ -1,6 +1,6 @@
 # File: taniumthreatresponse_consts.py
 #
-# Copyright (c) 2020-2025 Splunk Inc.
+# Copyright (c) 2020-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,11 @@ SNAPSHOTS_SORT_TYPE_VALUE_LIST = ["uuid", "username", "hostname", "created", "co
 PROCESS_CONTEXT_VALUE_LIST = ["parent", "node", "siblings", "children"]
 
 # Value list to parameter name mapping
-DSTTYPE_PARAMETER_NAME = {"hostname": "hostname", "ip_address": "ip", "client_id": "clientId"}
+DSTTYPE_PARAMETER_NAME = {
+                            "hostname": "hostname",
+                            "ip_address": "ip",
+                            "client_id": "clientId"
+                         }
 
 # API Endpoints
 LIST_ALERTS_ENDPOINT = "/plugin/products/threat-response/api/v1/alerts"
