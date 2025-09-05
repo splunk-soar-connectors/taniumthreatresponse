@@ -1,7 +1,7 @@
 # Tanium Threat Response
 
 Publisher: Splunk <br>
-Connector Version: 3.0.2 <br>
+Connector Version: 3.0.3 <br>
 Product Vendor: Tanium <br>
 Product Name: Threat Response <br>
 Minimum Product Version: 6.1.1
