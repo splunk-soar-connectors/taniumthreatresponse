@@ -1,9 +1,9 @@
 # Tanium Threat Response
 
-Publisher: Splunk \
-Connector Version: 3.0.2 \
-Product Vendor: Tanium \
-Product Name: Threat Response \
+Publisher: Splunk <br>
+Connector Version: 3.0.2 <br>
+Product Vendor: Tanium <br>
+Product Name: Threat Response <br>
 Minimum Product Version: 6.1.1
 
 This app supports various generic and investigate actions on Tanium Threat Response
@@ -165,32 +165,32 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[list connections](#action-list-connections) - Get a list of connections \
-[create connection](#action-create-connection) - Create a new live endpoint connection \
-[get endpoint](#action-get-endpoint) - Get information for an endpoint \
-[close connection](#action-close-connection) - Close an endpoint connection \
-[delete connection](#action-delete-connection) - Delete an endpoint connection \
-[create snapshot](#action-create-snapshot) - Capture a new snapshot \
-[list snapshots](#action-list-snapshots) - Get a list of all snapshots \
-[delete snapshot](#action-delete-snapshot) - Delete a snapshot \
-[get process](#action-get-process) - Get information for a process \
-[get process tree](#action-get-process-tree) - Get process tree for a process instance \
-[get events](#action-get-events) - Build a query to get events of a certain type from a connection \
-[get events summary](#action-get-events-summary) - Returns counts of given event type \
-[list files](#action-list-files) - List downloaded files in Tanium Threat Response \
-[save file](#action-save-file) - Save a file from a remote connection to Tanium Threat Response \
-[delete file](#action-delete-file) - Delete a file evidence from disk and Tanium Threat Response database \
-[get file](#action-get-file) - Download a file from Tanium Threat Response to the SOAR Vault \
-[upload intel doc](#action-upload-intel-doc) - Upload intel document to Tanium Threat Response \
-[start quick scan](#action-start-quick-scan) - Scan a computer group for hashes in intel document \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[list connections](#action-list-connections) - Get a list of connections <br>
+[create connection](#action-create-connection) - Create a new live endpoint connection <br>
+[get endpoint](#action-get-endpoint) - Get information for an endpoint <br>
+[close connection](#action-close-connection) - Close an endpoint connection <br>
+[delete connection](#action-delete-connection) - Delete an endpoint connection <br>
+[create snapshot](#action-create-snapshot) - Capture a new snapshot <br>
+[list snapshots](#action-list-snapshots) - Get a list of all snapshots <br>
+[delete snapshot](#action-delete-snapshot) - Delete a snapshot <br>
+[get process](#action-get-process) - Get information for a process <br>
+[get process tree](#action-get-process-tree) - Get process tree for a process instance <br>
+[get events](#action-get-events) - Build a query to get events of a certain type from a connection <br>
+[get events summary](#action-get-events-summary) - Returns counts of given event type <br>
+[list files](#action-list-files) - List downloaded files in Tanium Threat Response <br>
+[save file](#action-save-file) - Save a file from a remote connection to Tanium Threat Response <br>
+[delete file](#action-delete-file) - Delete a file evidence from disk and Tanium Threat Response database <br>
+[get file](#action-get-file) - Download a file from Tanium Threat Response to the SOAR Vault <br>
+[upload intel doc](#action-upload-intel-doc) - Upload intel document to Tanium Threat Response <br>
+[start quick scan](#action-start-quick-scan) - Scan a computer group for hashes in intel document <br>
 [list alerts](#action-list-alerts) - List alerts with optional filtering
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 This action requires the 'threat response use api' permission.
@@ -207,7 +207,7 @@ No Output
 
 Get a list of connections
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -244,7 +244,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Create a new live endpoint connection
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 This action consider the latest hostname from tanium if same names available.
@@ -273,7 +273,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get information for an endpoint
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -309,7 +309,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Close an endpoint connection
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -334,7 +334,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Delete an endpoint connection
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 A connection to an endpoint is deleted from Tanium Threat Response module. With the create connection action, we are able to retrieve/create a deleted connection.
@@ -361,7 +361,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Capture a new snapshot
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -392,7 +392,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get a list of all snapshots
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action will fetch all snapshots that are available on the Tanium Server, i.e., the snapshot files that are uploaded manually and the snapshots that are captured through Tanium UI.
@@ -433,7 +433,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Delete a snapshot
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 This action can be used to delete the snapshots that are uploaded manually and the snapshots that are captured through Tanium UI.
@@ -460,7 +460,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get information for a process
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -492,7 +492,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get process tree for a process instance
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action gives the process tree with sibling and children with respect to the 'limit' parameter. Based on API behavior, if more processes are available for the given process table id, the API response contains a maximum of 301 children and 602 siblings.
@@ -550,7 +550,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Build a query to get events of a certain type from a connection
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 When there are more data available, this action result will contain one more data than the limit.
@@ -647,7 +647,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Returns counts of given event type
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -688,7 +688,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List downloaded files in Tanium Threat Response
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -732,7 +732,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Save a file from a remote connection to Tanium Threat Response
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -765,7 +765,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Delete a file evidence from disk and Tanium Threat Response database
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -790,7 +790,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Download a file from Tanium Threat Response to the SOAR Vault
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -836,7 +836,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Upload intel document to Tanium Threat Response
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 This action requires the 'threat response intels write' permission.
@@ -910,7 +910,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Scan a computer group for hashes in intel document
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action requires the 'threat response on demand scans write' permission. If this action is failing with 'GroupNotFound' exception then please try with the ID of computer group for 'computer group name' parameter. You can find Computer Group ID from Tanium UI->Administration->Computer Groups->Click on Computer Group name now you can see the ID on URL. If a numerical value is given to the computer group parameter, then priority will be given to 'ID' and ID is not present in tanium, then consider ID as the name of the computer group. If the computer group is deleted but visible on Tanium through the group ID. In this case, this action will be passed using the deleted group ID and scan will start on Tanium without computer group name.
@@ -962,7 +962,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 List alerts with optional filtering
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 This action requires the 'threat response alerts read' permission.
