@@ -968,6 +968,10 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param["connection_id"]
         event_type = param["event_type"]
+        if event_type not in EVENT_TYPE_VALUE_LIST:
+            return action_result.set_status(
+                phantom.APP_ERROR, f"Please provide valid input from {EVENT_TYPE_VALUE_LIST} in 'event_type' action parameter"
+            )
         if not self._is_connection_active(action_result, cid):
             self.save_progress("Inactive or non-existent connection")
             return action_result.get_status()
