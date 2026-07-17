@@ -2,3 +2,4 @@
 
 * Enabled TLS certificate verification by default. (PAPP-38015)
 * Validated event summary types against the connector allowlist. (PAPP-38015)
+* Rejected unsafe identifier values before constructing Tanium API paths. (PAPP-38015)

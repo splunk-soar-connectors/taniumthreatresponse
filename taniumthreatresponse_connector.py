@@ -80,6 +80,12 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         return phantom.APP_SUCCESS, parameter
 
+    def _validate_path_segment(self, action_result, parameter, key):
+        """Reject values that can escape their intended URL path segment."""
+        if not isinstance(parameter, str) or not parameter or ".." in parameter or any(char in parameter for char in "/\\?#"):
+            return action_result.set_status(phantom.APP_ERROR, f"Please provide a valid {key}")
+        return phantom.APP_SUCCESS
+
     def _get_error_message_from_exception(self, e):
         """
         Get appropriate error message from the exception.
@@ -615,6 +621,10 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param.get("connection_id")
 
+        if not self._is_connection_active(action_result, cid):
+            self.save_progress("Inactive or non-existent connection")
+            return action_result.get_status()
+
         ret_val, _response = self._make_rest_call_helper(CLOSE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
         if phantom.is_fail(ret_val):
             message = "Close connection failed"
@@ -637,6 +647,10 @@ class TaniumThreatResponseConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         cid = param.get("connection_id")
+
+        if not self._is_connection_active(action_result, cid):
+            self.save_progress("Inactive or non-existent connection")
+            return action_result.get_status()
 
         ret_val, _response = self._make_rest_call_helper(DELETE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
         if phantom.is_fail(ret_val):
@@ -1131,6 +1145,9 @@ class TaniumThreatResponseConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         file_id = param["file_id"]
+        if phantom.is_fail(self._validate_path_segment(action_result, file_id, FILE_ID_KEY)):
+            return action_result.get_status()
+
         ret_val, _response = self._make_rest_call_helper(DELETE_FILE_EVIDENCE_ENDPOINT.format(file_id=file_id), action_result, method="delete")
         if phantom.is_fail(ret_val):
             self.save_progress("Delete File Failed")
