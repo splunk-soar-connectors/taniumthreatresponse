@@ -968,7 +968,6 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param["connection_id"]
         event_type = param["event_type"]
-
         if not self._is_connection_active(action_result, cid):
             self.save_progress("Inactive or non-existent connection")
             return action_result.get_status()
@@ -1442,7 +1441,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         if not self._api_token and not (self._username and self._password):
             return self.set_status(phantom.APP_ERROR, "Please provide either an API token, or username and password credentials")
 
-        self._verify_server_cert = config.get("verify_server_cert", False)
+        self._verify_server_cert = config.get("verify_server_cert", True)
 
         return phantom.APP_SUCCESS
 

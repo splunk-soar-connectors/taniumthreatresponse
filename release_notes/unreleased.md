@@ -1,3 +1,3 @@
 **Unreleased**
 
-* Updated development tooling. (PAPP-38015)
+* Enabled TLS certificate verification by default. (PAPP-38015)
