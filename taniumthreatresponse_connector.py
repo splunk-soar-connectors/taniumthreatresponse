@@ -1,6 +1,6 @@
 # File: taniumthreatresponse_connector.py
 #
-# Copyright (c) 2020-2025 Splunk Inc.
+# Copyright (c) 2020-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,6 +79,12 @@ class TaniumThreatResponseConnector(BaseConnector):
                 return action_result.set_status(phantom.APP_ERROR, NON_ZERO_POSITIVE_INTEGER_MESSAGE.format(key)), None
 
         return phantom.APP_SUCCESS, parameter
+
+    def _validate_path_segment(self, action_result, parameter, key):
+        """Reject values that can escape their intended URL path segment."""
+        if not isinstance(parameter, str) or not parameter or ".." in parameter or any(char in parameter for char in "/\\?#"):
+            return action_result.set_status(phantom.APP_ERROR, f"Please provide a valid {key}")
+        return phantom.APP_SUCCESS
 
     def _get_error_message_from_exception(self, e):
         """
@@ -455,7 +461,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         """
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val, response = self._make_rest_call_helper(STATUS_ENDPOINT, action_result)
+        ret_val, _response = self._make_rest_call_helper(STATUS_ENDPOINT, action_result)
         if phantom.is_fail(ret_val):
             self.save_progress("Test Connectivity Failed")
             return action_result.get_status()
@@ -615,7 +621,11 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param.get("connection_id")
 
-        ret_val, response = self._make_rest_call_helper(CLOSE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
+        if not self._is_connection_active(action_result, cid):
+            self.save_progress("Inactive or non-existent connection")
+            return action_result.get_status()
+
+        ret_val, _response = self._make_rest_call_helper(CLOSE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
         if phantom.is_fail(ret_val):
             message = "Close connection failed"
             return action_result.set_status(phantom.APP_ERROR, message)
@@ -638,7 +648,11 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param.get("connection_id")
 
-        ret_val, response = self._make_rest_call_helper(DELETE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
+        if not self._is_connection_active(action_result, cid):
+            self.save_progress("Inactive or non-existent connection")
+            return action_result.get_status()
+
+        ret_val, _response = self._make_rest_call_helper(DELETE_CONNECTION_ENDPOINT.format(cid=cid), action_result, method="delete")
         if phantom.is_fail(ret_val):
             self.save_progress("Delete connection failed")
             return action_result.get_status()
@@ -746,7 +760,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         request = {"ids": snapshot_ids}
 
-        ret_val, response = self._make_rest_call_helper(DELETE_SNAPSHOT_ENDPOINT, action_result, json=request, method="delete")
+        ret_val, _response = self._make_rest_call_helper(DELETE_SNAPSHOT_ENDPOINT, action_result, json=request, method="delete")
         if phantom.is_fail(ret_val):
             self.save_progress("Delete snapshot failed")
             return action_result.get_status()
@@ -968,7 +982,10 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         cid = param["connection_id"]
         event_type = param["event_type"]
-
+        if event_type not in EVENT_TYPE_VALUE_LIST:
+            return action_result.set_status(
+                phantom.APP_ERROR, f"Please provide valid input from {EVENT_TYPE_VALUE_LIST} in 'event_type' action parameter"
+            )
         if not self._is_connection_active(action_result, cid):
             self.save_progress("Inactive or non-existent connection")
             return action_result.get_status()
@@ -1105,7 +1122,7 @@ class TaniumThreatResponseConnector(BaseConnector):
 
         data = {"path": param.get("file_path")}
 
-        ret_val, response = self._make_rest_call_helper(SAVE_FILE_EVIDENCE_ENDPOINT.format(cid=cid), action_result, json=data, method="post")
+        ret_val, _response = self._make_rest_call_helper(SAVE_FILE_EVIDENCE_ENDPOINT.format(cid=cid), action_result, json=data, method="post")
         if phantom.is_fail(ret_val):
             self.save_progress("Save File Failed")
             return action_result.get_status()
@@ -1128,7 +1145,10 @@ class TaniumThreatResponseConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         file_id = param["file_id"]
-        ret_val, response = self._make_rest_call_helper(DELETE_FILE_EVIDENCE_ENDPOINT.format(file_id=file_id), action_result, method="delete")
+        if phantom.is_fail(self._validate_path_segment(action_result, file_id, FILE_ID_KEY)):
+            return action_result.get_status()
+
+        ret_val, _response = self._make_rest_call_helper(DELETE_FILE_EVIDENCE_ENDPOINT.format(file_id=file_id), action_result, method="delete")
         if phantom.is_fail(ret_val):
             self.save_progress("Delete File Failed")
             return action_result.get_status()
@@ -1442,7 +1462,7 @@ class TaniumThreatResponseConnector(BaseConnector):
         if not self._api_token and not (self._username and self._password):
             return self.set_status(phantom.APP_ERROR, "Please provide either an API token, or username and password credentials")
 
-        self._verify_server_cert = config.get("verify_server_cert", False)
+        self._verify_server_cert = config.get("verify_server_cert", True)
 
         return phantom.APP_SUCCESS
 
